@@ -1,7 +1,7 @@
-import * as React from "react";
-import {useEffect, useState} from "react";
-import {getAuth} from "firebase/auth";
-import {Navigate} from "react-router-dom"
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { getAuth } from 'firebase/auth';
+import { Navigate } from 'react-router-dom';
 
 const WithAuthentication = (props) => {
     const auth = getAuth()
@@ -13,7 +13,7 @@ const WithAuthentication = (props) => {
             setRan(true);
         });
         return () => unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.
-    }, [])
+    }, [auth])
 
     return (
         <>
