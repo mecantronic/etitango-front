@@ -52,24 +52,25 @@ class Inscripcion extends PureComponent {
 
     componentDidMount = async () => {
         try {
-            const locations = Promise.all([
-                axios.get(`${window.location.protocol}//${process.env.REACT_APP_BACK_END_URL || 'localhost:8000'}/location/countries/`),
-                axios.get(`${window.location.protocol}//${process.env.REACT_APP_BACK_END_URL || 'localhost:8000'}/location/provinces/`),
-                axios.get(`${window.location.protocol}//${process.env.REACT_APP_BACK_END_URL || 'localhost:8000'}/location/cities/`)
-            ])
-            locations
-                .then((response) => {
-                    this.setState({
-                        countries: response[0].data,
-                        allProvinces: response[1].data,
-                        allCities: response[2].data,
-                    })
-                })
-                .catch(e => {
-                    console.error(e)
-                })
+            const time = await axios.get('http://worldtimeapi.org/api/timezone/America/Argentina/Salta');
+            let countries;
+            let allProvinces;
+            let allCities;
+            try {
+                countries = await axios.get(`${window.location.protocol}//${process.env.REACT_APP_BACK_END_URL || 'localhost:8000'}/location/countries/`).catch();
+                allProvinces = await axios.get(`${window.location.protocol}//${process.env.REACT_APP_BACK_END_URL || 'localhost:8000'}/location/provinces/`).catch();
+                allCities = await axios.get(`${window.location.protocol}//${process.env.REACT_APP_BACK_END_URL || 'localhost:8000'}/location/cities/`).catch();
+            } catch (e) {
+            }
 
+            this.setState({
+                countries: countries?.data,
+                allProvinces: allProvinces?.data,
+                allCities: allCities?.data,
+                time: new Date(time.data.datetime)
+            });
         } catch (e) {
+            console.error(e);
         }
     }
 
@@ -221,206 +222,209 @@ class Inscripcion extends PureComponent {
             country,
             province,
             city,
-            vaccinated
+            vaccinated,
+            time
         } = this.state;
-
+        const openingDate = new Date(process.env.REACT_APP_OPENING_DATE);
         return (
             <React.Fragment>
                 <WithAuthentication redirectUrl={'inscripcion'}/>
                 <Container maxWidth="lg" sx={{marginTop: 6}}>
-                    <Grid container direction="column" spacing={3}>
+                    <Grid container direction='column' spacing={3}>
                         <Grid item>
-                            <Typography variant="h2" color="secondary" align="center">
+                            <Typography variant='h2' color='secondary' align='center'>
                                 Formulario de inscripción
                             </Typography>
                         </Grid>
-                        <Grid item container spacing={2} md={6} sm={12}>
-                            <Grid item md={6} sm={6} xs={12}>
-                                <TextField
-                                    fullWidth
-                                    label="Nombre"
-                                    value={name}
-                                    name="name"
-                                    required
-                                    error={Boolean(errors.name)}
-                                    helperText={errors.name || ''}
-                                    onChange={this.handleOnChange}
-                                />
-                            </Grid>
-                            <Grid item md={6} sm={6} xs={12}>
-                                <TextField
-                                    fullWidth
-                                    label="Apellido"
-                                    value={last_name}
-                                    name="last_name"
-                                    required
-                                    error={Boolean(errors.last_name)}
-                                    helperText={errors.last_name || ''}
-                                    onChange={this.handleOnChange}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid item container spacing={2} md={6} sm={12}>
-                            <Grid item md={6} sm={6} xs={12}>
-                                <TextField
-                                    fullWidth label="Email"
-                                    type="email"
-                                    value={email}
-                                    name="email"
-                                    required
-                                    error={Boolean(errors.email)}
-                                    helperText={errors.email || ''}
-                                    onChange={this.handleOnChange}
-                                />
-                            </Grid>
-                            <Grid item md={6} sm={6} xs={12}>
-                                <TextField
-                                    fullWidth
-                                    label="DNI"
-                                    value={dni_number}
-                                    name="dni_number"
-                                    required
-                                    error={Boolean(errors.dni_number)}
-                                    helperText={errors.dni_number || ''}
-                                    onChange={this.handleOnChange}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid item container spacing={2} md={6} sm={12}>
-                            <Grid item md={6} sm={6} xs={6}>
-                                <DatePicker
-                                    fullWidth
-                                    inputFormat="DD-MM-YYYY"
-                                    mask="__-__-____"
-                                    label="Fecha de llegada"
-                                    value={arrival_date}
-                                    onChange={this.handleArrivalDateChange}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
-                            </Grid>
-                            <Grid item md={6} sm={6} xs={6}>
-                                <DatePicker
-                                    fullWidth
-                                    inputFormat="DD-MM-YYYY"
-                                    mask="__-__-____"
-                                    label="Fecha de ida"
-                                    value={leave_date}
-                                    onChange={this.handleLeaveDateChange}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid item container spacing={2} md={6} sm={12}>
-                            <Grid item md={4} sm={4} xs={12}>
-                                <FormControl fullWidth>
-                                    <InputLabel id="helpwith-label">Ayuda con</InputLabel>
-                                    <Select
-                                        labelId="helpwith-label"
-                                        id="help_with"
-                                        name="help_with"
-                                        value={help_with}
-                                        label="Ayuda con"
-                                        onChange={this.handleOnChange}
-                                    >
-                                        {
-                                            HELP_WITH_CHOICES.map((help, i) => (
-                                                <MenuItem key={`help_with_${i}`}
-                                                          value={help.value}>{help.label}</MenuItem>
-                                            ))
-                                        }
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-                            <Grid item md={4} sm={4} xs={12}>
-                                <FormControl fullWidth>
-                                    <InputLabel id="food-label">Comida</InputLabel>
-                                    <Select
-                                        labelId="food-label"
-                                        id="food"
-                                        name="food"
-                                        value={food}
-                                        label="Comida"
-                                        onChange={this.handleOnChange}
-                                    >
-                                        {
-                                            FOOD_CHOICES.map((food, i) => (
-                                                <MenuItem key={`food_${i}`} value={food.value}>{food.label}</MenuItem>
-                                            ))
-                                        }
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-                            <Grid item md={4} sm={4} xs={12}>
-                                <FormControlLabel
-                                    control={<Checkbox value={is_celiac} onChange={this.handleIsCeliacChange}/>}
-                                    label="Celíaco"/>
-                            </Grid>
-                        </Grid>
-                        <Grid item container spacing={2} md={6} sm={12}>
-                            <Grid item md={4} sm={4} xs={12}>
-                                <Autocomplete
-                                    fullWidth
-                                    disablePortal
-                                    id="countries"
-                                    onChange={this.handleCountryChange}
-                                    getOptionLabel={(option) => {
-                                        return option.country_name
-                                    }}
-                                    options={countries}
-                                    value={country}
-                                    renderInput={(params) => <TextField
-                                        {...params}
-                                        label="Pais"
-                                        inputProps={{
-                                            ...params.inputProps,
-                                            autoComplete: 'new-password',
-                                        }}
-                                    />
-                                    }
-                                />
-                            </Grid>
-                            <Grid item md={4} sm={4} xs={12}>
-                                <Autocomplete
-                                    fullWidth
-                                    disablePortal
-                                    id="provinces"
-                                    onChange={this.handleProvinceChange}
-                                    getOptionLabel={(option) => option.province_name}
-                                    options={provinces}
-                                    value={province}
-                                    renderInput={(params) => <TextField
-                                        {...params}
-                                        label="Provincia"
-                                        inputProps={{
-                                            ...params.inputProps,
-                                            autoComplete: 'new-password',
-                                        }}
-                                    />
-                                    }
-                                />
-                            </Grid>
-                            <Grid item md={4} sm={4} xs={12}>
-                                <Autocomplete
-                                    fullWidth
-                                    disablePortal
-                                    id="cities"
-                                    onChange={this.handleCityChange}
-                                    getOptionLabel={(option) => option.city_name}
-                                    options={cities}
-                                    value={city}
-                                    renderInput={(params) => <TextField
-                                        {...params}
-                                        label="Ciudad"
-                                        inputProps={{
-                                            ...params.inputProps,
-                                            autoComplete: 'new-password',
-                                        }}
-                                    />
-                                    }
-                                />
-                            </Grid>
-                        </Grid>
-                        {/*<Grid item container alignItems="center">
+                        {time >= openingDate ? <>
+                                                 <Grid item container spacing={2} md={6} sm={12}>
+                                                     <Grid item md={6} sm={6} xs={12}>
+                                                         <TextField
+                                                             fullWidth
+                                                             label='Nombre'
+                                                             value={name}
+                                                             name='name'
+                                                             required
+                                                             error={Boolean(errors.name)}
+                                                             helperText={errors.name || ''}
+                                                             onChange={this.handleOnChange}
+                                                         />
+                                                     </Grid>
+                                                     <Grid item md={6} sm={6} xs={12}>
+                                                         <TextField
+                                                             fullWidth
+                                                             label='Apellido'
+                                                             value={last_name}
+                                                             name='last_name'
+                                                             required
+                                                             error={Boolean(errors.last_name)}
+                                                             helperText={errors.last_name || ''}
+                                                             onChange={this.handleOnChange}
+                                                         />
+                                                     </Grid>
+                                                 </Grid>
+                                                 <Grid item container spacing={2} md={6} sm={12}>
+                                                     <Grid item md={6} sm={6} xs={12}>
+                                                         <TextField
+                                                             fullWidth label='Email'
+                                                             type='email'
+                                                             value={email}
+                                                             name='email'
+                                                             required
+                                                             error={Boolean(errors.email)}
+                                                             helperText={errors.email || ''}
+                                                             onChange={this.handleOnChange}
+                                                         />
+                                                     </Grid>
+                                                     <Grid item md={6} sm={6} xs={12}>
+                                                         <TextField
+                                                             fullWidth
+                                                             label='DNI'
+                                                             value={dni_number}
+                                                             name='dni_number'
+                                                             required
+                                                             error={Boolean(errors.dni_number)}
+                                                             helperText={errors.dni_number || ''}
+                                                             onChange={this.handleOnChange}
+                                                         />
+                                                     </Grid>
+                                                 </Grid>
+                                                 <Grid item container spacing={2} md={6} sm={12}>
+                                                     <Grid item md={6} sm={6} xs={6}>
+                                                         <DatePicker
+                                                             fullWidth
+                                                             inputFormat='DD-MM-YYYY'
+                                                             mask='__-__-____'
+                                                             label='Fecha de llegada'
+                                                             value={arrival_date}
+                                                             onChange={this.handleArrivalDateChange}
+                                                             renderInput={(params) => <TextField {...params} />}
+                                                         />
+                                                     </Grid>
+                                                     <Grid item md={6} sm={6} xs={6}>
+                                                         <DatePicker
+                                                             fullWidth
+                                                             inputFormat='DD-MM-YYYY'
+                                                             mask='__-__-____'
+                                                             label='Fecha de ida'
+                                                             value={leave_date}
+                                                             onChange={this.handleLeaveDateChange}
+                                                             renderInput={(params) => <TextField {...params} />}
+                                                         />
+                                                     </Grid>
+                                                 </Grid>
+                                                 <Grid item container spacing={2} md={6} sm={12}>
+                                                     <Grid item md={4} sm={4} xs={12}>
+                                                         <FormControl fullWidth>
+                                                             <InputLabel id='helpwith-label'>Ayuda con</InputLabel>
+                                                             <Select
+                                                                 labelId='helpwith-label'
+                                                                 id='help_with'
+                                                                 name='help_with'
+                                                                 value={help_with}
+                                                                 label='Ayuda con'
+                                                                 onChange={this.handleOnChange}
+                                                             >
+                                                                 {
+                                                                     HELP_WITH_CHOICES.map((help, i) => (
+                                                                         <MenuItem key={`help_with_${i}`}
+                                                                                   value={help.value}>{help.label}</MenuItem>
+                                                                     ))
+                                                                 }
+                                                             </Select>
+                                                         </FormControl>
+                                                     </Grid>
+                                                     <Grid item md={4} sm={4} xs={12}>
+                                                         <FormControl fullWidth>
+                                                             <InputLabel id='food-label'>Comida</InputLabel>
+                                                             <Select
+                                                                 labelId='food-label'
+                                                                 id='food'
+                                                                 name='food'
+                                                                 value={food}
+                                                                 label='Comida'
+                                                                 onChange={this.handleOnChange}
+                                                             >
+                                                                 {
+                                                                     FOOD_CHOICES.map((food, i) => (
+                                                                         <MenuItem key={`food_${i}`}
+                                                                                   value={food.value}>{food.label}</MenuItem>
+                                                                     ))
+                                                                 }
+                                                             </Select>
+                                                         </FormControl>
+                                                     </Grid>
+                                                     <Grid item md={4} sm={4} xs={12}>
+                                                         <FormControlLabel
+                                                             control={<Checkbox value={is_celiac} onChange={this.handleIsCeliacChange} />}
+                                                             label='Celíaco' />
+                                                     </Grid>
+                                                 </Grid>
+                                                 <Grid item container spacing={2} md={6} sm={12}>
+                                                     <Grid item md={4} sm={4} xs={12}>
+                                                         <Autocomplete
+                                                             fullWidth
+                                                             disablePortal
+                                                             id='countries'
+                                                             onChange={this.handleCountryChange}
+                                                             getOptionLabel={(option) => {
+                                                                 return option.country_name;
+                                                             }}
+                                                             options={countries}
+                                                             value={country}
+                                                             renderInput={(params) => <TextField
+                                                                 {...params}
+                                                                 label='Pais'
+                                                                 inputProps={{
+                                                                     ...params.inputProps,
+                                                                     autoComplete: 'new-password'
+                                                                 }}
+                                                             />
+                                                             }
+                                                         />
+                                                     </Grid>
+                                                     <Grid item md={4} sm={4} xs={12}>
+                                                         <Autocomplete
+                                                             fullWidth
+                                                             disablePortal
+                                                             id='provinces'
+                                                             onChange={this.handleProvinceChange}
+                                                             getOptionLabel={(option) => option.province_name}
+                                                             options={provinces}
+                                                             value={province}
+                                                             renderInput={(params) => <TextField
+                                                                 {...params}
+                                                                 label='Provincia'
+                                                                 inputProps={{
+                                                                     ...params.inputProps,
+                                                                     autoComplete: 'new-password'
+                                                                 }}
+                                                             />
+                                                             }
+                                                         />
+                                                     </Grid>
+                                                     <Grid item md={4} sm={4} xs={12}>
+                                                         <Autocomplete
+                                                             fullWidth
+                                                             disablePortal
+                                                             id='cities'
+                                                             onChange={this.handleCityChange}
+                                                             getOptionLabel={(option) => option.city_name}
+                                                             options={cities}
+                                                             value={city}
+                                                             renderInput={(params) => <TextField
+                                                                 {...params}
+                                                                 label='Ciudad'
+                                                                 inputProps={{
+                                                                     ...params.inputProps,
+                                                                     autoComplete: 'new-password'
+                                                                 }}
+                                                             />
+                                                             }
+                                                         />
+                                                     </Grid>
+                                                 </Grid>
+                                                 {/*<Grid item container alignItems="center">
               <Grid item xs={1}>
                 <Checkbox size="large" value={vaccinated} onChange={this.handleIsVaccinatedChange} />
               </Grid>
@@ -429,38 +433,41 @@ class Inscripcion extends PureComponent {
                   Declaro entender que de no cumplir con lo anterior se me negará la entrada al encuentro y no se me devolverá el dinero del combo."</Typography>
               </Grid>
             </Grid>*/}
-                        <Grid item container
-                              justifyContent={"center"}
-                        >
-                            <Grid item style={{textAlign: 'center'}} justifyContent={'center'}>
-                                <Typography variant="h3" color="secondary" align="center">
-                                    Valor del Combo: $5800
-                                </Typography>
-                            </Grid>
+                                                 <Grid item container
+                                                       justifyContent={'center'}
+                                                 >
+                                                     <Grid item style={{ textAlign: 'center' }} justifyContent={'center'}>
+                                                         <Typography variant='h3' color='secondary' align='center'>
+                                                             Valor del Combo: $5800
+                                                         </Typography>
+                                                     </Grid>
 
-                             <Grid item style={{textAlign: 'center'}} justifyContent={'center'}>
-                                <Typography variant="h4" color="primary" align="center">
-                                    Al enviar tu comprobante de pago, por favor incluí tu número de teléfono
-                                </Typography>
-                            </Grid>
+                                                     <Grid item style={{ textAlign: 'center' }} justifyContent={'center'}>
+                                                         <Typography variant='h4' color='primary' align='center'>
+                                                             Al enviar tu comprobante de pago, por favor incluí tu número de teléfono
+                                                         </Typography>
+                                                     </Grid>
 
-                            <Grid container justifyContent="flex-end">
-                                <Grid item>
-                                    <Button variant="contained" color="secondary" onClick={this.save}
-                                            disabled={pristine || Boolean(Object.keys(errors).length) || !vaccinated}>Inscribirme!</Button>
-                                </Grid>
-                            </Grid>
-                            <Grid item style={{textAlign: 'center'}}>
-                                <Typography variant="caption">
-                                    * Si por alguna razón no podés asistir al ETI,
-                                    tenés tiempo de pedir la devolución de tu combo hasta 10 días antes del ETI,
-                                    es decir, hasta el <b>25 de octubre</b>.<br/>
-                                    Pasada esa fecha, no se te devolverá tu dinero aunque no asistas al ETI.
-                                </Typography>
-                            </Grid>
-                        </Grid>
+                                                     <Grid container justifyContent='flex-end'>
+                                                         <Grid item>
+                                                             <Button variant='contained' color='secondary' onClick={this.save}
+                                                                     disabled={pristine || Boolean(Object.keys(errors).length) || !vaccinated}>Inscribirme!</Button>
+                                                         </Grid>
+                                                     </Grid>
+                                                     <Grid item style={{ textAlign: 'center' }}>
+                                                         <Typography variant='caption'>
+                                                             * Si por alguna razón no podés asistir al ETI,
+                                                             tenés tiempo de pedir la devolución de tu combo hasta 10 días antes del ETI,
+                                                             es decir, hasta el <b>25 de octubre</b>.<br />
+                                                             Pasada esa fecha, no se te devolverá tu dinero aunque no asistas al ETI.
+                                                         </Typography>
+                                                     </Grid>
+                                                 </Grid>
+                                             </> :
+                         <Typography variant='body1' color='primary' align='center'>Las Inscripciones se abren el 26/9 a
+                             las 22 hs</Typography>
+                        }
                     </Grid>
-
                 </Container>
             </React.Fragment>
         )
