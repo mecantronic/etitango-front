@@ -1,7 +1,7 @@
 import * as React from 'react';
 import cronograma from '../cronograma.json';
 
-import { Box, Button, Grid, List, ListItem, ListItemText, Paper, Typography } from '@mui/material';
+import { Box, Button, Grid, Link, List, ListItem, ListItemText, Paper, Typography } from '@mui/material';
 
 const number = {
   fontSize: 24,
@@ -33,6 +33,14 @@ function Cronograma() {
         </Grid>
         <Grid item>
           <Grid container spacing={3} mt={6} px={15}>
+            <Typography variant="h4" marked="center" component="body">
+              Salón: Bomberos voluntarios de Sierra de La ventana.
+            <Link href={"https://www.google.com/maps/place/Bomberos+Voluntarios+de+Sierra+de+la+Ventana,+D+Meyer+S%2Fn,+Sierra+de+la+Ventana,+Buenos+Aires/@-38.1368324,-61.7942031,15z/data=!4m5!3m4!1s0x95eceeb55cdf8d9b:0x758f7d5143f4040f!8m2!3d-38.1368324!4d-61.7942031"}>
+              <Typography variant="body" marked="center" component="body">
+              (Ver en Mapa Aquí)
+              </Typography>
+            </Link>
+              </Typography>
             {cronograma.dias.map((dia, index) => (
               <Grid item key={`cronograma_${index}`} xs={12} md={4}>
                 <Paper sx={{ padding: "24px", height: "100%" }}>

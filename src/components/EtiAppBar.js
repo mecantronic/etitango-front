@@ -1,12 +1,12 @@
-import * as React from "react";
-import {useEffect, useState} from "react";
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 
-import {AppBar, Avatar, Box, Button, Link, Menu, Toolbar} from "@mui/material";
+import { AppBar, Avatar, Box, Button, Link, Menu, Toolbar } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 
-import {auth} from "../etiFirebase";
+import { auth } from '../etiFirebase';
 
 const links = [
     {href: "/historia-del-eti", title: "Historia del ETI"},
@@ -80,7 +80,7 @@ const EtiAppBar = () => {
                                 {"Cerrar Sesión"}
                             </Button>
                         }
-                    </Box>;
+                    </Box>
                     <Box sx={{flexGrow: 0, display: {xs: 'flex', md: 'none'}}}>
                         <IconButton
                             size="large"

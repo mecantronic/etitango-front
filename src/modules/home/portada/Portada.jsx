@@ -20,7 +20,7 @@ export default function Portada() {
                     src={ImgBackground}
                     alt="increase priority"
                 />
-                <Typography color="white" align="center" variant="h3" >
+                <Typography color="white" align="center" variant="h3" sx={{backgroundColor: '#00000075'}}>
                     ETI "Ventania" - 4, 5 y 6 de Noviembre - Sierra de la Ventana
                 </Typography>
             </Box>
