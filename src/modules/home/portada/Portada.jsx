@@ -1,5 +1,5 @@
-import { Box, Typography } from "@mui/material";
-import * as React from "react";
+import { Box, Typography } from '@mui/material';
+import * as React from 'react';
 
 const ImgBackground = process.env.PUBLIC_URL + "/img/h/login-background.jpg";
 
@@ -21,7 +21,7 @@ export default function Portada() {
                     alt="increase priority"
                 />
                 <Typography color="white" align="center" variant="h3" >
-                    ETI "La Revancha" - 8, 9 y 10 de Julio - Bell Ville
+                    ETI "Ventania" - 4, 5 y 6 de Noviembre - Sierra de la Ventana
                 </Typography>
             </Box>
         </React.Fragment>

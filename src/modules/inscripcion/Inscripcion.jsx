@@ -1,5 +1,5 @@
-import React, {PureComponent} from 'react'
-import {DatePicker} from '@mui/lab';
+import React, { PureComponent } from 'react';
+import { DatePicker } from '@mui/lab';
 import {
     Autocomplete,
     Button,
@@ -15,11 +15,11 @@ import {
     Typography
 } from '@mui/material';
 import axios from 'axios';
-import {debounce} from 'debounce';
-import {produce} from 'immer';
+import { debounce } from 'debounce';
+import { produce } from 'immer';
 
-import {FOOD_CHOICES, HELP_WITH_CHOICES, VALIDATION_RULES} from './inscripcion.constants';
-import WithAuthentication from "./withAuthentication";
+import { FOOD_CHOICES, HELP_WITH_CHOICES, VALIDATION_RULES } from './inscripcion.constants';
+import WithAuthentication from './withAuthentication';
 
 class Inscripcion extends PureComponent {
     constructor(props) {
@@ -38,8 +38,8 @@ class Inscripcion extends PureComponent {
             email: "",
             dni_number: "",
             status: "W",
-            arrival_date: "2022-07-8",
-            leave_date: "2022-07-10",
+            arrival_date: "2022-11-4",
+            leave_date: "2022-11-6",
             help_with: "",
             food: "",
             is_celiac: false,
@@ -433,11 +433,15 @@ class Inscripcion extends PureComponent {
                               justifyContent={"center"}
                         >
                             <Grid item style={{textAlign: 'center'}} justifyContent={'center'}>
-                                <Typography variant="h3" color="primary" align="center">
-                                    Combo
+                                <Typography variant="h3" color="secondary" align="center">
+                                    Valor del Combo: $5800
                                 </Typography>
-                                <Typography>Hasta el 9/6: $3500</Typography>
-                                <Typography>Después del 9/6: $4000</Typography>
+                            </Grid>
+
+                             <Grid item style={{textAlign: 'center'}} justifyContent={'center'}>
+                                <Typography variant="h4" color="primary" align="center">
+                                    Al enviar tu comprobante de pago, por favor incluí tu número de teléfono
+                                </Typography>
                             </Grid>
 
                             <Grid container justifyContent="flex-end">
@@ -450,7 +454,7 @@ class Inscripcion extends PureComponent {
                                 <Typography variant="caption">
                                     * Si por alguna razón no podés asistir al ETI,
                                     tenés tiempo de pedir la devolución de tu combo hasta 10 días antes del ETI,
-                                    es decir, hasta el <b>martes 28 de junio</b>.<br/>
+                                    es decir, hasta el <b>25 de octubre</b>.<br/>
                                     Pasada esa fecha, no se te devolverá tu dinero aunque no asistas al ETI.
                                 </Typography>
                             </Grid>
