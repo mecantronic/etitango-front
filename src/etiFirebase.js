@@ -1,8 +1,8 @@
-import firebase from "firebase/compat/app";
-import * as firebaseAuth from "firebase/auth";
-import { getAuth } from "firebase/auth";
-import { config } from "dotenv";
-import { sendVerificationEmail } from "./helpers/firebaseAuthentication";
+import firebase from 'firebase/compat/app';
+import * as firebaseAuth from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
+import { config } from 'dotenv';
+import { sendVerificationEmail } from './helpers/firebaseAuthentication';
 
 config();
 export const firebaseConfig = {
@@ -26,7 +26,7 @@ export const uiConfig = {
   // We will display Google and Facebook as auth providers.
   signInOptions: [
     firebaseAuth.GoogleAuthProvider.PROVIDER_ID,
-    firebaseAuth.FacebookAuthProvider.PROVIDER_ID,
+    // firebaseAuth.FacebookAuthProvider.PROVIDER_ID,
     firebaseAuth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD,
   ],
   callbacks: {

@@ -20,6 +20,7 @@ import { produce } from 'immer';
 
 import { FOOD_CHOICES, HELP_WITH_CHOICES, VALIDATION_RULES } from './inscripcion.constants';
 import WithAuthentication from './withAuthentication';
+import { auth } from '../../etiFirebase';
 
 class Inscripcion extends PureComponent {
     constructor(props) {
@@ -35,7 +36,7 @@ class Inscripcion extends PureComponent {
             //FormData
             name: "",
             last_name: "",
-            email: "",
+            email: auth?.currentUser?.email,
             dni_number: "",
             status: "W",
             arrival_date: "2022-11-4",
@@ -267,6 +268,7 @@ class Inscripcion extends PureComponent {
                                                      <Grid item md={6} sm={6} xs={12}>
                                                          <TextField
                                                              fullWidth label='Email'
+                                                             disabled
                                                              type='email'
                                                              value={email}
                                                              name='email'
