@@ -20,7 +20,7 @@ import { produce } from 'immer';
 
 import { FOOD_CHOICES, HELP_WITH_CHOICES, VALIDATION_RULES } from './inscripcion.constants';
 import WithAuthentication from './withAuthentication';
-import { auth } from '../../etiFirebase';
+import { getAuth } from 'firebase/auth';
 
 class Inscripcion extends PureComponent {
     constructor(props) {
@@ -36,7 +36,7 @@ class Inscripcion extends PureComponent {
             //FormData
             name: "",
             last_name: "",
-            email: auth?.currentUser?.email,
+            email: "",
             dni_number: "",
             status: "W",
             arrival_date: "2022-11-4",
@@ -52,18 +52,17 @@ class Inscripcion extends PureComponent {
     }
 
     componentDidMount = async () => {
+        // const time = await axios.get('http://worldtimeapi.org/api/timezone/America/Argentina/Salta');
+        let countries;
+        let allProvinces;
+        let allCities;
+        getAuth().onAuthStateChanged(u => {
+            this.setState({ email: u.email });
+        });
         try {
-            // const time = await axios.get('http://worldtimeapi.org/api/timezone/America/Argentina/Salta');
-            let countries;
-            let allProvinces;
-            let allCities;
-            try {
-                countries = await axios.get(`${window.location.protocol}//${process.env.REACT_APP_BACK_END_URL || 'localhost:8000'}/location/countries/`).catch();
-                allProvinces = await axios.get(`${window.location.protocol}//${process.env.REACT_APP_BACK_END_URL || 'localhost:8000'}/location/provinces/`).catch();
-                allCities = await axios.get(`${window.location.protocol}//${process.env.REACT_APP_BACK_END_URL || 'localhost:8000'}/location/cities/`).catch();
-            } catch (e) {
-            }
-
+            countries = await axios.get(`${window.location.protocol}//${process.env.REACT_APP_BACK_END_URL || 'localhost:8000'}/location/countries/`).catch();
+            allProvinces = await axios.get(`${window.location.protocol}//${process.env.REACT_APP_BACK_END_URL || 'localhost:8000'}/location/provinces/`).catch();
+            allCities = await axios.get(`${window.location.protocol}//${process.env.REACT_APP_BACK_END_URL || 'localhost:8000'}/location/cities/`).catch();
             this.setState({
                 countries: countries?.data,
                 allProvinces: allProvinces?.data,
