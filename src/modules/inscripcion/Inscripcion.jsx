@@ -52,7 +52,7 @@ class Inscripcion extends PureComponent {
 
     componentDidMount = async () => {
         try {
-            const time = await axios.get('http://worldtimeapi.org/api/timezone/America/Argentina/Salta');
+            // const time = await axios.get('http://worldtimeapi.org/api/timezone/America/Argentina/Salta');
             let countries;
             let allProvinces;
             let allCities;
@@ -67,7 +67,7 @@ class Inscripcion extends PureComponent {
                 countries: countries?.data,
                 allProvinces: allProvinces?.data,
                 allCities: allCities?.data,
-                time: new Date(time.data.datetime)
+                // time: new Date(time.data.datetime)
             });
         } catch (e) {
             console.error(e);
@@ -223,9 +223,9 @@ class Inscripcion extends PureComponent {
             province,
             city,
             vaccinated,
-            time
+
         } = this.state;
-        const openingDate = new Date(process.env.REACT_APP_OPENING_DATE);
+        const isOpen = true;
         return (
             <React.Fragment>
                 <WithAuthentication redirectUrl={'inscripcion'}/>
@@ -236,7 +236,7 @@ class Inscripcion extends PureComponent {
                                 Formulario de inscripción
                             </Typography>
                         </Grid>
-                        {time >= openingDate ? <>
+                        {isOpen ? <>
                                                  <Grid item container spacing={2} md={6} sm={12}>
                                                      <Grid item md={6} sm={6} xs={12}>
                                                          <TextField
