@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-import { auth, uiConfig } from "../../etiFirebase";
-import { Navigate } from "react-router-dom";
-import { sendVerificationEmail } from "../../helpers/firebaseAuthentication.js";
+import React, { useEffect, useState } from 'react';
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import { auth, uiConfig } from '../../etiFirebase';
+import { Navigate } from 'react-router-dom';
+import { sendVerificationEmail } from '../../helpers/firebaseAuthentication.js';
 
 function SignInScreen() {
   const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
@@ -44,11 +44,12 @@ function SignInScreen() {
           en tu correo)
         </p>
         <p>
-          No lo recibiste?
-          <button onClick={sendVerificationEmail}>Reenviar</button>
+          No lo recibiste? Revisá la carpeta de SPAM (Correo no deseado)
+
         </p>
         <p>
-          Si seguís sin verlo, revisá la carpeta de SPAM (Correo no deseado){" "}
+          Si seguís sin verlo, te lo reenviamos
+          <button onClick={sendVerificationEmail}>Reenviar</button>
         </p>
       </div>
     );

@@ -452,7 +452,7 @@ class Inscripcion extends PureComponent {
                                                      <Grid container justifyContent='flex-end'>
                                                          <Grid item>
                                                              <Button variant='contained' color='secondary' onClick={this.save}
-                                                                     disabled={pristine || Boolean(Object.keys(errors).length) || !vaccinated}>Inscribirme!</Button>
+                                                                     disabled={pristine || Boolean(Object.keys(errors).length) || !vaccinated || !help_with || !country || !food}>Inscribirme!</Button>
                                                          </Grid>
                                                      </Grid>
                                                      <Grid item style={{ textAlign: 'center' }}>
