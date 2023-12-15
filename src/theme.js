@@ -1,5 +1,9 @@
 import { createTheme } from '@mui/material/styles';
 import { green, grey, red } from '@mui/material/colors';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 const rawTheme = createTheme({
   palette: {
@@ -29,7 +33,7 @@ const rawTheme = createTheme({
     }
   },
   typography: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'roboto',
     lineHeight: '24px',
     letterSpacing: '-0.015em',
     fontWeightLight: 300,
@@ -48,11 +52,17 @@ const rawTheme = createTheme({
     h4: {
       fontSize: 36
     },
+    h4b: {
+      fontSize: 24
+    },
     h5: {
       fontSize: 20
     },
     h6: {
       fontSize: 18
+    },
+    h7: {
+      fontSize: 14
     },
     subtitle1: {
       fontSize: 20
