@@ -11,7 +11,6 @@ import { useLocation } from 'react-router-dom';
 import { USERS } from 'helpers/firestore/users';
 
 
-
 const EtiAppBar = () => {
   const [isSignedIn, setIsSignedIn] = useState(!!auth.currentUser); // Local signed-in state.
   const [userData, setUserData] = useState({})
@@ -61,8 +60,6 @@ const EtiAppBar = () => {
       <Container 
       maxWidth="xl" id="container">
         <Toolbar
-        
-      
           disableGutters
           id="toolbar"
           sx={{ display: 'flex', justifyContent: 'space-between' }}
@@ -71,8 +68,6 @@ const EtiAppBar = () => {
           <Box>
             <Link href="/">
               <Avatar
-              border={1}
-              borderColor={'red'}
               src="/img/icon/ETI_logo.png"
               alt="ETI"
               sx={{ width: '128px', height: '97px'}}
