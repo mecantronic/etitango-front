@@ -11,6 +11,7 @@ import { useLocation } from 'react-router-dom';
 import { USERS } from 'helpers/firestore/users';
 
 
+
 const EtiAppBar = () => {
   const [isSignedIn, setIsSignedIn] = useState(!!auth.currentUser); // Local signed-in state.
   const [userData, setUserData] = useState({})
@@ -27,7 +28,6 @@ const EtiAppBar = () => {
           
         ]);
         setUserData({ ...user});
-        // setLoading(false);
         console.log(user)
       }
     };
@@ -61,6 +61,8 @@ const EtiAppBar = () => {
       <Container 
       maxWidth="xl" id="container">
         <Toolbar
+        
+      
           disableGutters
           id="toolbar"
           sx={{ display: 'flex', justifyContent: 'space-between' }}
@@ -73,14 +75,12 @@ const EtiAppBar = () => {
               borderColor={'red'}
               src="/img/icon/ETI_logo.png"
               alt="ETI"
-              sx={{ width: '128px', height: '97px' }}
+              sx={{ width: '128px', height: '97px'}}
             />
             </Link>
           </Box>
           
           <Box
-            border={1}
-            borderColor={'red'}
             sx={{ flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'flex-end' }}
             display={'flex'}
             id="botonera"
@@ -88,37 +88,22 @@ const EtiAppBar = () => {
             {isSignedIn ? (
               !PRIVATE_ROUTES.includes(currentRoute) && (
                 <>  
-                  <Box border={1} borderColor={'red'} sx={{ height: 70}}>
-                    <Stack direction="column" sx={{ height: 20, mt: '10px' }}>
-                      <Typography variant='h4b' color={'white'} sx={!superAdmin ? { justifyContent: 'center', alignItems: 'center', textAlign: 'center' } : {}}>
+                  <Box  sx={{ height: 70, }}>
+                    <Stack direction="column" sx={{ height: 20, mt: '5px',  }}>
+                      <Typography fontFamily={'Work Sans'} variant='h4b' color={'white'} sx={!superAdmin ? {mt: 1.5} : {}}>
                         {userData.nameFirst} {userData.nameLast}
                       </Typography>
                       {superAdmin ? (
-                        <Typography variant='h7' color={'white'} sx={{ textAlign: 'end' }}>
+                        <Typography fontFamily={'Work Sans'} variant='h7' color={'white'} sx={{ textAlign: 'end' }}>
                           Superadmin
                         </Typography>
                       ) : (
-                        <Typography variant='h7' color={'white'} sx={{ textAlign: 'center' }}>
-                          {/* Puedes dejar este espacio en blanco si no deseas mostrar ningún texto */}
+                        <Typography fontFamily={'Work Sans'} variant='h7' color={'white'} sx={{ textAlign: 'center' }}>
+                          
                         </Typography>
                       )}
                     </Stack>
                   </Box>
-
-
-
-                {/* <Box border={1} borderColor={'red'} sx={{ height: 70 }}>
-                  <Stack direction="column"  sx={{height: 20, mt: '5px' }}>
-                    <Typography variant='h4b' color={'white'} >
-                      {userData.nameFirst} {userData.nameLast}
-                    </Typography>
-                      {superAdmin && (
-                    <Typography variant='h7' color={'white'} sx={{textAlign:'end'}}>
-                      Superadmin
-                    </Typography>
-                          )}
-                  </Stack>
-                </Box> */}
         
                 <Box>
                       <Button 

@@ -19,130 +19,82 @@ export default function AppFooter() {
   return (
 
     <Box
-      // border={1}
-      // borderColor={'red'}
+      
       mt={2}
       mb={2}
-      spacing={4}
-      paddingX={10}
-      paddingY={5}
+      spacing={1}
+      paddingX={12}
+      paddingY={6}
        sx={{ backgroundColor: 'rgba(33, 33, 33, 1)'}}
       // direction={'column'}
+      
     >
       <Grid
       container
+      spacing={2}
       > 
 
       {/* PRIMER COLUMNA  */}
-      <Grid 
-      item xs={12} md={3} sm={6}
+      <Grid
       
-      
+      item xs={12} sm={6} md={3}
+      display={'flex'}
+      direction={'column'}
+      justifyContent={'space-between'}
       >
-        <div>
-        <Typography  fontWeight={'bold'} color={'#5FB4FC'} >
+        
+        <Typography pl={6}  fontWeight={'bold'} color={'#5FB4FC'} >
             Más sobre ETI
             {/* {t('links.title').toUpperCase()} */}
           </Typography>
-        </div>
-  
         
 
+            {links.map((link) => (
+                  <Link 
+                    variant="p"
+                    color="#5FB4FC"
+                    underline="none"
+                    display={'flex'}
+                    href={link.href}
+                    key={link.href}
+                    pl={8}
+                    mt={2}
+                    
+                  >
+                    {link.title}
+                  </Link>
+                ))}
+        
       </Grid>
 
     {/* SEGUNDA COLUMNA */}
       <Grid 
+        item xs={12} sm={6} md={3}
         
-        item xs={12} md={3} sm={6}
         >
             <Typography fontWeight={'bold'} color={'#5FB4FC'}>
               Quienes somos
               {/* {t('about.title').toUpperCase()} */}
             </Typography>
+        
+          <Typography pl={2} mt={2} color={'white'}>
+            {t('about.description')}
+          </Typography>
+         
+        
       </Grid>
 
 {/* TERCERA COLUMNA */}
       <Grid
-          
-          item xs={12} md={3} sm={6}
-          
+          item xs={12} sm={6} md={3}
           >
 
-          <Typography fontWeight={'bold'}  color={'#5FB4FC'}>
+          <Typography pl={6} fontWeight={'bold'}  color={'#5FB4FC'}>
             Encuéntranos en 
             {/* {t('socialNetworks.title').toUpperCase()} */}
           </Typography>
-
-          </Grid>
-
-  {/* CUARTA COLUMNA */}
-          <Grid 
-       
-        item xs={12} md={3} sm={6}
-        >
-
-          {/* <img
-                src="/img/icon/tango_logo.png"
-                alt="ETI"
-                sx={{ width: '20px', height: '20px' }}
-              /> */}
-        
-        </Grid>
-
-    {/* PRIMERA COLUMNA DESCRIPCION */}
-        <Grid
-           
-            item xs={12} md={3} sm={6}
-            container
-            justifyContent={'space-evenly'}
-            direction={'column'}
-            // style={{ height: '15vh' }}
-            pl={2}
-            
-            
-          >{links.map((link) => (
-            <Link
-              variant="p"
-              color="#5FB4FC"
-              underline="none"
-              display={'flex'}
-              href={link.href}
-              key={link.href}
-            >
-              {link.title}
-            </Link>
-          ))}
-          
-          </Grid>
-       
-    
-     
-        {/* LO Q VA ADENTRO DEL SEGUNDO GRID */}
-        <Grid
          
-          item xs={12} md={3} sm={6}
-            
-            // style={{ height: '15vh' }}
-            pl={2}
-            
-          >
-          <Typography mt={2} color={'white'}>
-            {t('about.description')}
-          </Typography>
-          
-      </Grid>
-
-      {/* TERCER GRID  */}
-
-           <Grid
-          
-           item xs={12} md={3} sm={6}
-          // style={{ height: '15vh' }}
-          pl={2}
-          
-          
-        > 
-          <Link mt={2} sx={{ display: 'flex', alignItems: 'center' }} underline='none' color={'#5FB4FC'} href="http://facebook.com/groups/305562943758" target="_blank">
+          <Link pl={8} mt={2} sx={{ display: 'flex', alignItems: 'center' }} underline='none' color={'#5FB4FC'} href="http://facebook.com/groups/305562943758" target="_blank">
             Facebook
             <Avatar
               src="/img/icon/facebook.png"
@@ -152,29 +104,24 @@ export default function AppFooter() {
             />
              
           </Link>
-           
-        </Grid> 
+         
+        </Grid>
 
-      {/* CUARTO GRID */}
-         <Grid 
-      
-        item xs={12} md={3} sm={6}
-        display={'flex'}
-        alignItems={'flex-end'}
-        direction={'column'}
+  {/* CUARTA COLUMNA */}
+          <Grid
+          item xs={12} sm={6} md={3}
+          display={'flex'}
+          alignItems={'flex-end'}
+          direction={'column'}
+          pr={8}      
         >
-        
-        
-      
            <img
                 src="/img/icon/tango_logo.png"
                 alt="ETI"
                 sx={{ width: '20px', height: '20px' }}
               /> 
-       </Grid>
-         
 
-
+        </Grid>
 
       </Grid>
     </Box>
