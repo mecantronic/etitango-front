@@ -1,62 +1,109 @@
 import * as React from 'react';
-import { Grid, Link, Typography } from '@mui/material';
+import { Grid, Link, Typography, Avatar, Paper, Box} from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import { useTranslation } from 'react-i18next';
 import { SCOPES } from 'helpers/constants/i18n.ts';
+
 
 export default function AppFooter() {
   const { t } = useTranslation([SCOPES.COMPONENTS.FOOTER, SCOPES.COMPONENTS.BAR], {
     useSuspense: false
   });
   const links = [
+    { href: '/', title: 'ETI' },
     { href: '/historia-del-eti', title: t(`${SCOPES.COMPONENTS.BAR}.history`) },
-    { href: '/manifiesto-etiano', title: t(`${SCOPES.COMPONENTS.BAR}.manifest`) },
-    { href: '/comision-de-genero-contact', title: t(`${SCOPES.COMPONENTS.BAR}.genderContact`) }
+    { href: '/', title: 'Comisiones Etianas' },
+    { href: '/comision-de-genero-who', title: t(`${SCOPES.COMPONENTS.BAR}.genderWho`) },
+  
   ];
   return (
-    <Grid
-      container
+
+    <Box
+      // border={1}
+      // borderColor={'red'}
       mt={2}
       mb={2}
       spacing={4}
       paddingX={10}
       paddingY={5}
-      sx={{ backgroundColor: 'secondary.dark' }}
-      alignContent={'center'}
-      justifyContent={'center'}
-      alignItems={'center'}
+       sx={{ backgroundColor: 'rgba(33, 33, 33, 1)'}}
+      // direction={'column'}
     >
-      <Grid item xs={12} md={4}>
-        <Grid
-          direction={'column'}
-          container
-          alignItems={'center'}
-          justifyContent={'space-between'}
-          style={{ height: '25vh' }}
-        >
-          <Typography textAlign={'center'} color={'white'}>
-            {t('about.title').toUpperCase()}
+      <Grid
+      container
+      > 
+
+      {/* PRIMER COLUMNA  */}
+      <Grid 
+      item xs={12} md={3} sm={6}
+      
+      
+      >
+        <div>
+        <Typography  fontWeight={'bold'} color={'#5FB4FC'} >
+            Más sobre ETI
+            {/* {t('links.title').toUpperCase()} */}
           </Typography>
-          <Typography textAlign={'center'} color={'white'}>
-            {t('about.description')}
-          </Typography>
-        </Grid>
+        </div>
+  
+        
+
       </Grid>
-      <Grid item xs={12} md={4}>
-        <Grid
-          direction={'column'}
-          container
-          alignItems={'center'}
-          justifyContent={'space-between'}
-          style={{ height: '25vh' }}
+
+    {/* SEGUNDA COLUMNA */}
+      <Grid 
+        
+        item xs={12} md={3} sm={6}
         >
-          <Typography textAlign={'center'} color={'white'} marginBottom={4}>
-            {t('links.title').toUpperCase()}
+            <Typography fontWeight={'bold'} color={'#5FB4FC'}>
+              Quienes somos
+              {/* {t('about.title').toUpperCase()} */}
+            </Typography>
+      </Grid>
+
+{/* TERCERA COLUMNA */}
+      <Grid
+          
+          item xs={12} md={3} sm={6}
+          
+          >
+
+          <Typography fontWeight={'bold'}  color={'#5FB4FC'}>
+            Encuéntranos en 
+            {/* {t('socialNetworks.title').toUpperCase()} */}
           </Typography>
-          {links.map((link) => (
+
+          </Grid>
+
+  {/* CUARTA COLUMNA */}
+          <Grid 
+       
+        item xs={12} md={3} sm={6}
+        >
+
+          {/* <img
+                src="/img/icon/tango_logo.png"
+                alt="ETI"
+                sx={{ width: '20px', height: '20px' }}
+              /> */}
+        
+        </Grid>
+
+    {/* PRIMERA COLUMNA DESCRIPCION */}
+        <Grid
+           
+            item xs={12} md={3} sm={6}
+            container
+            justifyContent={'space-evenly'}
+            direction={'column'}
+            // style={{ height: '15vh' }}
+            pl={2}
+            
+            
+          >{links.map((link) => (
             <Link
               variant="p"
-              color="white"
+              color="#5FB4FC"
               underline="none"
               display={'flex'}
               href={link.href}
@@ -65,27 +112,72 @@ export default function AppFooter() {
               {link.title} 
             </Link>
           ))}
-        </Grid>
-      </Grid>
-      <Grid item xs={12} md={4}>
+          
+          </Grid>
+       
+    
+     
+        {/* LO Q VA ADENTRO DEL SEGUNDO GRID */}
         <Grid
-          direction={'column'}
-          container
-          alignItems={'center'}
-          justifyContent={'space-between'}
-          style={{ height: '25vh' }}
-        >
-          <Typography textAlign={'center'} color={'white'}>
-            {t('socialNetworks.title').toUpperCase()}
+         
+          item xs={12} md={3} sm={6}
+            
+            // style={{ height: '15vh' }}
+            pl={2}
+            
+          >
+          <Typography mt={2} color={'white'}>
+            {t('about.description')}
           </Typography>
-          <Link href="http://facebook.com/groups/305562943758" target="_blank">
-            <FacebookIcon sx={{ color: 'white', fontSize: '56px' }} />
-          </Link>
-          <Typography textAlign={'center'} color={'white'}>
-            {t('footer')}
-          </Typography>
-        </Grid>
+          
       </Grid>
-    </Grid>
+
+      {/* TERCER GRID  */}
+
+           <Grid
+          
+           item xs={12} md={3} sm={6}
+          // style={{ height: '15vh' }}
+          pl={2}
+          
+          
+        > 
+          <Link mt={2} sx={{ display: 'flex', alignItems: 'center' }} underline='none' color={'#5FB4FC'} href="http://facebook.com/groups/305562943758" target="_blank">
+            Facebook
+            <Avatar
+              src="/img/icon/facebook.png"
+              alt="ETI"
+              sx={{ width: '24px', height: '24px', ml: 3 }}
+              
+            />
+             
+          </Link>
+           
+        </Grid> 
+
+      {/* CUARTO GRID */}
+         <Grid 
+      
+        item xs={12} md={3} sm={6}
+        display={'flex'}
+        alignItems={'flex-end'}
+        direction={'column'}
+        >
+        
+        
+      
+           <img
+                src="/img/icon/tango_logo.png"
+                alt="ETI"
+                sx={{ width: '20px', height: '20px' }}
+              /> 
+       </Grid>
+         
+
+
+
+      </Grid>
+    </Box>
+
   );
 }
