@@ -1,130 +1,91 @@
 import * as React from 'react';
-import { Grid, Link, Typography, Avatar, Paper, Box} from '@mui/material';
+import { Grid, Link, Typography } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import { useTranslation } from 'react-i18next';
 import { SCOPES } from 'helpers/constants/i18n.ts';
-
 
 export default function AppFooter() {
   const { t } = useTranslation([SCOPES.COMPONENTS.FOOTER, SCOPES.COMPONENTS.BAR], {
     useSuspense: false
   });
   const links = [
-    { href: '/', title: 'ETI' },
     { href: '/historia-del-eti', title: t(`${SCOPES.COMPONENTS.BAR}.history`) },
-    { href: '/', title: 'Comisiones Etianas' },
-    { href: '/comision-de-genero-who', title: t(`${SCOPES.COMPONENTS.BAR}.genderWho`) },
-  
+    { href: '/manifiesto-etiano', title: t(`${SCOPES.COMPONENTS.BAR}.manifest`) },
+    { href: '/comision-de-genero-contact', title: t(`${SCOPES.COMPONENTS.BAR}.genderContact`) }
   ];
   return (
-
-    <Box
-      
+    <Grid
+      container
       mt={2}
       mb={2}
-      spacing={1}
-      paddingX={12}
-      paddingY={6}
-       sx={{ backgroundColor: 'rgba(33, 33, 33, 1)'}}
-      // direction={'column'}
-      
+      spacing={4}
+      paddingX={10}
+      paddingY={5}
+      sx={{ backgroundColor: 'secondary.dark' }}
+      alignContent={'center'}
+      justifyContent={'center'}
+      alignItems={'center'}
     >
-      <Grid
-      container
-      spacing={2}
-      > 
-
-      {/* PRIMER COLUMNA  */}
-      <Grid
-      
-      item xs={12} sm={6} md={3}
-      display={'flex'}
-      direction={'column'}
-      justifyContent={'space-between'}
-      >
-        
-        <Typography pl={6}  fontWeight={'bold'} color={'#5FB4FC'} >
-            Más sobre ETI
-            {/* {t('links.title').toUpperCase()} */}
-          </Typography>
-        
-
-            {links.map((link) => (
-                  <Link 
-                    variant="p"
-                    color="#5FB4FC"
-                    underline="none"
-                    display={'flex'}
-                    href={link.href}
-                    key={link.href}
-                    pl={8}
-                    mt={2}
-                    
-                  >
-                    {link.title}
-                  </Link>
-                ))}
-        
-      </Grid>
-
-    {/* SEGUNDA COLUMNA */}
-      <Grid 
-        item xs={12} sm={6} md={3}
-        
+      <Grid item xs={12} md={4}>
+        <Grid
+          direction={'column'}
+          container
+          alignItems={'center'}
+          justifyContent={'space-between'}
+          style={{ height: '25vh' }}
         >
-            <Typography fontWeight={'bold'} color={'#5FB4FC'}>
-              Quienes somos
-              {/* {t('about.title').toUpperCase()} */}
-            </Typography>
-        
-          <Typography pl={2} mt={2} color={'white'}>
+          <Typography textAlign={'center'} color={'white'}>
+            {t('about.title').toUpperCase()}
+          </Typography>
+          <Typography textAlign={'center'} color={'white'}>
             {t('about.description')}
           </Typography>
-         
-        
-      </Grid>
-
-{/* TERCERA COLUMNA */}
-      <Grid
-          item xs={12} sm={6} md={3}
-          >
-
-          <Typography pl={6} fontWeight={'bold'}  color={'#5FB4FC'}>
-            Encuéntranos en 
-            {/* {t('socialNetworks.title').toUpperCase()} */}
-          </Typography>
-         
-          <Link pl={8} mt={2} sx={{ display: 'flex', alignItems: 'center' }} underline='none' color={'#5FB4FC'} href="http://facebook.com/groups/305562943758" target="_blank">
-            Facebook
-            <Avatar
-              src="/img/icon/facebook.png"
-              alt="ETI"
-              sx={{ width: '24px', height: '24px', ml: 3 }}
-              
-            />
-             
-          </Link>
-         
         </Grid>
-
-  {/* CUARTA COLUMNA */}
-          <Grid
-          item xs={12} sm={6} md={3}
-          display={'flex'}
-          alignItems={'flex-end'}
+      </Grid>
+      <Grid item xs={12} md={4}>
+        <Grid
           direction={'column'}
-          pr={8}      
+          container
+          alignItems={'center'}
+          justifyContent={'space-between'}
+          style={{ height: '25vh' }}
         >
-           <img
-                src="/img/icon/tango_logo.png"
-                alt="ETI"
-                sx={{ width: '20px', height: '20px' }}
-              /> 
-
+          <Typography textAlign={'center'} color={'white'} marginBottom={4}>
+            {t('links.title').toUpperCase()}
+          </Typography>
+          {links.map((link) => (
+            <Link
+              variant="p"
+              color="white"
+              underline="none"
+              display={'flex'}
+              href={link.href}
+              key={link.href}
+            >
+              {link.title} 
+            </Link>
+          ))}
         </Grid>
-
       </Grid>
-    </Box>
-
+      <Grid item xs={12} md={4}>
+        <Grid
+          direction={'column'}
+          container
+          alignItems={'center'}
+          justifyContent={'space-between'}
+          style={{ height: '25vh' }}
+        >
+          <Typography textAlign={'center'} color={'white'}>
+            {t('socialNetworks.title').toUpperCase()}
+          </Typography>
+          <Link href="http://facebook.com/groups/305562943758" target="_blank">
+            <FacebookIcon sx={{ color: 'white', fontSize: '56px' }} />
+          </Link>
+          <Typography textAlign={'center'} color={'white'}>
+            {t('footer')}
+          </Typography>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 }
