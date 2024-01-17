@@ -1,12 +1,29 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
-import { DatePicker } from 'formik-mui-x-date-pickers';
+import React, { useState } from 'react';
+import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import { makeStyles } from '@mui/styles';
-import { Field, useField } from 'formik';
+import { Field } from 'formik';
+import { IconButton } from '@mui/material';
+import EventIcon from '@mui/icons-material/Event'; // Importa el icono de calendario
+import { DatePicker } from 'formik-mui-x-date-pickers';
+import { styled } from '@mui/material/styles';
 
 const CustomSVGIcon = () => (
   <img src="/img/icon/calendar-add.svg" alt="Custom Icon" width="24" height="24" /> // Usar la ruta a tu SVG externo
 );
+
+//Styles
+
+const StyledStaticDatePicker = styled(StaticDatePicker)({
+  '.MuiPickersToolbar-root': {
+    color: '#ad1457',
+    borderRadius: 0,
+    borderWidth: 0,
+    borderColor: '#e91e63',
+    border: '0px solid',
+    backgroundColor: '#f8bbd0'
+  }
+});
 
 // const useStyles = makeStyles({
 //   root: {
@@ -14,7 +31,7 @@ const CustomSVGIcon = () => (
 //       '& fieldset': {
 //         borderColor: '#E68650',
 //         borderRadius: '8px',
-//         borderWidth: '2px'   
+//         borderWidth: '2px'
 //       },
 //       '&:hover fieldset ': {
 //         borderColor: '#E68650',
@@ -26,7 +43,7 @@ const CustomSVGIcon = () => (
 //       },
 //       '& .MuiIconButton-root': { // Estilos para el icono del DatePicker
 //         color: '#A82548', // Cambiar el color del icono aquí
-        
+
 //       //}
 //       }
 //     }
@@ -34,15 +51,12 @@ const CustomSVGIcon = () => (
 //   },
 // });
 
-
 export const ETIDatePicker = ({
-  
   fieldName,
   setFieldValue,
   textFieldProps,
   specialCase,
-  borderColor,
-  
+  borderColor
 }: {
   fieldName: string;
   // eslint-disable-next-line no-unused-vars
@@ -51,14 +65,14 @@ export const ETIDatePicker = ({
   specialCase: boolean;
   borderColor: boolean;
 }) => {
-  
-  const [field] = useField(fieldName)
+  const [showStaticPicker, setShowStaticDatePicker] = useState(false);
+
   const useStyles = makeStyles({
-    root: { 
-       '& .MuiFormHelperText-root': {
+    root: {
+      '& .MuiFormHelperText-root': {
         width: '165px',
-        margin: '2px 0px 0px 2px',
-         },   
+        margin: '2px 0px 0px 2px'
+      },
       '& .MuiOutlinedInput-root': {
         fontFamily: 'inter',
         width: '165px',
@@ -66,65 +80,57 @@ export const ETIDatePicker = ({
         flexDirection: 'row-reverse',
         padding: '2px',
         '& fieldset': {
-          borderColor: field.value ? '#E68650' : '#FDE4AA',
+          borderColor: specialCase ? 'transparent' : borderColor ? 'transparent' : 'transparent',
           borderRadius: '8px',
           borderWidth: '1.5px',
           pointerEvents: 'none'
         },
         '&:hover fieldset ': {
-          borderColor: field.value ? '#E68650' : '#FDE4AA',
+          borderColor: specialCase ? 'transparent' : borderColor ? 'transparent' : 'transparent',
           borderRadius: '8px',
           pointerEvents: 'none'
         },
         '&.Mui-focused fieldset': {
-          borderColor: field.value ? '#E68650' : '#FDE4AA',
+          borderColor: specialCase ? 'transparent' : borderColor ? 'transparent' : 'transparent',
           borderRadius: '8px',
           pointerEvents: 'none'
         },
         '& .MuiOutlinedInput-notchedOutline': {
-          borderColor: field.value ? '#E68650' : '#FDE4AA',
+          borderColor: specialCase ? 'transparent' : borderColor ? 'transparent' : 'transparent'
         },
-        '& .MuiIconButton-root': { 
-          color: '#A82548', 
-        },   
-      },
-    },
+        '& .MuiIconButton-root': {
+          color: '#A82548'
+        }
+      }
+    }
   });
-
 
   const classes = useStyles();
 
-return (
-  <Field
-      component={DatePicker}
-      disablePast
-      textField={{
-        ...textFieldProps,
-        className: classes.root,
-        onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => {
-          e.preventDefault();
-        }, // Agregar las clases al DatePicker
-      }}
-      inputProps={{
-        style: {
-          fontFamily: 'inter',
-        },
-      }}
-      name={fieldName}
-      inputFormat="DD-MM-YYYY"
-      inputIcon= {<CustomSVGIcon />}
-      mask="__-__-____"
-      onChange={(value: any) => {
-        
-        console.log('value date aqui -> ', value);
-        // Verifica si value no es nulo antes de llamar a toDate()
-        if (value && value.toDate) {
-          console.log('value to date ->', value.toDate());
-          setFieldValue(fieldName, value.toDate());
-        } else {
-          // Maneja el caso en el que value es nulo
-          console.warn('Fecha inválida');
-          setFieldValue(fieldName, null); // Puedes ajustar esto según tus necesidades
-      }}}
-  />
-)};
+  return (
+    <div>
+      <IconButton onClick={() => setShowStaticDatePicker(true)}>
+        <EventIcon />
+      </IconButton>
+
+      {/* git pus{showStaticPicker && <StaticDatePicker onClose={() => setShowStaticDatePicker(false)} />} */}
+
+      <Field
+        component={StaticDatePicker}
+        disablePast
+        textField={{
+          ...textFieldProps,
+          className: classes.root // Agregar las clases al StaticDatePicker
+        }}
+        inputProps={{
+          style: {
+            fontFamily: 'inter'
+          }
+        }}
+        name={fieldName}
+        inputFormat="DD-MM-YYYY"
+        onChange={(value: any) => setFieldValue(fieldName, value.toDate())}
+      />
+    </div>
+  );
+};
