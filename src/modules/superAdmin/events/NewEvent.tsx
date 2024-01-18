@@ -21,6 +21,7 @@ import { makeStyles } from '@mui/styles';
 import ETITimePicker2 from 'components/ETITimePicker2';
 import { ETITimePicker } from 'components/form/TimePicker';
 import { assignEventAdmins } from '../../../helpers/firestore/users';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export default function NewEvent(props: { etiEventId: string, onChange: Function }) {
   const { etiEventId, onChange } = props
@@ -96,6 +97,79 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
     }
   };
 
+
+    const newTheme = (theme: any) =>
+      createTheme({
+        ...theme,
+        components: {
+          MuiPickersCalendarHeader: {
+            styleOverrides: {
+              root: {
+                color: '#ffffff',
+                borderRadius: '0px',
+                borderWidth: '1px',
+                borderColor: '#e91e63',
+                backgroundColor: '#A82548'
+              },
+              switchViewIcon: {
+                color: '#ffffff'
+              }
+            }
+          },
+          MuiDayCalendar: {
+            styleOverrides: {
+              weekDayLabel: {
+                color: '#A82548'
+              }
+            }
+          },
+          MuiPickersDay: {
+            styleOverrides: {
+              root: ({ selected }: { selected: boolean }) => {
+                return {
+                  borderRadius: '15px',
+                  borderWidth: '1px',
+                  borderColor: selected ? '#A82548' : 'transparent',
+                  border: '1px solid',
+                  backgroundColor: selected ? '#A82548' : 'transparent',
+                  color: selected ? '#ffffff' : '#A82548',
+                  '&:hover': {
+                    backgroundColor: selected ? '#A82548' : '#A82548',
+                    color: selected ? '#ffffff' : '#ffffff'
+                  }
+                };
+              },
+              day: {
+                color: '#ffffff'
+              }
+            }
+          },
+          MuiPickersMonth: {
+            styleOverrides: {
+              monthButton: {
+                color: '#ad1457',
+                borderRadius: '15px',
+                borderWidth: '1px',
+                borderColor: '#e91e63',
+                border: '1px solid',
+                backgroundColor: '#f48fb1'
+              }
+            }
+          },
+          MuiPickersYear: {
+            styleOverrides: {
+              root: {
+                color: '#ffffff',
+                borderRadius: '15px',
+                borderWidth: '0px',
+                borderColor: '#e91e63',
+                border: '0px solid',
+                backgroundColor: '#A82548'
+              }
+            }
+          }
+        }
+      });
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -250,80 +324,111 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
 
 
   return (
-    <Translation
-      ns={[SCOPES.COMMON.FORM, SCOPES.MODULES.SIGN_UP, SCOPES.MODULES.PROFILE]}
-      useSuspense={false}
-    >
-      {(t) => (
-        <>
-          <WithAuthentication
-            roles={[UserRoles.SUPER_ADMIN]}
-            redirectUrl={`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}`}
-          />
-          {loading ? (
-            <CircularProgress />
-          ) : (
-            <Box sx={{ display: 'flex', flexDirection: 'column', boxShadow: 3, width: 960, height: 820, borderRadius: '12px', overflow: 'auto', backgroundColor: '#FFFFFF' }}>
-              <Box sx={{ color: '#FFFFFF', backgroundColor: '#4B84DB', padding: '12px 24px 12px 24px', fontWeight: 600, fontSize: '24px', lineHeight: '16px', fontFamily: 'Montserrat', height: '40px' }}>
-                Nuevo ETI
-              </Box>
+    <ThemeProvider theme={newTheme}>
+      <Translation
+        ns={[SCOPES.COMMON.FORM, SCOPES.MODULES.SIGN_UP, SCOPES.MODULES.PROFILE]}
+        useSuspense={false}
+      >
+        {(t) => (
+          <>
+            <WithAuthentication
+              roles={[UserRoles.SUPER_ADMIN]}
+              redirectUrl={`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}`}
+            />
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  boxShadow: 3,
+                  width: 960,
+                  height: 820,
+                  borderRadius: '12px',
+                  overflow: 'auto',
+                  backgroundColor: '#FFFFFF'
+                }}
+              >
+                <Box
+                  sx={{
+                    color: '#FFFFFF',
+                    backgroundColor: '#4B84DB',
+                    padding: '12px 24px 12px 24px',
+                    fontWeight: 600,
+                    fontSize: '24px',
+                    lineHeight: '16px',
+                    fontFamily: 'Montserrat',
+                    height: '40px'
+                  }}
+                >
+                  Nuevo ETI
+                </Box>
 
-              <Box sx={{ display: 'flex', ...scrollbarStyles }}>
-                <Grid container>
-                  <Grid item xs={12}>
-                    <Formik
-                      enableReinitialize
-                      initialValues={{
-                        dateEnd: event?.dateEnd || '',
-                        dateSignupOpen: event?.dateSignupOpen || '',
-                        dateStart: event?.dateStart || '',
-                        dateSignupEnd: event?.dateSignupEnd || '',
-                        timeStart: event?.timeStart || '',
-                        timeEnd: event?.timeEnd || '',
-                        timeSignupOpen: event?.timeSignupOpen || '',
-                        timeSignupEnd: event?.timeSignupEnd || '',
-                        location: event?.location || null,
-                        name: event?.name || '',
-                      }}
-                      validationSchema={EventFormSchema}
-                      onSubmit={async (values, { setSubmitting }) => {
-                        console.log('values aqui ->', values);
-                        await save(values, setSubmitting);
-                      }}
-                    >
-                      {({ setFieldValue, touched, errors, values }) => (
-                        <Form>
-                          <Box sx={{margin: '20px', backgroundColor: '#FAFAFA', borderRadius: '12px', p: 2}}>
+                <Box sx={{ display: 'flex', ...scrollbarStyles }}>
+                  <Grid container>
+                    <Grid item xs={12}>
+                      <Formik
+                        enableReinitialize
+                        initialValues={{
+                          dateEnd: event?.dateEnd || '',
+                          dateSignupOpen: event?.dateSignupOpen || '',
+                          dateStart: event?.dateStart || '',
+                          dateSignupEnd: event?.dateSignupEnd || '',
+                          timeStart: event?.timeStart || '',
+                          timeEnd: event?.timeEnd || '',
+                          timeSignupOpen: event?.timeSignupOpen || '',
+                          timeSignupEnd: event?.timeSignupEnd || '',
+                          location: event?.location || null,
+                          name: event?.name || ''
+                        }}
+                        validationSchema={EventFormSchema}
+                        onSubmit={async (values, { setSubmitting }) => {
+                          console.log('values aqui ->', values);
+                          await save(values, setSubmitting);
+                        }}
+                      >
+                        {({ setFieldValue, touched, errors, values }) => (
+                          <Form>
+                            <Box
+                              sx={{
+                                margin: '20px',
+                                backgroundColor: '#FAFAFA',
+                                borderRadius: '12px',
+                                p: 2
+                              }}
+                            >
+                              <Grid container gap={2}>
+                                <Typography sx={{ color: '#212121', fontWeight: 500 }}>
+                                  Nombre para el evento
+                                </Typography>
+                                <Grid item md={12} sm={12} xs={12}>
+                                  <Field
+                                    name="name"
+                                    placeholder="Nuevo ETI"
+                                    component={TextField}
+                                    required
+                                    fullWidth
+                                    classes={{ root: values.name ? classes.filled : classes.root }}
+                                  />
+                                </Grid>
 
-                          <Grid container gap={2}>
-                            <Typography sx={{ color: '#212121', fontWeight: 500}}>Nombre para el evento</Typography>
-                            <Grid item md={12} sm={12} xs={12}>
-                              <Field
-                                name="name"
-                                placeholder="Nuevo ETI"
-                                component={TextField}
-                                required
-                                fullWidth
-                                classes={{root:values.name ? classes.filled : classes.root}}
-                              />
-                            </Grid>
-
-                            <Grid item md={12} sm={12} xs={12}>
-                              <LocationPicker
-                                values={values}
-                                errors={errors}
-                                t={t}
-                                setFieldValue={setFieldValue}
-                                touched={touched}
-                                location={event}
-                                borderColor={enable}
-                                specialCase={false}
-                                colorFont={'#424242'}
-                                fontFamily={'Montserrat'}
-                                fontWeight={500}
-                              />
-                            </Grid>
-                            {/* <Grid item md={12} sm={12} xs={12}>
+                                <Grid item md={12} sm={12} xs={12}>
+                                  <LocationPicker
+                                    values={values}
+                                    errors={errors}
+                                    t={t}
+                                    setFieldValue={setFieldValue}
+                                    touched={touched}
+                                    location={event}
+                                    borderColor={enable}
+                                    specialCase={false}
+                                    colorFont={'#424242'}
+                                    fontFamily={'Montserrat'}
+                                    fontWeight={500}
+                                  />
+                                </Grid>
+                                {/* <Grid item md={12} sm={12} xs={12}>
                               <Field
                                 name="location"
                                 placeholder="Lugar"
@@ -333,117 +438,173 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                                 classes={{ root: classes.root }}
                               />
                             </Grid> */}
-                            <Grid item md={12} sm={12} xs={12}>
-                            <Typography sx={{ color: '#424242', fontWeight: 500 }}>Desde el</Typography>
-                            <Grid container alignItems={'flex-start'}>
-                              <Grid item >
-                                <ETIDatePicker
-                                  textFieldProps={{ fullWidth: true }}
-                                  fieldName="dateStart"
-                                  setFieldValue={setFieldValue}
-                                  borderColor={enable}
-                                  specialCase={false}
-                                />
-                              </Grid>
-                              <Typography sx={{ color: '#424242', mt: 2, ml: 2, mr: 2, fontWeight: 500 }}>a las</Typography>
-                              <Grid item >
-                                {/* <ETITimePicker
+                                <Grid item md={12} sm={12} xs={12}>
+                                  <Typography sx={{ color: '#424242', fontWeight: 500 }}>
+                                    Desde el
+                                  </Typography>
+                                  <Grid container alignItems={'flex-start'}>
+                                    <Grid item>
+                                      <ETIDatePicker
+                                        textFieldProps={{ fullWidth: true }}
+                                        fieldName="dateStart"
+                                        setFieldValue={setFieldValue}
+                                        borderColor={enable}
+                                        specialCase={false}
+                                      />
+                                    </Grid>
+                                    <Typography
+                                      sx={{
+                                        color: '#424242',
+                                        mt: 2,
+                                        ml: 2,
+                                        mr: 2,
+                                        fontWeight: 500
+                                      }}
+                                    >
+                                      a las
+                                    </Typography>
+                                    <Grid item>
+                                      {/* <ETITimePicker
                                   textFieldProps={{ fullWidth: true }}
                                   fieldName="timeStart"
                                   setFieldValue={setFieldValue}
                                   borderColor={enable}
                                   specialCase={false}
                                 /> */}
-                                <ETITimePicker2 
-                                  value={values['timeStart']}
-                                  onChange={(value) => setFieldValue('timeStart', value)}
-                                />
-                              </Grid>
-                            </Grid>
-                            </Grid>
+                                      <ETITimePicker2
+                                        value={values['timeStart']}
+                                        onChange={(value) => setFieldValue('timeStart', value)}
+                                      />
+                                    </Grid>
+                                  </Grid>
+                                </Grid>
 
-                            <Grid item md={12} sm={12} xs={12}>
-                            <Typography sx={{ color: '#424242', fontWeight: 500 }}>Hasta el</Typography>
-                            <Grid container alignItems={'flex-start'}>
-                              <Grid item >
-                                <ETIDatePicker
-                                  textFieldProps={{ fullWidth: true }}
-                                  fieldName="dateEnd"
-                                  setFieldValue={setFieldValue}
-                                  borderColor={enable}
-                                  specialCase={false}
-                                />
-                              </Grid>
-                              <Typography sx={{ color: '#424242', mt: 2, ml: 2, mr: 2, fontWeight: 500 }}>a las</Typography>
-                              <Grid item >
-                                {/* <ETITimePicker
+                                <Grid item md={12} sm={12} xs={12}>
+                                  <Typography sx={{ color: '#424242', fontWeight: 500 }}>
+                                    Hasta el
+                                  </Typography>
+                                  <Grid container alignItems={'flex-start'}>
+                                    <Grid item>
+                                      <ETIDatePicker
+                                        textFieldProps={{ fullWidth: true }}
+                                        fieldName="dateEnd"
+                                        setFieldValue={setFieldValue}
+                                        borderColor={enable}
+                                        specialCase={false}
+                                      />
+                                    </Grid>
+                                    <Typography
+                                      sx={{
+                                        color: '#424242',
+                                        mt: 2,
+                                        ml: 2,
+                                        mr: 2,
+                                        fontWeight: 500
+                                      }}
+                                    >
+                                      a las
+                                    </Typography>
+                                    <Grid item>
+                                      {/* <ETITimePicker
                                   textFieldProps={{ fullWidth: true }}
                                   fieldName="timeEnd"
                                   setFieldValue={setFieldValue}
                                   borderColor={enable}
                                   specialCase={false}
                                 /> */}
-                                <ETITimePicker2 
-                                  value={values['timeEnd']}
-                                  onChange={(value) => setFieldValue('timeEnd', value)}
-                                />
-                              </Grid>
-                            </Grid>
-                            </Grid>
+                                      <ETITimePicker2
+                                        value={values['timeEnd']}
+                                        onChange={(value) => setFieldValue('timeEnd', value)}
+                                      />
+                                    </Grid>
+                                  </Grid>
+                                </Grid>
 
-                            <Grid item md={12} sm={12} xs={12}>
-                            <Typography sx={{ color: '#424242', fontWeight: 500 }}>Inicio de inscripciones</Typography>
-                            <Grid container alignItems={'flex-start'}>
-                              <Grid item >
-                                <ETIDatePicker
-                                  textFieldProps={{ fullWidth: true }}
-                                  fieldName="dateSignupOpen"
-                                  setFieldValue={setFieldValue}
-                                  borderColor={enable}
-                                  specialCase={false}
-                                />
-                              </Grid>
-                              <Typography sx={{ color: '#424242', mt: 2, ml: 2, mr: 2, fontWeight: 500 }}>a las</Typography>
-                              <Grid item >
-                                {/* <ETITimePicker
+                                <Grid item md={12} sm={12} xs={12}>
+                                  <Typography sx={{ color: '#424242', fontWeight: 500 }}>
+                                    Inicio de inscripciones
+                                  </Typography>
+                                  <Grid container alignItems={'flex-start'}>
+                                    <Grid item>
+                                      <ETIDatePicker
+                                        textFieldProps={{ fullWidth: true }}
+                                        fieldName="dateSignupOpen"
+                                        setFieldValue={setFieldValue}
+                                        borderColor={enable}
+                                        specialCase={false}
+                                      />
+                                    </Grid>
+                                    <Typography
+                                      sx={{
+                                        color: '#424242',
+                                        mt: 2,
+                                        ml: 2,
+                                        mr: 2,
+                                        fontWeight: 500
+                                      }}
+                                    >
+                                      a las
+                                    </Typography>
+                                    <Grid item>
+                                      {/* <ETITimePicker
                                   textFieldProps={{ fullWidth: true }}
                                   fieldName="timeSignupOpen"
                                   setFieldValue={setFieldValue}
                                   borderColor={enable}
                                   specialCase={false}
                                 /> */}
-                                <ETITimePicker2 
-                                  value={values['timeSignupOpen']}
-                                  onChange={(value) => setFieldValue('timeSignupOpen', value)}
-                                />
-                              </Grid>
-                              <Typography sx={{ color: '#424242', mt: 2, ml: 2, mr: 2, fontWeight: 500 }}>hasta el</Typography>
-                              <Grid item >
-                                <ETIDatePicker
-                                  textFieldProps={{ fullWidth: true }}
-                                  fieldName="dateSignupEnd"
-                                  setFieldValue={setFieldValue}
-                                  borderColor={enable}
-                                  specialCase={false}
-                                />
-                              </Grid>
-                              <Typography sx={{ color: '#424242', mt: 2, ml: 2, mr: 2, fontWeight: 500}}>hasta las</Typography>
-                              <Grid item >
-                                {/* <ETITimePicker
+                                      <ETITimePicker2
+                                        value={values['timeSignupOpen']}
+                                        onChange={(value) => setFieldValue('timeSignupOpen', value)}
+                                      />
+                                    </Grid>
+                                    <Typography
+                                      sx={{
+                                        color: '#424242',
+                                        mt: 2,
+                                        ml: 2,
+                                        mr: 2,
+                                        fontWeight: 500
+                                      }}
+                                    >
+                                      hasta el
+                                    </Typography>
+                                    <Grid item>
+                                      <ETIDatePicker
+                                        textFieldProps={{ fullWidth: true }}
+                                        fieldName="dateSignupEnd"
+                                        setFieldValue={setFieldValue}
+                                        borderColor={enable}
+                                        specialCase={false}
+                                      />
+                                    </Grid>
+                                    <Typography
+                                      sx={{
+                                        color: '#424242',
+                                        mt: 2,
+                                        ml: 2,
+                                        mr: 2,
+                                        fontWeight: 500
+                                      }}
+                                    >
+                                      hasta las
+                                    </Typography>
+                                    <Grid item>
+                                      {/* <ETITimePicker
                                   textFieldProps={{ fullWidth: true }}
                                   fieldName="timeSignupEnd"
                                   setFieldValue={setFieldValue}
                                   borderColor={enable}
                                   specialCase={false}
                                 /> */}
-                                <ETITimePicker2 
-                                  value={values['timeSignupEnd']}
-                                  onChange={(value) => setFieldValue('timeSignupEnd', value)}
-                                />
-                              </Grid>
-                            </Grid>
-                            </Grid>
-                            {/* <Grid container justifyContent="flex-end">
+                                      <ETITimePicker2
+                                        value={values['timeSignupEnd']}
+                                        onChange={(value) => setFieldValue('timeSignupEnd', value)}
+                                      />
+                                    </Grid>
+                                  </Grid>
+                                </Grid>
+                                {/* <Grid container justifyContent="flex-end">
                               <Grid item>
                                 <Button
                                   variant="contained"
@@ -458,64 +619,138 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                                 </Button>
                               </Grid>
                             </Grid> */}
-                            {/* {idNuevo && (<> */}
-                              <Grid item xs={12}>
-                                <Grid container gap={2}>
-                                  <Typography sx={{ color: '##424242', fontWeight: 500}}>Colaboradores en la organización del evento</Typography>
-                                  <Grid item xs={12} sx={{ border: '1.5px solid #E68650', borderRadius: '8px', display: 'flex', justifyContent: 'space-between' }} >
-                                    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                                      {showAdmins ? (<>
-                                        {admins.map((admin:any, index) => (
-                                          <Chip key={index} label={admin.name} onDelete={() => handleDelete(admin.email)} variant="outlined" sx={{ m: 1, borderRadius: '8px', color: '#A82548', fontFamily: 'Roboto', fontWeight: 500, fontSize: '14px' }} />
-                                        ))}
-                                      </>) : <Typography sx={{display: 'flex', alignItems: 'center', ml: 1, color: '#9E9E9E', fontFamily: 'Roboto'}}> Organizadores </Typography>}
-                                    </Box>
-
-                                    <Button sx={{ padding: '12px, 16px, 12px, 16px', alignItems: 'flex-end' }} onClick={handleOpen}>
-                                      <Icon sx={{ display: 'flex', width: '4em', mr: '-8px' }}>
-                                        <Typography sx={{ mr: 1, color: '#A82548', fontFamily: 'Roboto', fontWeight: 500 }}>
-                                          Agregar
-                                        </Typography>
-                                        <img src='/img/icon/user-cirlce-add.svg' height={25} width={25} />
-                                      </Icon>
-                                    </Button>
-
-                                  </Grid>
-                                </Grid>
-                                <Modal open={open} onClose={() => handleClose([])}>
-                                  <Box sx={{ ...style, display: 'flex', flexDirection: 'column' }}>
-                                    <RolesNewEvent eventId={idNuevo} handleClose={handleClose} />
-                                  </Box>
-                                </Modal>
-
-
-
-                         
-                              </Grid>
-
-
-                            {/* </> */}
-                            {/* )} */}
-                          </Grid>
-                          </Box>
-
-                                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', margin: '20px' }}>
-                                  <Button sx={{ width: '115px', padding: '12px, 32px, 12px, 32px', borderRadius: '25px', backgroundColor: '#A82548', height: '44px', '&:hover': { backgroundColor: '#A82548' } }} onClick={() => { onChange(), handleCreateEvent(values) }}>
-                                    <Typography sx={{ color: '#FAFAFA', fontWeight: 500, fontSize: '14px', lineHeight: '20px' }}>
-                                      Crear
+                                {/* {idNuevo && (<> */}
+                                <Grid item xs={12}>
+                                  <Grid container gap={2}>
+                                    <Typography sx={{ color: '##424242', fontWeight: 500 }}>
+                                      Colaboradores en la organización del evento
                                     </Typography>
-                                  </Button>
-                                </Box>
-                        </Form>
-                      )}
-                    </Formik>
+                                    <Grid
+                                      item
+                                      xs={12}
+                                      sx={{
+                                        border: '1.5px solid #E68650',
+                                        borderRadius: '8px',
+                                        display: 'flex',
+                                        justifyContent: 'space-between'
+                                      }}
+                                    >
+                                      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                                        {showAdmins ? (
+                                          <>
+                                            {admins.map((admin: any, index) => (
+                                              <Chip
+                                                key={index}
+                                                label={admin.name}
+                                                onDelete={() => handleDelete(admin.email)}
+                                                variant="outlined"
+                                                sx={{
+                                                  m: 1,
+                                                  borderRadius: '8px',
+                                                  color: '#A82548',
+                                                  fontFamily: 'Roboto',
+                                                  fontWeight: 500,
+                                                  fontSize: '14px'
+                                                }}
+                                              />
+                                            ))}
+                                          </>
+                                        ) : (
+                                          <Typography
+                                            sx={{
+                                              display: 'flex',
+                                              alignItems: 'center',
+                                              ml: 1,
+                                              color: '#9E9E9E',
+                                              fontFamily: 'Roboto'
+                                            }}
+                                          >
+                                            {' '}
+                                            Organizadores{' '}
+                                          </Typography>
+                                        )}
+                                      </Box>
+
+                                      <Button
+                                        sx={{
+                                          padding: '12px, 16px, 12px, 16px',
+                                          alignItems: 'flex-end'
+                                        }}
+                                        onClick={handleOpen}
+                                      >
+                                        <Icon sx={{ display: 'flex', width: '4em', mr: '-8px' }}>
+                                          <Typography
+                                            sx={{
+                                              mr: 1,
+                                              color: '#A82548',
+                                              fontFamily: 'Roboto',
+                                              fontWeight: 500
+                                            }}
+                                          >
+                                            Agregar
+                                          </Typography>
+                                          <img
+                                            src="/img/icon/user-cirlce-add.svg"
+                                            height={25}
+                                            width={25}
+                                          />
+                                        </Icon>
+                                      </Button>
+                                    </Grid>
+                                  </Grid>
+                                  <Modal open={open} onClose={() => handleClose([])}>
+                                    <Box
+                                      sx={{ ...style, display: 'flex', flexDirection: 'column' }}
+                                    >
+                                      <RolesNewEvent eventId={idNuevo} handleClose={handleClose} />
+                                    </Box>
+                                  </Modal>
+                                </Grid>
+
+                                {/* </> */}
+                                {/* )} */}
+                              </Grid>
+                            </Box>
+
+                            <Box
+                              sx={{ display: 'flex', justifyContent: 'flex-end', margin: '20px' }}
+                            >
+                              <Button
+                                sx={{
+                                  width: '115px',
+                                  padding: '12px, 32px, 12px, 32px',
+                                  borderRadius: '25px',
+                                  backgroundColor: '#A82548',
+                                  height: '44px',
+                                  '&:hover': { backgroundColor: '#A82548' }
+                                }}
+                                onClick={() => {
+                                  onChange(), handleCreateEvent(values);
+                                }}
+                              >
+                                <Typography
+                                  sx={{
+                                    color: '#FAFAFA',
+                                    fontWeight: 500,
+                                    fontSize: '14px',
+                                    lineHeight: '20px'
+                                  }}
+                                >
+                                  Crear
+                                </Typography>
+                              </Button>
+                            </Box>
+                          </Form>
+                        )}
+                      </Formik>
+                    </Grid>
                   </Grid>
-                </Grid>
+                </Box>
               </Box>
-            </Box>
-          )}
-        </>
-      )}
-    </Translation>
+            )}
+          </>
+        )}
+      </Translation>
+    </ThemeProvider>
   );
 }

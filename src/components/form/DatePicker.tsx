@@ -1,29 +1,12 @@
 /* eslint-disable prettier/prettier */
-import React, { useState } from 'react';
-import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
-import { makeStyles } from '@mui/styles';
-import { Field } from 'formik';
-import { IconButton } from '@mui/material';
-import EventIcon from '@mui/icons-material/Event'; // Importa el icono de calendario
+import React from 'react';
 import { DatePicker } from 'formik-mui-x-date-pickers';
-import { styled } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
+import { Field, useField } from 'formik';
 
 const CustomSVGIcon = () => (
   <img src="/img/icon/calendar-add.svg" alt="Custom Icon" width="24" height="24" /> // Usar la ruta a tu SVG externo
 );
-
-//Styles
-
-const StyledStaticDatePicker = styled(StaticDatePicker)({
-  '.MuiPickersToolbar-root': {
-    color: '#ad1457',
-    borderRadius: 0,
-    borderWidth: 0,
-    borderColor: '#e91e63',
-    border: '0px solid',
-    backgroundColor: '#f8bbd0'
-  }
-});
 
 // const useStyles = makeStyles({
 //   root: {
@@ -65,8 +48,7 @@ export const ETIDatePicker = ({
   specialCase: boolean;
   borderColor: boolean;
 }) => {
-  const [showStaticPicker, setShowStaticDatePicker] = useState(false);
-
+  const [field] = useField(fieldName);
   const useStyles = makeStyles({
     root: {
       '& .MuiFormHelperText-root': {
@@ -80,23 +62,23 @@ export const ETIDatePicker = ({
         flexDirection: 'row-reverse',
         padding: '2px',
         '& fieldset': {
-          borderColor: specialCase ? 'transparent' : borderColor ? 'transparent' : 'transparent',
+          borderColor: field.value ? '#E68650' : '#FDE4AA',
           borderRadius: '8px',
           borderWidth: '1.5px',
           pointerEvents: 'none'
         },
         '&:hover fieldset ': {
-          borderColor: specialCase ? 'transparent' : borderColor ? 'transparent' : 'transparent',
+          borderColor: field.value ? '#E68650' : '#FDE4AA',
           borderRadius: '8px',
           pointerEvents: 'none'
         },
         '&.Mui-focused fieldset': {
-          borderColor: specialCase ? 'transparent' : borderColor ? 'transparent' : 'transparent',
+          borderColor: field.value ? '#E68650' : '#FDE4AA',
           borderRadius: '8px',
           pointerEvents: 'none'
         },
         '& .MuiOutlinedInput-notchedOutline': {
-          borderColor: specialCase ? 'transparent' : borderColor ? 'transparent' : 'transparent'
+          borderColor: field.value ? '#E68650' : '#FDE4AA'
         },
         '& .MuiIconButton-root': {
           color: '#A82548'
@@ -108,29 +90,35 @@ export const ETIDatePicker = ({
   const classes = useStyles();
 
   return (
-    <div>
-      <IconButton onClick={() => setShowStaticDatePicker(true)}>
-        <EventIcon />
-      </IconButton>
-
-      {/* git pus{showStaticPicker && <StaticDatePicker onClose={() => setShowStaticDatePicker(false)} />} */}
-
-      <Field
-        component={StaticDatePicker}
-        disablePast
-        textField={{
-          ...textFieldProps,
-          className: classes.root // Agregar las clases al StaticDatePicker
-        }}
-        inputProps={{
-          style: {
-            fontFamily: 'inter'
-          }
-        }}
-        name={fieldName}
-        inputFormat="DD-MM-YYYY"
-        onChange={(value: any) => setFieldValue(fieldName, value.toDate())}
-      />
-    </div>
+    <Field
+      component={DatePicker}
+      disablePast
+      textField={{
+        ...textFieldProps,
+        className: classes.root,
+        onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => {
+          e.preventDefault();
+        }
+      }}
+      inputProps={{
+        style: {
+          fontFamily: 'inter'
+        }
+      }}
+      name={fieldName}
+      inputFormat="DD-MM-YYYY"
+      views={['day', 'month', 'year']}
+      mask="__-__-____"
+      onChange={(value: any) => {
+        console.log('value date aqui -> ', value);
+        if (value && value.toDate) {
+          console.log('value to date ->', value.toDate());
+          setFieldValue(fieldName, value.toDate());
+        } else {
+          console.warn('Fecha inválida');
+          setFieldValue(fieldName, null);
+        }
+      }}
+    />
   );
 };

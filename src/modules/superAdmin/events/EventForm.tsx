@@ -16,6 +16,7 @@ import { UserRoles } from '../../../shared/User';
 import { ETIDatePicker } from '../../../components/form/DatePicker';
 import RolesList from '../roles/RolesList';
 import { LocationPicker } from 'components/form/LocationPicker';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export default function EventForm() {
   
@@ -68,6 +69,79 @@ export default function EventForm() {
 
     fetchData();
   }, [id]);
+
+    const newTheme = (theme: any) =>
+      createTheme({
+        ...theme,
+        components: {
+          MuiPickersCalendarHeader: {
+            styleOverrides: {
+              root: {
+                color: '#ffffff',
+                borderRadius: '0px',
+                borderWidth: '1px',
+                borderColor: '#e91e63',
+                backgroundColor: '#A82548'
+              },
+              switchViewIcon: {
+                color: '#ffffff'
+              }
+            }
+          },
+          MuiDayCalendar: {
+            styleOverrides: {
+              weekDayLabel: {
+                color: '#A82548'
+              }
+            }
+          },
+          MuiPickersDay: {
+            styleOverrides: {
+              root: ({ selected }: { selected: boolean }) => {
+                return {
+                  borderRadius: '15px',
+                  borderWidth: '1px',
+                  borderColor: selected ? '#A82548' : 'transparent',
+                  border: '1px solid',
+                  backgroundColor: selected ? '#A82548' : 'transparent',
+                  color: selected ? '#ffffff' : '#A82548',
+                  '&:hover': {
+                    backgroundColor: selected ? '#A82548' : '#A82548',
+                    color: selected ? '#ffffff' : '#ffffff'
+                  }
+                };
+              },
+              day: {
+                color: '#ffffff'
+              }
+            }
+          },
+          MuiPickersMonth: {
+            styleOverrides: {
+              monthButton: {
+                color: '#ad1457',
+                borderRadius: '15px',
+                borderWidth: '1px',
+                borderColor: '#e91e63',
+                border: '1px solid',
+                backgroundColor: '#f48fb1'
+              }
+            }
+          },
+          MuiPickersYear: {
+            styleOverrides: {
+              root: {
+                color: '#ffffff',
+                borderRadius: '15px',
+                borderWidth: '0px',
+                borderColor: '#e91e63',
+                border: '0px solid',
+                backgroundColor: '#A82548'
+              }
+            }
+          }
+        }
+      });
   
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -100,133 +174,133 @@ export default function EventForm() {
   };
 
   return (
-    <Translation
-      ns={[SCOPES.COMMON.FORM, SCOPES.MODULES.SIGN_UP, SCOPES.MODULES.PROFILE]}
-      useSuspense={false}
-    >
-      {(t) => (
-        <>
-          <WithAuthentication
-            roles={[UserRoles.SUPER_ADMIN]}
-            redirectUrl={`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}`}
-          />
-          {loading ? (
-            <CircularProgress />
-          ) : (
-            <Container maxWidth="lg" sx={{ marginTop: 3, mx: 3 }}>
-              <Grid
-                container
-                direction="column"
-                alignItems="center"
-                justifyContent="center"
-                spacing={3}
-              >
-                <Grid item sx={{ my: 3, typography: 'h5', color: 'secondary.main' }}>
-                  EVENTS
-                </Grid>
-                <Formik
-                  enableReinitialize
-                  initialValues={{
-                    dateEnd: event?.dateEnd || '',
-                    dateSignupOpen: event?.dateSignupOpen || '',
-                    dateStart: event?.dateStart || '',
-                    location: event?.location || '',
-                    name: event?.name || '',
-                    
-
-                  }}
-                  validationSchema={EventFormSchema}
-                  onSubmit={async (values, { setSubmitting }) => {
-                    await save(values, setSubmitting);
-                  }}
+    <ThemeProvider theme={newTheme}>
+      <Translation
+        ns={[SCOPES.COMMON.FORM, SCOPES.MODULES.SIGN_UP, SCOPES.MODULES.PROFILE]}
+        useSuspense={false}
+      >
+        {(t) => (
+          <>
+            <WithAuthentication
+              roles={[UserRoles.SUPER_ADMIN]}
+              redirectUrl={`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}`}
+            />
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              <Container maxWidth="lg" sx={{ marginTop: 3, mx: 3 }}>
+                <Grid
+                  container
+                  direction="column"
+                  alignItems="center"
+                  justifyContent="center"
+                  spacing={3}
                 >
-                  {({ isSubmitting, setFieldValue, touched, errors, values }) => (
-                    <Form>
-                      <Grid container spacing={2}>
-                        <Grid item md={6} sm={6} xs={12}>
-                          <Field
-                            name="name"
-                            label={t('name')}
-                            component={TextField}
-                            required
-                            fullWidth
-                          />
-                        </Grid>
-                        <Grid item md={6} sm={6} xs={12}>
-                          <Field
-                            name="location"
-                            label={t('location')}
-                            component={TextField}
-                            required
-                            fullWidth
-                          />
-                        </Grid>
-                        <Grid item md={4} sm={4} xs={12}>
-                          <ETIDatePicker
-                            textFieldProps={{ fullWidth: true }}
-                            borderColor={false}
-                            specialCase={true}
-                            fieldName="dateStart"
-                            setFieldValue={setFieldValue}
-                          />
-                        </Grid>
-                        <Grid item md={4} sm={4} xs={12}>
-                          <ETIDatePicker
-                            textFieldProps={{ fullWidth: true }}
-                            borderColor={false}
-                            specialCase={true}
-                            fieldName="dateEnd"
-                            setFieldValue={setFieldValue}
-                          />
-                        </Grid>
-                        <Grid item md={4} sm={4} xs={12}>
-                          <ETIDatePicker
-                            textFieldProps={{ fullWidth: true }}
-                            borderColor={false}
-                            specialCase={true}
-                            fieldName="dateSignupOpen"
-                            setFieldValue={setFieldValue}
-                          />
-                        </Grid>
+                  <Grid item sx={{ my: 3, typography: 'h5', color: 'secondary.main' }}>
+                    EVENTS
+                  </Grid>
+                  <Formik
+                    enableReinitialize
+                    initialValues={{
+                      dateEnd: event?.dateEnd || '',
+                      dateSignupOpen: event?.dateSignupOpen || '',
+                      dateStart: event?.dateStart || '',
+                      location: event?.location || '',
+                      name: event?.name || ''
+                    }}
+                    validationSchema={EventFormSchema}
+                    onSubmit={async (values, { setSubmitting }) => {
+                      await save(values, setSubmitting);
+                    }}
+                  >
+                    {({ isSubmitting, setFieldValue, touched, errors, values }) => (
+                      <Form>
+                        <Grid container spacing={2}>
+                          <Grid item md={6} sm={6} xs={12}>
+                            <Field
+                              name="name"
+                              label={t('name')}
+                              component={TextField}
+                              required
+                              fullWidth
+                            />
+                          </Grid>
+                          <Grid item md={6} sm={6} xs={12}>
+                            <Field
+                              name="location"
+                              label={t('location')}
+                              component={TextField}
+                              required
+                              fullWidth
+                            />
+                          </Grid>
+                          <Grid item md={4} sm={4} xs={12}>
+                            <ETIDatePicker
+                              textFieldProps={{ fullWidth: true }}
+                              borderColor={false}
+                              specialCase={true}
+                              fieldName="dateStart"
+                              setFieldValue={setFieldValue}
+                            />
+                          </Grid>
+                          <Grid item md={4} sm={4} xs={12}>
+                            <ETIDatePicker
+                              textFieldProps={{ fullWidth: true }}
+                              borderColor={false}
+                              specialCase={true}
+                              fieldName="dateEnd"
+                              setFieldValue={setFieldValue}
+                            />
+                          </Grid>
+                          <Grid item md={4} sm={4} xs={12}>
+                            <ETIDatePicker
+                              textFieldProps={{ fullWidth: true }}
+                              borderColor={false}
+                              specialCase={true}
+                              fieldName="dateSignupOpen"
+                              setFieldValue={setFieldValue}
+                            />
+                          </Grid>
 
-                        <Grid item xs={12} lg={12} style={{ display: 'flex' }}>
-                          <LocationPicker
-                            values={values}
-                            errors={errors}
-                            t={t}
-                            setFieldValue={setFieldValue}
-                            touched={touched}
-                            location={event}
-                            borderColor={false}
-                            specialCase={true}
-                            colorFont={'#0075D9'}
-                            fontFamily={'Inter'}
-                            fontWeight={400}
-                          />
-                        </Grid>
+                          <Grid item xs={12} lg={12} style={{ display: 'flex' }}>
+                            <LocationPicker
+                              values={values}
+                              errors={errors}
+                              t={t}
+                              setFieldValue={setFieldValue}
+                              touched={touched}
+                              location={event}
+                              borderColor={false}
+                              specialCase={true}
+                              colorFont={'#0075D9'}
+                              fontFamily={'Inter'}
+                              fontWeight={400}
+                            />
+                          </Grid>
 
-                        <Grid container justifyContent="flex-end">
-                          <Grid item>
-                            <Button
-                              variant="contained"
-                              color="secondary"
-                              type="submit"
-                              disabled={isSubmitting}
-                            >
-                              Save
-                            </Button>
+                          <Grid container justifyContent="flex-end">
+                            <Grid item>
+                              <Button
+                                variant="contained"
+                                color="secondary"
+                                type="submit"
+                                disabled={isSubmitting}
+                              >
+                                Save
+                              </Button>
+                            </Grid>
                           </Grid>
                         </Grid>
-                      </Grid>
-                    </Form>
-                  )}
-                </Formik>
-              </Grid>
-              <RolesList eventId={id} />
-            </Container>
-          )}
-        </>
-      )}
-    </Translation>
+                      </Form>
+                    )}
+                  </Formik>
+                </Grid>
+                <RolesList eventId={id} />
+              </Container>
+            )}
+          </>
+        )}
+      </Translation>
+    </ThemeProvider>
   );
 }

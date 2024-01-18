@@ -14,14 +14,15 @@ import { Field, Form, Formik } from 'formik';
 import { Select } from 'formik-mui';
 import { bool, date, object, string } from 'yup';
 import { SignupHelpWith, SignupStatus } from '../../shared/signup';
-import { LocationPicker } from '../../components/form/LocationPicker.tsx';
+import { LocationPicker } from '../../components/form/LocationPicker';
 import { getDocument } from '../../helpers/firestore/index.js';
 import { USERS } from '../../helpers/firestore/users';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../App.js';
-import { ETIDatePicker } from '../../components/form/DatePicker.tsx';
+import { ETIDatePicker } from '../../components/form/DatePicker';
 import ReceiptUpload from '../../components/receiptUpload/index';
 import { UserContext } from '../../helpers/UserContext';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 /* eslint-disable react/prop-types */
 function ResetSignup({ etiEventId, signupId }) {
   const navigate = useNavigate();
@@ -134,8 +135,83 @@ export default function Inscripcion() {
     </Grid>
   );
 
+      const newTheme = (theme: any) =>
+      createTheme({
+        ...theme,
+        components: {
+          MuiPickersCalendarHeader: {
+            styleOverrides: {
+              root: {
+                color: '#ffffff',
+                borderRadius: '0px',
+                borderWidth: '1px',
+                borderColor: '#e91e63',
+                backgroundColor: '#A82548'
+              },
+              switchViewIcon: {
+                color: '#ffffff'
+              }
+            }
+          },
+          MuiDayCalendar: {
+            styleOverrides: {
+              weekDayLabel: {
+                color: '#A82548'
+              }
+            }
+          },
+          MuiPickersDay: {
+            styleOverrides: {
+              root: ({ selected }: { selected: boolean }) => {
+                return {
+                  borderRadius: '15px',
+                  borderWidth: '1px',
+                  borderColor: selected ? '#A82548' : 'transparent',
+                  border: '1px solid',
+                  backgroundColor: selected ? '#A82548' : 'transparent',
+                  color: selected ? '#ffffff' : '#A82548',
+                  '&:hover': {
+                    backgroundColor: selected ? '#A82548' : '#A82548',
+                    color: selected ? '#ffffff' : '#ffffff'
+                  }
+                };
+              },
+              day: {
+                color: '#ffffff'
+              }
+            }
+          },
+          MuiPickersMonth: {
+            styleOverrides: {
+              monthButton: {
+                color: '#ad1457',
+                borderRadius: '15px',
+                borderWidth: '1px',
+                borderColor: '#e91e63',
+                border: '1px solid',
+                backgroundColor: '#f48fb1'
+              }
+            }
+          },
+          MuiPickersYear: {
+            styleOverrides: {
+              root: {
+                color: '#ffffff',
+                borderRadius: '15px',
+                borderWidth: '0px',
+                borderColor: '#e91e63',
+                border: '0px solid',
+                backgroundColor: '#A82548'
+              }
+            }
+          }
+        }
+      });
+  
+
   return (
     <>
+    <ThemeProvider theme={newTheme}>
       <WithAuthentication />
       <Container maxWidth="lg" sx={{ marginTop: 3 }}>
         {etiEvent?.dateSignupOpen > new Date() ? (
@@ -268,6 +344,7 @@ export default function Inscripcion() {
           </Grid>
         )}
       </Container>
+      </ThemeProvider>
     </>
   );
 }

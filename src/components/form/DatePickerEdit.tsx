@@ -93,22 +93,37 @@ export const ETIDatePickerEdit = ({
   const classes = useStyles();
 
 return (
-  <Field
+    <Field
       component={DatePicker}
       disablePast
       textField={{
         ...textFieldProps,
-        className: classes.root, // Agregar las clases al DatePicker
+        className: classes.root,
+        onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => {
+          e.preventDefault();
+        }
       }}
       inputProps={{
         style: {
-          fontFamily: 'inter',
-        },
+          fontFamily: 'inter'
+        }
       }}
       name={fieldName}
       inputFormat="DD-MM-YYYY"
-      inputIcon= {<CustomSVGIcon />}
+      views={['day', 'month', 'year']}
       mask="__-__-____"
-      onChange={(value: any) => setFieldValue(fieldName, value.toDate())}
-  />
-)};
+      onChange={(value: any) => {
+        console.log('value date aqui -> ', value);
+  
+        if (value && value.toDate) {
+          console.log('value to date ->', value.toDate());
+          setFieldValue(fieldName, value.toDate());
+        } else {
+          
+          console.warn('Fecha inválida');
+          setFieldValue(fieldName, null);
+        }
+      }}
+    />
+  );
+};
