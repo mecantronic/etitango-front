@@ -38,8 +38,8 @@ export default function ETICombos({setFieldValue, selectedEvent, values }: {
           styleOverrides: {
             root: {
               color: '#ffffff',
-              borderRadius: '0px',
-              borderWidth: '1px',
+              borderRadius: 0,
+              borderWidth: 1,
               borderColor: '#e91e63',
               backgroundColor: '#A82548'
             },
@@ -51,7 +51,7 @@ export default function ETICombos({setFieldValue, selectedEvent, values }: {
         MuiDayCalendar: {
           styleOverrides: {
             weekDayLabel: {
-              color: '#A82548'
+              color: '#A82548' 
             }
           }
         },
@@ -59,8 +59,8 @@ export default function ETICombos({setFieldValue, selectedEvent, values }: {
           styleOverrides: {
             root: ({ selected }: { selected: boolean }) => {
               return {
-                borderRadius: '15px',
-                borderWidth: '1px',
+                borderRadius: 15,
+                borderWidth: 1,
                 borderColor: selected ? '#A82548' : 'transparent',
                 border: '1px solid',
                 backgroundColor: selected ? '#A82548' : 'transparent',
@@ -80,8 +80,8 @@ export default function ETICombos({setFieldValue, selectedEvent, values }: {
           styleOverrides: {
             monthButton: {
               color: '#ad1457',
-              borderRadius: '15px',
-              borderWidth: '1px',
+              borderRadius: 15,
+              borderWidth: 1,
               borderColor: '#e91e63',
               border: '1px solid',
               backgroundColor: '#f48fb1'
@@ -92,8 +92,8 @@ export default function ETICombos({setFieldValue, selectedEvent, values }: {
           styleOverrides: {
             root: {
               color: '#ffffff',
-              borderRadius: '15px',
-              borderWidth: '0px',
+              borderRadius: 15,
+              borderWidth: 0,
               borderColor: '#e91e63',
               border: '0px solid',
               backgroundColor: '#A82548'
