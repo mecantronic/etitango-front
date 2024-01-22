@@ -1,8 +1,8 @@
-/* eslint-disable prettier/prettier */
 import React from 'react';
 import { DatePicker } from 'formik-mui-x-date-pickers';
 import { makeStyles } from '@mui/styles';
 import { Field, useField } from 'formik';
+import esLocale from 'date-fns/locale/es';
 
 const CustomSVGIcon = () => (
   <img src="/img/icon/calendar-add.svg" alt="Icono personalizado" width="24" height="24" />
@@ -79,9 +79,7 @@ export const ETIDatePicker = ({
         }
       }}
       name={fieldName}
-      inputFormat="DD-MM-YYYY"
       views={['day', 'month', 'year']}
-      mask="__-__-____"
       onChange={(value: any) => {
         console.log('value date aqui -> ', value);
         if (value && value.toDate) {
@@ -92,6 +90,7 @@ export const ETIDatePicker = ({
           setFieldValue(fieldName, null);
         }
       }}
+      locale={esLocale}
     />
   );
 };

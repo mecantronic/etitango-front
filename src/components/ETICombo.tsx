@@ -13,6 +13,7 @@ import { createOrUpdateDoc } from 'helpers/firestore';
 import ETITimePicker2 from './ETITimePicker2';
 import { values } from 'lodash';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import './ETICombo.css';
 
 // eslint-disable-next-line no-unused-vars                      // error values
 export default function ETICombos({
@@ -396,7 +397,7 @@ export default function ETICombos({
                     <Typography sx={{ color: '#424242', mt: 2, ml: 2, mr: 2, fontWeight: 500 }}>
                       abonando hasta el
                     </Typography>
-                    <Grid item>
+                    <Grid item className=".css-b8izq4-MuiTypography-root-MuiDayPicker-weekDayLabel">
                       {/**Add icons */}
                       <ETIDatePicker
                         textFieldProps={{ fullWidth: true }}
