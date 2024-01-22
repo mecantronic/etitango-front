@@ -15,136 +15,20 @@ import { values } from 'lodash';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 // eslint-disable-next-line no-unused-vars                      // error values
-export default function ETICombos({setFieldValue, selectedEvent, values }: {
+export default function ETICombos({
+  setFieldValue,
+  selectedEvent
+}: {
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   selectedEvent: EtiEvent | null;
 }) {
   const idEvent = selectedEvent?.id;
   const [open, setOpen] = React.useState(false);
-  const [firstPayTime, setFirstPayTime] = useState('');
-  const [secondTimePay, setSecondTimePay] = useState('');
-  const [timeRefundDeadline, setTimeRefundDeadline] = useState('');
-
   const handleOpen = () => setOpen(true);
+  const [enable, setEnable] = useState(false);
   const handleClose = () => {
     setOpen(false);
   };
-
-const newTheme = (theme: any) =>
-  createTheme({
-    ...theme,
-    components: {
-      MuiPickersCalendarHeader: {
-        styleOverrides: {
-          root: {
-            color: '#ffffff',
-            borderRadius: 0,
-            borderWidth: 1,
-            borderColor: '#e91e63',
-            backgroundColor: '#A82548'
-          },
-          switchViewIcon: {
-            color: '#ffffff'
-          }
-        }
-      },
-      MuiDayCalendar: {
-        styleOverrides: {
-          weekDayLabel: {
-            color: '#A82548'
-          }
-        }
-      },
-      MuiPickersDay: {
-        styleOverrides: {
-          root: ({ selected }: { selected: boolean }) => {
-            return {
-              borderRadius: 15,
-              borderWidth: 1,
-              borderColor: selected ? '#A82548' : 'transparent',
-              border: '1px solid',
-              backgroundColor: selected ? '#A82548' : 'transparent',
-              color: selected ? '#ffffff' : '#A82548',
-              '&:hover': {
-                backgroundColor: selected ? '#A82548' : '#A82548',
-                color: selected ? '#ffffff' : '#ffffff'
-              }
-            };
-          },
-          day: {
-            color: '#ffffff'
-          }
-        }
-      },
-      MuiPickersMonth: {
-        styleOverrides: {
-          monthButton: {
-            color: '#ad1457',
-            borderRadius: 15,
-            borderWidth: 1,
-            borderColor: '#e91e63',
-            border: '1px solid',
-            backgroundColor: '#f48fb1'
-          }
-        }
-      },
-      MuiPickersYear: {
-        styleOverrides: {
-          root: {
-            color: '#ffffff',
-            borderRadius: 15,
-            borderWidth: 0,
-            borderColor: '#e91e63',
-            border: '0px solid',
-            backgroundColor: '#A82548'
-          }
-        }
-      }
-    }
-  })
-
-
-
-
-
-
-  const useStyles = makeStyles({
-    root: {
-      '& .MuiFormHelperText-root': {
-        width: '165px',
-        margin: '2px 0px 2px 2px'
-      },
-      '& .MuiOutlinedInput-root': {
-        fontFamily: 'inter',
-        width: '109px',
-        display: 'flex',
-        '& fieldset': {
-          borderColor: '#FDE4AA',
-          borderRadius: '8px',
-          borderWidth: '1.5px',
-          pointerEvents: 'none'
-        },
-        '&:hover fieldset ': {
-          borderColor: '#FDE4AA',
-          borderRadius: '8px',
-          pointerEvents: 'none'
-        },
-        '&.Mui-focused fieldset': {
-          borderColor: '#FDE4AA',
-          borderRadius: '8px',
-          pointerEvents: 'none'
-        },
-        '& .MuiOutlinedInput-notchedOutline': {
-          borderColor: '#FDE4AA'
-        },
-        '& .MuiIconButton-root': {
-          color: '#A82548'
-        }
-      }
-    }
-  });
-
-  const classes = useStyles();
 
   // Add Cloudinary
   const [imageEvent, setImageEvent] = useState('');
@@ -172,6 +56,142 @@ const newTheme = (theme: any) =>
       console.error(error);
     }
   };
+
+  const newTheme = (theme: any) =>
+    createTheme({
+      ...theme,
+      components: {
+        MuiPickersCalendarHeader: {
+          styleOverrides: {
+            root: {
+              color: '#ffffff',
+              borderRadius: 0,
+              borderWidth: 1,
+              borderColor: '#e91e63',
+              backgroundColor: '#A82548'
+            },
+            switchViewIcon: {
+              color: '#ffffff'
+            }
+          }
+        },
+        MuiDayCalendar: {
+          styleOverrides: {
+            weekDayLabel: {
+              color: '#A82548'
+            }
+          }
+        },
+        MuiPickersDay: {
+          styleOverrides: {
+            root: ({ selected }: { selected: boolean }) => {
+              return {
+                borderRadius: 15,
+                borderWidth: 1,
+                borderColor: selected ? '#A82548' : 'transparent',
+                border: '1px solid',
+                backgroundColor: selected ? '#A82548' : 'transparent',
+                color: selected ? '#ffffff' : '#A82548',
+                '&:hover': {
+                  backgroundColor: selected ? '#A82548' : '#A82548',
+                  color: selected ? '#ffffff' : '#ffffff'
+                }
+              };
+            },
+            day: {
+              color: '#ffffff'
+            }
+          }
+        },
+        MuiPickersMonth: {
+          styleOverrides: {
+            monthButton: {
+              color: '#ad1457',
+              borderRadius: 15,
+              borderWidth: 1,
+              borderColor: '#e91e63',
+              border: '1px solid',
+              backgroundColor: '#f48fb1'
+            }
+          }
+        },
+        MuiPickersYear: {
+          styleOverrides: {
+            root: {
+              color: '#ffffff',
+              borderRadius: 15,
+              borderWidth: 0,
+              borderColor: '#e91e63',
+              border: '0px solid',
+              backgroundColor: '#A82548'
+            }
+          }
+        }
+      }
+    });
+
+  // Make Styles
+  const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: '#FAFAFA',
+    border: '1px solid #000',
+    boxShadow: 24,
+    borderRadius: 6,
+    p: 4,
+    overflow: 'auto',
+    width: '900px',
+    height: '500px'
+  };
+
+  const scrollbarStyles = {
+    overflowY: 'auto',
+    '&::-webkit-scrollbar': {
+      width: '8px'
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: '#C0E5FF',
+      borderRadius: '12px'
+    },
+    '&::-webkit-scrollbar-track': {
+      backgroundColor: 'transparent',
+      boxShadow: '1px 0px 2px 0px #6695B7',
+      borderRadius: '12px'
+    }
+  };
+
+  const useStyles = makeStyles({
+    root: {
+      '& .MuiFormHelperText-root': {
+        margin: '2px 0px 0px 2px'
+      },
+      '& .MuiOutlinedInput-root': {
+        fontFamily: 'inter',
+        '& fieldset': {
+          borderColor: enable ? '#E68650' : '#FDE4AA',
+          borderRadius: '8px',
+          borderWidth: '1.5px',
+          pointerEvents: 'none'
+        },
+        '&:hover fieldset ': {
+          borderColor: enable ? '#E68650' : '#FDE4AA',
+          borderRadius: '8px',
+          pointerEvents: 'none'
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: enable ? '#E68650' : '#FDE4AA',
+          borderRadius: '8px',
+          pointerEvents: 'none'
+        },
+        '& .MuiOutlinedInput-notchedOutline': {
+          borderColor: enable ? '#E68650' : '#FDE4AA'
+        }
+      }
+    }
+  });
+
   const styleModal = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -186,6 +206,8 @@ const newTheme = (theme: any) =>
     width: '900px',
     height: '500px'
   };
+
+  const classes = useStyles();
 
   return (
     <>
@@ -241,9 +263,104 @@ const newTheme = (theme: any) =>
                       </Icon>
                     </Button>
                   </Grid>
+                  {/** Added component Modal  */}
                   <Modal open={open} onClose={() => handleClose()}>
                     <Box sx={{ ...styleModal, display: 'flex', flexDirection: 'column' }}>
-                      <h1>Modal</h1>
+                      <Grid container alignItems="center" justifyContent="space-between">
+                        <Grid>
+                          {/* Title */}
+                          <Typography variant="h4">Añadí más productos al combo</Typography>
+                        </Grid>
+                        <Grid item xs={2} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                          {/* Icon add */}
+                          <Button>
+                            {/* Validate*/}
+                            <img
+                              src={'/img/icon/btnDelete.svg'}
+                              alt="btnDelete"
+                              height={50}
+                              width={50}
+                            />
+                          </Button>
+                          {/* Icon remove */}
+                          <Button>
+                            {/* Validate*/}
+                            <img
+                              src={'/img/icon/btnPlus.svg'}
+                              alt="btnPlus"
+                              height={50}
+                              width={50}
+                            />
+                          </Button>
+                        </Grid>
+                      </Grid>
+                      {/** Fields  */}
+                      <Grid item xs={12}>
+                        <Field
+                          name="name"
+                          placeholder="Producto 1"
+                          component={TextField}
+                          required
+                          fullWidth
+                          sx={{ marginTop: 3 }} // Adjust the marginTop value as necessary
+                          classes={{ root: classes.root }}
+                        />
+                        <Grid item xs={12}>
+                          <Field
+                            name="name"
+                            placeholder="Producto 2"
+                            component={TextField}
+                            required
+                            fullWidth
+                            sx={{ marginTop: 3 }} // Adjust the marginTop value as necessary
+                            classes={{ root: classes.root }}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Field
+                            name="name"
+                            placeholder="Producto 3"
+                            component={TextField}
+                            required
+                            fullWidth
+                            sx={{ marginTop: 3 }} // Adjust the marginTop value as necessary
+                            classes={{ root: classes.root }}
+                          />
+                        </Grid>
+                        <Grid container justifyContent="flex-end">
+                          <Grid item>
+                            {/** Button to add  */}
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              type="submit"
+                              disabled={enable}
+                              sx={{
+                                width: '150px',
+                                padding: '12px, 32px, 12px, 32px',
+                                borderRadius: '25px',
+                                marginTop: '80px',
+                                backgroundColor: enable ? '#CCCCCC' : '#A82548',
+                                height: '44px',
+                                '&:hover': {
+                                  backgroundColor: enable ? '#CCCCCC' : '#A82548'
+                                }
+                              }}
+                            >
+                              <Typography
+                                sx={{
+                                  color: '#FAFAFA',
+                                  fontWeight: 500,
+                                  fontSize: '15px',
+                                  lineHeight: '10px'
+                                }}
+                              >
+                                Agregar
+                              </Typography>
+                            </Button>
+                          </Grid>
+                        </Grid>
+                      </Grid>
                     </Box>
                   </Modal>
                 </Grid>

@@ -5,34 +5,8 @@ import { makeStyles } from '@mui/styles';
 import { Field, useField } from 'formik';
 
 const CustomSVGIcon = () => (
-  <img src="/img/icon/calendar-add.svg" alt="Custom Icon" width="24" height="24" /> // Usar la ruta a tu SVG externo
+  <img src="/img/icon/calendar-add.svg" alt="Icono personalizado" width="24" height="24" />
 );
-
-// const useStyles = makeStyles({
-//   root: {
-//     '& .MuiOutlinedInput-root': {
-//       '& fieldset': {
-//         borderColor: '#E68650',
-//         borderRadius: '8px',
-//         borderWidth: '2px'
-//       },
-//       '&:hover fieldset ': {
-//         borderColor: '#E68650',
-//         borderRadius: '8px',
-//       },
-//       '&.Mui-focused fieldset': {
-//         borderColor: '#E68650',
-//         borderRadius: '8px',
-//       },
-//       '& .MuiIconButton-root': { // Estilos para el icono del DatePicker
-//         color: '#A82548', // Cambiar el color del icono aquí
-
-//       //}
-//       }
-//     }
-
-//   },
-// });
 
 export const ETIDatePicker = ({
   fieldName,
@@ -42,7 +16,6 @@ export const ETIDatePicker = ({
   borderColor
 }: {
   fieldName: string;
-  // eslint-disable-next-line no-unused-vars
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   textFieldProps: any;
   specialCase: boolean;
@@ -115,7 +88,7 @@ export const ETIDatePicker = ({
           console.log('value to date ->', value.toDate());
           setFieldValue(fieldName, value.toDate());
         } else {
-          console.warn('Fecha inválida');
+          console.warn('Fecha no válida');
           setFieldValue(fieldName, null);
         }
       }}
