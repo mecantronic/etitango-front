@@ -262,21 +262,21 @@ export default function EventForm() {
                             />
                           </Grid>
 
-                          <Grid item xs={12} lg={12} style={{ display: 'flex' }}>
-                            <LocationPicker
-                              values={values}
-                              errors={errors}
-                              t={t}
-                              setFieldValue={setFieldValue}
-                              touched={touched}
-                              location={event}
-                              borderColor={false}
-                              specialCase={true}
-                              colorFont={'#0075D9'}
-                              fontFamily={'Inter'}
-                              fontWeight={400}
-                            />
-                          </Grid>
+                        <Grid item xs={12} lg={12} style={{ display: 'flex' }}>
+                          <LocationPicker
+                            values={values}
+                            errors={errors}
+                            t={t}
+                            setFieldValue={setFieldValue}
+                            touched={touched}
+                            location={event}
+                            borderColor={false}
+                            specialCase={true}
+                            colorFont={'#0075D9'}
+                            fontFamily={'Inter'}
+                            fontWeight={400}
+                          />
+                        </Grid>
 
                           <Grid container justifyContent="flex-end">
                             <Grid item>

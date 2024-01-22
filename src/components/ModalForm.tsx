@@ -15,7 +15,7 @@ import ETITimePicker2 from './ETITimePicker2';
 import { TimePicker } from '@mui/x-date-pickers';
 import { Moment } from 'moment';
 import { ETIDatePicker } from './form/DatePicker';
-import moment from 'moment-timezone'
+import moment from 'moment-timezone';
 import { values } from 'lodash';
 import { makeStyles } from '@mui/styles';
 
@@ -32,25 +32,23 @@ interface TimePickerFieldProps {
 
 type FieldType = 'description' | 'time';
 
-const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpdatedEvent,  }) => {
-
-  
+const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpdatedEvent }) => {
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     try {
       const id = idEvent;
       values.Agenda = additionalFields;
       //console.log('datos desde el modalForm -> ', values);
-      
+
       const eventId = await createOrUpdateDoc('events', values, id);
       const updatedEvent = await getDocument(`events/${eventId}`);
       setUpdatedEvent(updatedEvent);
       // setAgendaData([{
       //   ...additionalFields.map(field => ({ description: field.description, time: field.time })),
-      //    description: values.description, 
-      //    time: values.date 
-      //   }, 
+      //    description: values.description,
+      //    time: values.date
+      //   },
       // ]);
-      
+
       //console.log('Datos enviados. ID del evento:', eventId);
     } catch (error) {
       console.error('Error al enviar el formulario:', error);
@@ -62,17 +60,16 @@ const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpda
 
   const [event, setEvent] = useState<EtiEvent>();
   const [loading, setLoading] = useState(true);
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState('');
   const { id } = useParams();
   const [timeValue, setTimeValue] = useState('');
-  
 
   useEffect(() => {
     const fetchData = async () => {
       if (id) {
         const isValidId: RegExp = /^new$|^[\w\d]{20}$/;
 
-        if (id === "new" || isValidId.test(id)) {
+        if (id === 'new' || isValidId.test(id)) {
           try {
             const event = await getEvent(id);
             setEvent(event);
@@ -89,29 +86,25 @@ const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpda
     fetchData();
   }, [id]);
 
-
-
-  const [additionalFields, setAdditionalFields] = useState<{ description: string, time: string }[]>([
-    { description: '', time: '' }
-  ]);
+  const [additionalFields, setAdditionalFields] = useState<{ description: string; time: string }[]>(
+    [{ description: '', time: '' }]
+  );
 
   useEffect(() => {
     console.log('Valor actual de additionalFields:', additionalFields);
   }, [additionalFields]);
-  
 
   const handleDateTimeChange = (index: number, type: FieldType, value: string) => {
     const newFields = [...additionalFields];
     newFields[index][type] = value; // Almacena el valor directamente
     setAdditionalFields(newFields);
   };
-  
+
   const handleDescriptionChange = (index: number, value: string) => {
     const newFields = [...additionalFields];
     newFields[index]['description'] = value;
     setAdditionalFields(newFields);
-};
-
+  };
 
   const handleAddField = () => {
     setAdditionalFields([...additionalFields, { description: '', time: '' }]);
@@ -124,12 +117,12 @@ const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpda
   };
 
   const handleChange = (event) => {
-    const time = event.target.value
+    const time = event.target.value;
     const isValidTime = /^([01]\d|2[0-3]):([0-5]\d)$/.test(time);
-    if(isValidTime || time === ''){
+    if (isValidTime || time === '') {
       setValue(time);
     }
-  }
+  };
 
   const handleBlur = (event) => {
     const time = event.target.value;
@@ -143,7 +136,7 @@ const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpda
     root: {
       '& .MuiFormHelperText-root': {
         margin: '2px 0px 0px 2px'
-      },   
+      },
       '& .MuiOutlinedInput-root': {
         fontFamily: 'inter',
         '& fieldset': {
@@ -160,29 +153,29 @@ const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpda
           pointerEvents: 'none'
         },
         '& .MuiOutlinedInput-notchedOutline': {
-          borderColor:  '#FDE4AA',
+          borderColor: '#FDE4AA'
         }
-      },
+      }
     },
     filled: {
       '& .MuiOutlinedInput-root': {
         '& fieldset': {
-          borderColor: '#E68650',
+          borderColor: '#E68650'
         },
         '&:hover fieldset ': {
-          borderColor: '#E68650',
+          borderColor: '#E68650'
         },
         '&.Mui-focused fieldset': {
-          borderColor: '#E68650',
+          borderColor: '#E68650'
         },
         '& .MuiOutlinedInput-notchedOutline': {
-          borderColor: '#E68650',
+          borderColor: '#E68650'
         }
-      },
-    },
+      }
+    }
   });
 
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <Modal
@@ -197,27 +190,31 @@ const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpda
         flexDirection: 'column'
       }}
     >
-      <Box style={{
-        background: 'white',
-        padding: '20px',
-        borderRadius: '12px',
-        flexDirection: 'column',
-        width: '800px',
-        display: 'flex',
-      }}
+      <Box
+        style={{
+          background: 'white',
+          padding: '20px',
+          borderRadius: '12px',
+          flexDirection: 'column',
+          width: '800px',
+          display: 'flex'
+        }}
       >
         <Formik
           enableReinitialize
           initialValues={{
             date: event?.dateStart || '',
-            description: event?.description || '',
+            description: event?.description || ''
           }}
           onSubmit={handleSubmit}
         >
           {({ isSubmitting, setFieldValue, values }) => (
             <Form>
-              <Grid container spacing={2} sx={{padding: '16px'}}>
-                <Grid container sx={{backgroundColor: '#FAFAFA', padding: '16px', borderRadius: '12px'}}>
+              <Grid container spacing={2} sx={{ padding: '16px' }}>
+                <Grid
+                  container
+                  sx={{ backgroundColor: '#FAFAFA', padding: '16px', borderRadius: '12px' }}
+                >
                   <Grid item xs={12}>
                     <Typography variant="h6" fontWeight="500">
                       Fija la fecha de tu evento
@@ -226,9 +223,9 @@ const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpda
                   <Grid item xs={3}>
                     <Field
                       component={ETIDatePicker}
-                      label='Fecha'
-                      fieldName='date'
-                      name='date'
+                      label="Fecha"
+                      fieldName="date"
+                      name="date"
                       setFieldValue={setFieldValue}
                       textFieldProps={{
                         fullWidth: true
@@ -245,11 +242,19 @@ const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpda
                       onChange={(e: { target: { value: any } }) =>
                         setFieldValue('description', e.target.value)
                       }
-                      classes={{root:values?.description ? classes.filled : classes.root  }}
+                      classes={{ root: values?.description ? classes.filled : classes.root }}
                     />
                   </Grid>
                 </Grid>
-                <Grid container sx={{backgroundColor: '#FAFAFA', padding: '16px', marginTop: '20px', borderRadius: '12px 12px 0 0'}}>
+                <Grid
+                  container
+                  sx={{
+                    backgroundColor: '#FAFAFA',
+                    padding: '16px',
+                    marginTop: '20px',
+                    borderRadius: '12px 12px 0 0'
+                  }}
+                >
                   <Grid item xs={10}>
                     <Typography variant="h6" fontWeight="500">
                       Define la agenda para este dia
@@ -294,11 +299,14 @@ const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpda
                 </Grid>
                 {additionalFields.map((field, index) => (
                   <>
-                    <Grid container sx={{
-                        backgroundColor: '#FAFAFA', 
-                        padding: '16px',  
+                    <Grid
+                      container
+                      sx={{
+                        backgroundColor: '#FAFAFA',
+                        padding: '16px',
                         borderRadius: '0 0 12px 12px'
-                      }}>
+                      }}
+                    >
                       <Grid item xs={2}>
                         <ETITimePicker2
                           value={timeValue}
@@ -318,7 +326,11 @@ const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpda
                           onChange={(event: { target: { value: string } }) =>
                             handleDescriptionChange(index, event.target.value)
                           }
-                          classes={{ root: values[`descripcionDeLaActividad_${index}`] ? classes.filled : classes.root }}
+                          classes={{
+                            root: values[`descripcionDeLaActividad_${index}`]
+                              ? classes.filled
+                              : classes.root
+                          }}
                         />
                       </Grid>
                     </Grid>

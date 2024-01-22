@@ -15,6 +15,7 @@ const GeneralInfo = () => {
   const [events, setEvents] = useState<EtiEvent[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [eventData, setEventData] = useState<EtiEvent| null> (null);
+  const [changeEvent2, setChangeEvent2] = useState(false)
   // const [showEvent, setShowEven] = useState(false)
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
@@ -39,6 +40,25 @@ const GeneralInfo = () => {
     setIsLoading(false);
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const evts = await firestoreEventHelper.getEvents();
+      setEvents(evts);
+      if (evts.length > 0) {
+        evts.forEach((element) => {
+          if(element.id === eventData?.id){
+            setEventData(element)
+          }
+        })
+      } else {
+        setEventData(null);
+      }
+    };
+    setIsLoading(true);
+    fetchData().catch((error) => console.error(error));
+    setIsLoading(false);
+  }, [changeEvent2]);
+
   const handleDeleteEvent = async (id: string) => {
     try {
       await deleteDoc(doc(db, "events", id));
@@ -54,11 +74,11 @@ const GeneralInfo = () => {
 
   return (
     <>
-      {/* <WithAuthentication roles={[UserRoles.SUPER_ADMIN]} /> */}
+      <WithAuthentication roles={[UserRoles.SUPER_ADMIN]} />
      <Box sx={{display: 'flex', flexDirection: 'column'}}>
       <NewEventList events={events} isLoading={isLoading} onDeleteEvent={handleDeleteEvent} onSelectEvent={setEventData} selectedRows={selectedRows} setSelectedRows={setSelectedRows} />
         <Box sx={{mt: 5}}>
-        <NewEditEvent selectedEvent={eventData}></NewEditEvent>
+        <NewEditEvent selectedEvent={eventData} setChangeEvent2={setChangeEvent2} changeEvent2={changeEvent2}></NewEditEvent>
       </Box>
      </Box>
     </>

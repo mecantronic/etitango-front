@@ -20,37 +20,55 @@ import { unassignEventAdmin } from '../../../helpers/firestore/users';
 import { makeStyles } from '@mui/styles';
 import ETITimePicker2 from 'components/ETITimePicker2';
 import { ETITimePicker } from 'components/form/TimePicker';
-import { assignEventAdmins } from '../../../helpers/firestore/users';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { assignEventAdmins } from '../../../helpers/firestore/users';
 
-export default function NewEvent(props: { etiEventId: string, onChange: Function }) {
-  const { etiEventId, onChange } = props
+export default function NewEvent(props: { etiEventId: string; onChange: Function }) {
+  const { etiEventId, onChange } = props;
   const alertText: string = 'Este campo no puede estar vacío';
-  
 
   const EventFormSchema = object({
-
-    
-    dateStart: date().nullable().transform((originalValue) => {const parsedDate = new Date(originalValue);return isNaN(parsedDate.getTime()) ? undefined : parsedDate;}).required(alertText),
-    dateEnd: date().nullable().when('dateStart', (dateStart, schema) => (dateStart && schema.min(dateStart, "No puede ser anterior a la fecha de inicio"))).required(alertText),
-    dateSignupOpen: date().nullable().when('dateStart', (dateStart, schema) => {
-      if (dateStart) {
-        const dateStartEqual= new Date(dateStart.getTime() - 1);
-        return schema.max(dateStartEqual, "No puede ser igual o posterior a la fecha de inicio");
-      }
-      return schema;
-      }).required(alertText),
+    dateStart: date()
+      .nullable()
+      .transform((originalValue) => {
+        const parsedDate = new Date(originalValue);
+        return isNaN(parsedDate.getTime()) ? undefined : parsedDate;
+      })
+      .required(alertText),
+    dateEnd: date()
+      .nullable()
+      .when(
+        'dateStart',
+        (dateStart, schema) =>
+          dateStart && schema.min(dateStart, 'No puede ser anterior a la fecha de inicio')
+      )
+      .required(alertText),
+    dateSignupOpen: date()
+      .nullable()
+      .when('dateStart', (dateStart, schema) => {
+        if (dateStart) {
+          const dateStartEqual = new Date(dateStart.getTime() - 1);
+          return schema.max(dateStartEqual, 'No puede ser igual o posterior a la fecha de inicio');
+        }
+        return schema;
+      })
+      .required(alertText),
     dateSignupEnd: date()
-    .nullable()
-    .when('dateStart', (dateStart, schema) => {
-      if (dateStart) {
-        const dateStartEqual = new Date(dateStart.getTime() - 1);
-        return schema.max(dateStartEqual, "No puede ser igual o posterior a la fecha de inicio");
-      }
-      return schema;
-    })
-    .when('dateSignupOpen', (dateSignuopOpen, schema) => (dateSignuopOpen && schema.min(dateSignuopOpen, "No puede ser anterior a la fecha de inscripcion")))
-    .required(alertText),
+      .nullable()
+      .when('dateStart', (dateStart, schema) => {
+        if (dateStart) {
+          const dateStartEqual = new Date(dateStart.getTime() - 1);
+          return schema.max(dateStartEqual, 'No puede ser igual o posterior a la fecha de inicio');
+        }
+        return schema;
+      })
+      .when(
+        'dateSignupOpen',
+        (dateSignuopOpen, schema) =>
+          dateSignuopOpen &&
+          schema.min(dateSignuopOpen, 'No puede ser anterior a la fecha de inscripcion')
+      )
+      .required(alertText),
     timeStart: string().required(alertText),
     timeEnd: string().required(alertText),
     timeSignupOpen: string().required(alertText),
@@ -68,7 +86,7 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
       .when('country', {
         is: 'Argentina',
         then: string().nullable(true).required(alertText)
-      }),
+      })
   });
   const [event, setEvent] = useState<EtiEvent>();
   const [loading, setLoading] = useState(false);
@@ -77,26 +95,30 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
   const [enable, setEnable] = useState(false);
   const [open, setOpen] = React.useState(false);
   // const [createEvent, setCreateEvent] = useState(true);
-  const [showAdmins, setShowAdmins] = useState(false)
+  const [showAdmins, setShowAdmins] = useState(false);
+  const [selectAdmin, setSelectAdmin] = useState(false);
   const [admins, setAdmins] = useState<string[]>([]);
-  const handleOpen = () =>setOpen(true);
+  const handleOpen = () => setOpen(true);
   const handleClose = (values: string[] | null) => {
-    setOpen(false)
+    setOpen(false);
     // setCreateEvent(false)
     if (values && values.length > 0) {
       setAdmins((prevAdmins) => {
-        const uniqueNewAdmins = values.filter((newAdmin:any) => !prevAdmins.some((admin:any) => admin.email === newAdmin.email));
+        const uniqueNewAdmins = values.filter(
+          (newAdmin: any) => !prevAdmins.some((admin: any) => admin.email === newAdmin.email)
+        );
         const combinedAdmins = [...prevAdmins, ...uniqueNewAdmins];
-        const uniqueAdmins = combinedAdmins.filter((admin:any, index, self) => self.findIndex((a:any) => a.email === admin.email) === index);
+        const uniqueAdmins = combinedAdmins.filter(
+          (admin: any, index, self) => self.findIndex((a: any) => a.email === admin.email) === index
+        );
         return uniqueAdmins;
       });
-  
+
       setShowAdmins(true);
       console.log('Contenido de values:', values);
       console.log('Contenido de admins:', admins);
     }
   };
-
 
     const newTheme = (theme: any) =>
       createTheme({
@@ -106,8 +128,8 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
             styleOverrides: {
               root: {
                 color: '#ffffff',
-                borderRadius: '0px',
-                borderWidth: '1px',
+                borderRadius: 0,
+                borderWidth: 1,
                 borderColor: '#e91e63',
                 backgroundColor: '#A82548'
               },
@@ -127,8 +149,8 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
             styleOverrides: {
               root: ({ selected }: { selected: boolean }) => {
                 return {
-                  borderRadius: '15px',
-                  borderWidth: '1px',
+                  borderRadius: 15,
+                  borderWidth: 1,
                   borderColor: selected ? '#A82548' : 'transparent',
                   border: '1px solid',
                   backgroundColor: selected ? '#A82548' : 'transparent',
@@ -148,8 +170,8 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
             styleOverrides: {
               monthButton: {
                 color: '#ad1457',
-                borderRadius: '15px',
-                borderWidth: '1px',
+                borderRadius: 15,
+                borderWidth: 1,
                 borderColor: '#e91e63',
                 border: '1px solid',
                 backgroundColor: '#f48fb1'
@@ -160,8 +182,8 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
             styleOverrides: {
               root: {
                 color: '#ffffff',
-                borderRadius: '15px',
-                borderWidth: '0px',
+                borderRadius: 15,
+                borderWidth: 0,
                 borderColor: '#e91e63',
                 border: '0px solid',
                 backgroundColor: '#A82548'
@@ -199,19 +221,22 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
       if (etiEventId) {
         const validateRuote: RegExp = /^[a-zA-Z0-9]{20,}$/;
         const idV: boolean = validateRuote.test(etiEventId);
-        const idEvento = await createOrUpdateDoc('events', values, etiEventId === 'new' ? undefined : idV);
+        const idEvento = await createOrUpdateDoc(
+          'events',
+          values,
+          etiEventId === 'new' ? undefined : idV
+        );
         setIdNuevo(idEvento);
-        setEnable(true)
+        setEnable(true);
         // navigate(`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}`);
       }
     } catch (error) {
       console.error(error);
-      setEnable(false)
+      setEnable(false);
       setSubmitting(false);
       //TODO global error handling this.setState({errors: error.response.event})
     }
   };
-
 
   const style = {
     position: 'absolute' as 'absolute',
@@ -225,14 +250,13 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
     p: 4,
     overflow: 'auto',
     width: '900px',
-    height: '500px',
+    height: '500px'
   };
-
 
   const handleDelete = (email: string) => {
     try {
-        // setAdmins((currentAdmins) => currentAdmins.filter((admin) => admin !== email));
-        setAdmins((currentAdmins) => currentAdmins.filter((admin:any) => admin.email !== email));
+      // setAdmins((currentAdmins) => currentAdmins.filter((admin) => admin !== email));
+      setAdmins((currentAdmins) => currentAdmins.filter((admin: any) => admin.email !== email));
     } catch (error) {
       console.error('Error al borrar administrador:', error);
     } finally {
@@ -243,45 +267,56 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
   const handleCreateEvent = async (values: any) => {
     try {
       if (etiEventId) {
+        const selectedEmails = admins.map((admin: any) => admin.email);
+        if (selectedEmails.length === 0) {
+          if (admins.length === 0) {
+            setSelectAdmin(true);
+            throw new Error('Tienes que seleccionar al menos un admin.');
+          }
+        }
         const validateRuote: RegExp = /^[a-zA-Z0-9]{20,}$/;
         const idV: boolean = validateRuote.test(etiEventId);
-        const idEvento = await createOrUpdateDoc('events', values, etiEventId === 'new' ? undefined : idV);
-        console.log('admins cuando creo el evento => ', admins);
-        const selectedEmails = admins.map((admin:any) => admin.email);
+        const idEvento = await createOrUpdateDoc(
+          'events',
+          values,
+          etiEventId === 'new' ? undefined : idV
+        );
         await assignEventAdmins(selectedEmails, idEvento);
         setIdNuevo(idEvento);
-        setEnable(true)
+        setEnable(true);
+        setSelectAdmin(false);
+        onChange();
         // navigate(`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}`);
       }
       // await createOrUpdateDoc('events', values, idNuevo === 'new' ? undefined : idNuevo);
     } catch (error) {
       console.error(error);
-      setEnable(false)
+      setEnable(false);
       // setSubmitting(false);
     }
-  }
+  };
 
   const scrollbarStyles = {
     overflowY: 'auto',
     '&::-webkit-scrollbar': {
-      width: '8px',
+      width: '8px'
     },
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: '#C0E5FF',
-      borderRadius: '12px',
+      borderRadius: '12px'
     },
     '&::-webkit-scrollbar-track': {
       backgroundColor: 'transparent',
       boxShadow: '1px 0px 2px 0px #6695B7',
-      borderRadius: '12px',
-    },
+      borderRadius: '12px'
+    }
   };
 
   const useStyles = makeStyles({
     root: {
       '& .MuiFormHelperText-root': {
         margin: '2px 0px 0px 2px'
-      },   
+      },
       '& .MuiOutlinedInput-root': {
         fontFamily: 'inter',
         '& fieldset': {
@@ -298,39 +333,38 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
           pointerEvents: 'none'
         },
         '& .MuiOutlinedInput-notchedOutline': {
-          borderColor:  '#FDE4AA',
+          borderColor: '#FDE4AA'
         }
-      },
+      }
     },
     filled: {
       '& .MuiOutlinedInput-root': {
         '& fieldset': {
-          borderColor: '#E68650',
+          borderColor: '#E68650'
         },
         '&:hover fieldset ': {
-          borderColor: '#E68650',
+          borderColor: '#E68650'
         },
         '&.Mui-focused fieldset': {
-          borderColor: '#E68650',
+          borderColor: '#E68650'
         },
         '& .MuiOutlinedInput-notchedOutline': {
-          borderColor: '#E68650',
+          borderColor: '#E68650'
         }
-      },
-    },
+      }
+    }
   });
 
-  const classes = useStyles()
-
+  const classes = useStyles();
 
   return (
-    <ThemeProvider theme={newTheme}>
-      <Translation
-        ns={[SCOPES.COMMON.FORM, SCOPES.MODULES.SIGN_UP, SCOPES.MODULES.PROFILE]}
-        useSuspense={false}
-      >
-        {(t) => (
-          <>
+    <Translation
+      ns={[SCOPES.COMMON.FORM, SCOPES.MODULES.SIGN_UP, SCOPES.MODULES.PROFILE]}
+      useSuspense={false}
+    >
+      {(t) => (
+        <>
+          <ThemeProvider theme={newTheme}>
             <WithAuthentication
               roles={[UserRoles.SUPER_ADMIN]}
               redirectUrl={`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}`}
@@ -383,9 +417,9 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                           name: event?.name || ''
                         }}
                         validationSchema={EventFormSchema}
-                        onSubmit={async (values, { setSubmitting }) => {
+                        onSubmit={async (values) => {
                           console.log('values aqui ->', values);
-                          await save(values, setSubmitting);
+                          await handleCreateEvent(values);
                         }}
                       >
                         {({ setFieldValue, touched, errors, values }) => (
@@ -426,6 +460,7 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                                     colorFont={'#424242'}
                                     fontFamily={'Montserrat'}
                                     fontWeight={500}
+                                    isDisabled={false}
                                   />
                                 </Grid>
                                 {/* <Grid item md={12} sm={12} xs={12}>
@@ -632,7 +667,8 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                                         border: '1.5px solid #E68650',
                                         borderRadius: '8px',
                                         display: 'flex',
-                                        justifyContent: 'space-between'
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center'
                                       }}
                                     >
                                       <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -655,6 +691,14 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                                               />
                                             ))}
                                           </>
+                                        ) : selectAdmin ? (
+                                          <Typography
+                                            variant="body2"
+                                            color="error"
+                                            sx={{ fontWeight: 500, p: 2 }}
+                                          >
+                                            Debes seleccionar al menos un admin.
+                                          </Typography>
                                         ) : (
                                           <Typography
                                             sx={{
@@ -716,6 +760,7 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                               sx={{ display: 'flex', justifyContent: 'flex-end', margin: '20px' }}
                             >
                               <Button
+                                type="submit"
                                 sx={{
                                   width: '115px',
                                   padding: '12px, 32px, 12px, 32px',
@@ -725,7 +770,7 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                                   '&:hover': { backgroundColor: '#A82548' }
                                 }}
                                 onClick={() => {
-                                  onChange(), handleCreateEvent(values);
+                                  handleCreateEvent(values);
                                 }}
                               >
                                 <Typography
@@ -748,9 +793,9 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                 </Box>
               </Box>
             )}
-          </>
-        )}
-      </Translation>
-    </ThemeProvider>
+          </ThemeProvider>
+        </>
+      )}
+    </Translation>
   );
 }

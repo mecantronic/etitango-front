@@ -135,7 +135,7 @@ export default function Inscripcion() {
     </Grid>
   );
 
-      const newTheme = (theme: any) =>
+      const newTheme = (theme) =>
       createTheme({
         ...theme,
         components: {
