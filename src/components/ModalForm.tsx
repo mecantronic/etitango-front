@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
@@ -18,12 +19,14 @@ import { ETIDatePicker } from './form/DatePicker';
 import moment from 'moment-timezone';
 import { values } from 'lodash';
 import { makeStyles } from '@mui/styles';
+import * as Yup from 'yup';
 
 interface SimpleModalProps {
   idEvent: string;
   open: boolean;
   onClose: () => void;
   setAgendaData: (data: any[]) => void;
+  setDataFromModalForm: (data: any[]) => void;
 }
 interface TimePickerFieldProps {
   value: string;
@@ -50,6 +53,53 @@ const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpda
       // ]);
 
       //console.log('Datos enviados. ID del evento:', eventId);
+
+const ModalForm: React.FC<SimpleModalProps> = ({
+  open,
+  onClose,
+  idEvent,
+  eventData,
+  setAgendaData,
+  setDataFromModalForm
+}) => {
+  const handleSubmit = async (values: any, { setSubmitting }: any) => {
+    try {
+      const id = idEvent;
+
+      // Obtener la información existente del evento desde Firebase
+      const existingEvent = await getDocument(`events/${id}`);
+      const existingAgenda = existingEvent?.Agenda || [];
+      console.log('existingAgenda :', existingAgenda)
+
+      // Formatear la fecha en el formato dd/mm/aaaa
+      const formattedDate = moment(values.date).format('DD/MM/YYYY');
+
+      // Construir la nueva estructura de agenda con los datos del formulario
+      const newAgendaItem = {
+        date: formattedDate,
+        description: values.description,
+        schedule: additionalFields.map((field) => ({
+          time: field.time,
+          activity: field.description,
+        })),
+      };
+
+      const updatedAgenda = [...existingAgenda, newAgendaItem];
+
+      // Actualizar la información en Firebase
+      const eventId = await createOrUpdateDoc('events', {
+        ...existingEvent,
+        Agenda: updatedAgenda,
+      }, id);
+
+      // Obtener el evento actualizado
+      const updatedEvent = await getDocument(`events/${eventId}`);
+      console.log('aganda? -> ', updatedEvent?.Agenda);
+      
+
+      // Actualizar los datos en el componente padre
+      setAgendaData(updatedAgenda);
+      setDataFromModalForm(updatedEvent);
     } catch (error) {
       console.error('Error al enviar el formulario:', error);
     } finally {
@@ -57,7 +107,24 @@ const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpda
       onClose();
     }
   };
+  // console.log('dateStart en el modal ', eventData?.dateStart);
+  // console.log('endStart en el modal ', eventData?.dateEnd);
 
+  let validationSchema: Yup.ObjectSchema<any> | undefined;
+ 
+  if (eventData) {
+    const dateStart = eventData?.dateStart ? new Date(eventData.dateStart) : null;
+    const dateEnd = eventData?.dateEnd ? new Date(eventData.dateEnd) : null;
+
+    // Definir el esquema de validación después de asegurarse de que eventData está definido
+    validationSchema = Yup.object().shape({
+      date: Yup.date()
+        .required('La fecha es requerida')
+        .min(dateStart, 'La fecha no puede ser anterior a la fecha de inicio del evento')
+        .max(dateEnd, 'La fecha no puede ser posterior a la fecha de finalización del evento'),
+    });
+  }
+  
   const [event, setEvent] = useState<EtiEvent>();
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState('');
@@ -96,8 +163,13 @@ const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpda
 
   const handleDateTimeChange = (index: number, type: FieldType, value: string) => {
     const newFields = [...additionalFields];
-    newFields[index][type] = value; // Almacena el valor directamente
+    newFields[index][type] = value;
     setAdditionalFields(newFields);
+  
+    // Actualizar el estado de la hora específico para este campo
+    const newTimeValues = [...timeValues];
+    newTimeValues[index] = value;
+    setTimeValues(newTimeValues);
   };
 
   const handleDescriptionChange = (index: number, value: string) => {
@@ -206,6 +278,7 @@ const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpda
             date: event?.dateStart || '',
             description: event?.description || ''
           }}
+          validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
           {({ isSubmitting, setFieldValue, values }) => (
@@ -217,7 +290,7 @@ const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpda
                 >
                   <Grid item xs={12}>
                     <Typography variant="h6" fontWeight="500">
-                      Fija la fecha de tu evento
+                      Fija la agenda para tu evento
                     </Typography>
                   </Grid>
                   <Grid item xs={3}>
@@ -253,6 +326,7 @@ const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpda
                     padding: '16px',
                     marginTop: '20px',
                     borderRadius: '12px 12px 0 0'
+                    alignItems: 'center'
                   }}
                 >
                   <Grid item xs={10}>
@@ -309,10 +383,9 @@ const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpda
                     >
                       <Grid item xs={2}>
                         <ETITimePicker2
-                          value={timeValue}
+                          value={timeValues[index]}
                           onChange={(value) => {
                             handleDateTimeChange(index, 'time', value);
-                            setTimeValue(value);
                           }}
                         />
                       </Grid>
@@ -363,34 +436,4 @@ const ModalForm: React.FC<SimpleModalProps> = ({ open, onClose, idEvent, setUpda
     </Modal>
   );
 };
-
-// const TimePickerField: React.FC<TimePickerFieldProps> = ({ value, onChange }) => {
-//   const [selectedTime, setSelectedTime] = useState<Date | null>(null);
-
-//   useEffect(() => {
-//       if (value) {
-//           setSelectedTime(new Date(value));
-//       }
-//   }, [value]);
-
-//   const handleTimeChange = (newValue: Moment | null) => {
-//     if (newValue !== null) {
-//       const horaComoString = newValue.format('HH:mm A');
-//       console.log('hora como string ->', horaComoString);
-//       //setSelectedTime(newValue.toDate());
-//       onChange(horaComoString);
-//     }
-//   };
-
-//   return (
-//       <TimePicker
-//           label="Hora"
-//           renderInput={(params) => <TextField {...params} />}
-//           //value={selectedTime}
-//           value={value ? moment(value, 'HH:mm A') : null}
-//           onChange={handleTimeChange}
-//       />
-//   );
-// };
-
 export default ModalForm;

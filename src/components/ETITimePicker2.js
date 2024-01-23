@@ -11,6 +11,7 @@ interface ETITimePicker2Props {
   onChange: (value: string) => void;
 }
 
+
 const ETITimePicker2: React.FC<ETITimePicker2Props> = ({ value, onChange }) => {
   const StyledTextField = styled(TextField)(({ theme }) => ({
     '& .MuiOutlinedInput-root': {
@@ -79,6 +80,27 @@ const ETITimePicker2: React.FC<ETITimePicker2Props> = ({ value, onChange }) => {
         }
       }}
     />
+   
+    <StyledTextField
+    label=""
+    type="time"
+    value={value}
+    onChange={(event) => onChange(event.target.value)}
+    onBlur={handleBlur}
+    style={{ width: '96px', height: '48px', borderRadius: '12px'}}
+    InputProps={{
+      startAdornment: (
+        <InputAdornment position="start">
+          <AccessTimeIcon sx={{ color: '#A82548', fontSize: 'large' }} />
+        </InputAdornment>
+      ),
+    }}
+    sx={{
+      '& input[type="time"]::-webkit-calendar-picker-indicator': {
+        display: 'none',
+      },
+    }}
+  />
   );
 };
 

@@ -49,7 +49,7 @@ export default function NewEditEvent({
 
   const updateAlojamientoData = (newData) => {
     setAlojamientoData(newData);
-    //console.log('data de alojamiento -> ', alojamientoData);
+    // console.log('data de alojamiento desde NewEditEvent -> ', alojamientoData);
   };
 
   const updateDataBanks = (newData) => {
@@ -68,11 +68,26 @@ export default function NewEditEvent({
 
   const handleCreateEvent = async (values: any) => {
     try {
+
       if (!changeEvent2) {
         values.alojamiento = alojamientoData;
         values.datosBancarios = dataBanks;
         values.linkMercadoPago = dataMP;
         await createOrUpdateDoc('events', values, idEvent === 'new' ? undefined : idEvent);
+      if(!changeEvent2){
+      if (alojamientoData && alojamientoData.length > 0) {
+        values.alojamiento = alojamientoData;
+      }
+  
+      if (dataBanks && dataBanks.length > 0) {
+        values.datosBancarios = dataBanks;
+      }
+  
+      if (dataMP && dataMP.length > 0) {
+        values.linkMercadoPago = dataMP;  
+      }
+      await createOrUpdateDoc('events', values, idEvent === 'new' ? undefined : idEvent);
+        
       } else {
         alert('Tienes cambios que no seran guardados.');
       }

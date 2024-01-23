@@ -264,7 +264,7 @@ export default function NewEvent(props: { etiEventId: string; onChange: Function
     }
   };
 
-  const handleCreateEvent = async (values: any) => {
+  const handleCreateEvent = async (values: any, setSubmitting: Function) => {
     try {
       if (etiEventId) {
         const selectedEmails = admins.map((admin: any) => admin.email);
@@ -293,6 +293,8 @@ export default function NewEvent(props: { etiEventId: string; onChange: Function
       console.error(error);
       setEnable(false);
       // setSubmitting(false);
+      setEnable(false)
+      setSubmitting(false);
     }
   };
 
@@ -364,6 +366,7 @@ export default function NewEvent(props: { etiEventId: string; onChange: Function
     >
       {(t) => (
         <>
+
           <ThemeProvider theme={newTheme}>
             <WithAuthentication
               roles={[UserRoles.SUPER_ADMIN]}
@@ -446,7 +449,57 @@ export default function NewEvent(props: { etiEventId: string; onChange: Function
                                     classes={{ root: values.name ? classes.filled : classes.root }}
                                   />
                                 </Grid>
+          <WithAuthentication
+            roles={[UserRoles.SUPER_ADMIN]}
+            redirectUrl={`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}`}
+          />
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <Box sx={{ display: 'flex', flexDirection: 'column', boxShadow: 3, width: 960, height: 820, borderRadius: '12px', overflow: 'auto', backgroundColor: '#FFFFFF' }}>
+              <Box sx={{ color: '#FFFFFF', backgroundColor: '#4B84DB', padding: '12px 24px 12px 24px', fontWeight: 600, fontSize: '24px', lineHeight: '16px', fontFamily: 'Montserrat', height: '40px' }}>
+                Nuevo ETI
+              </Box>
 
+              <Box sx={{ display: 'flex', ...scrollbarStyles }}>
+                <Grid container>
+                  <Grid item xs={12}>
+                    <Formik
+                      enableReinitialize
+                      initialValues={{
+                        dateEnd: event?.dateEnd || '',
+                        dateSignupOpen: event?.dateSignupOpen || '',
+                        dateStart: event?.dateStart || '',
+                        dateSignupEnd: event?.dateSignupEnd || '',
+                        timeStart: event?.timeStart || '',
+                        timeEnd: event?.timeEnd || '',
+                        timeSignupOpen: event?.timeSignupOpen || '',
+                        timeSignupEnd: event?.timeSignupEnd || '',
+                        location: event?.location || null,
+                        name: event?.name || '',
+                      }}
+                      validationSchema={EventFormSchema}
+                      onSubmit={async (values,  { setSubmitting }) => {
+                        console.log('values aqui ->', values);
+                        await handleCreateEvent(values, setSubmitting);
+                      }}
+                    >
+                      {({ setFieldValue, touched, errors, values, isSubmitting}) => (
+                        <Form>
+                          <Box sx={{ margin: '20px', backgroundColor: '#FAFAFA', borderRadius: '12px', p: 2 }}>
+
+                            <Grid container gap={2}>
+                              <Typography sx={{ color: '#212121', fontWeight: 500 }}>Nombre para el evento</Typography>
+                              <Grid item md={12} sm={12} xs={12}>
+                                <Field
+                                  name="name"
+                                  placeholder="Nuevo ETI"
+                                  component={TextField}
+                                  required
+                                  fullWidth
+                                  classes={{ root: values.name ? classes.filled : classes.root }}
+                                />
+                              </Grid>
                                 <Grid item md={12} sm={12} xs={12}>
                                   <LocationPicker
                                     values={values}
@@ -789,6 +842,22 @@ export default function NewEvent(props: { etiEventId: string; onChange: Function
                         )}
                       </Formik>
                     </Grid>
+
+                              {/* </> */}
+                              {/* )} */}
+                            </Grid>
+                          </Box>
+
+                          <Box sx={{ display: 'flex', justifyContent: 'flex-end', margin: '20px' }}>
+                            <Button type='submit'  disabled={isSubmitting} sx={{ width: '115px', padding: '12px, 32px, 12px, 32px', borderRadius: '25px', backgroundColor: '#A82548', height: '44px', '&:hover': { backgroundColor: '#A82548' } }}>
+                              <Typography sx={{ color: '#FAFAFA', fontWeight: 500, fontSize: '14px', lineHeight: '20px' }}>
+                                Crear
+                              </Typography>
+                            </Button>
+                          </Box>
+                        </Form>
+                      )}
+                    </Formik>
                   </Grid>
                 </Box>
               </Box>
