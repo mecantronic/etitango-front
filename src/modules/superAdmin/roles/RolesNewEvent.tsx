@@ -109,77 +109,114 @@ const RolesNewEvent = ({ eventId, handleClose }: { eventId?: string, handleClose
     };
 
     return (
-        <>
-            <WithAuthentication roles={[UserRoles.SUPER_ADMIN]} />
-            <Box sx={{ display: 'flex', border: '1.5px solid #FDE4AA', borderRadius: '4px', padding: 1, justifyContent: 'space-between' }}>
-                <Input type="text" value={searchTerm} onChange={handleSearchChange} placeholder="Buscar" disableUnderline />
-                <Icon>
-                    <img src='/img/icon/search_normal.svg' height={25} width={25} />
-                </Icon>
-            </Box>
+      <>
+        <WithAuthentication roles={[UserRoles.SUPER_ADMIN]} />
+        <Box
+          sx={{
+            display: 'flex',
+            border: '1.5px solid #FDE4AA',
+            borderRadius: '4px',
+            padding: 1,
+            justifyContent: 'space-between'
+          }}
+        >
+          <Input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="Buscar"
+            disableUnderline
+          />
+          <Icon>
+            <img src="/img/icon/search_normal.svg" height={25} width={25} />
+          </Icon>
+        </Box>
 
-            <DataGrid
-                rows={filteredUsuarios.map(getUserDataValues)}
-                columns={columns}
-                loading={isLoading}
-                initialState={{
-                    sorting: {
-                        sortModel: [{ field: 'Nombre', sort: 'asc' }],
-                    },
-                }}
-                checkboxSelection
-                pageSize={5}
-                rowsPerPageOptions={[10]}
-                disableSelectionOnClick
-                getRowId={(row) => row.id}
-                onSelectionModelChange={(selection) => {
-                    const selectedInfo = selection.map((selectedId: any) => {
-                        const selectedUsuario = usuarios.find((usuario) => usuario.id.toString() === selectedId);
-                        return selectedUsuario ? { name: `${selectedUsuario?.nameFirst} ${selectedUsuario?.nameLast}`, email: selectedUsuario.email } : '';
-                    })
-                    setSelectedUserInfo(selectedInfo)
-                }}
-                sx={{
-                    mb: 2,
-                    mt: 2,
-                    "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer": {
-                        display: "none"
-                    },
-                    '& .MuiDataGrid-virtualScroller': {
-                        ...scrollbarStyles
-                    },
-                    '& .MuiDataGrid-columnHeaders': {
-                        backgroundColor: '#5FB4FC',
-                        color: '#FAFAFA',
-                        fontSize: '16px',
-                        lineHeight: '16px',
-                        fontFamily: 'Inter',
-                        fontWeight: 600
-                    },
-                    '& .css-1yi8l0w-MuiButtonBase-root-MuiCheckbox-root': {
-                        color: '#A82548',
-                    },
-                    '& .MuiDataGrid-row:nth-of-type(even)': {
-                        backgroundColor: '#DBEEFF', // Color para filas pares
-                    },
-                    '& .MuiDataGrid-cellContent': {
-                        color: '#0075D9',
-                        fontSize: '16px',
-                        lineHeight: '16px',
-                        fontFamily: 'Inter',
-                        fontWeight: 400
-                    }
-                }}
-            />
+        <DataGrid
+          hideFooter ={true}
+          hideFooterSelectedRowCount={true}
+          rows={filteredUsuarios.map(getUserDataValues)}
+          columns={columns}
+          loading={isLoading}
+          initialState={{
+            sorting: {
+              sortModel: [{ field: 'Nombre', sort: 'asc' }]
+            }
+          }}
+          checkboxSelection
+          pageSize={5}
+          rowsPerPageOptions={[10]}
+          disableSelectionOnClick
+          getRowId={(row) => row.id}
+          onSelectionModelChange={(selection) => {
+            const selectedInfo = selection.map((selectedId: any) => {
+              const selectedUsuario = usuarios.find(
+                (usuario) => usuario.id.toString() === selectedId
+              );
+              return selectedUsuario
+                ? {
+                    name: `${selectedUsuario?.nameFirst} ${selectedUsuario?.nameLast}`,
+                    email: selectedUsuario.email
+                  }
+                : '';
+            });
+            setSelectedUserInfo(selectedInfo);
+          }}
+          sx={{
+            mb: 2,
+            mt: 2,
+            '& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer': {
+              display: 'none'
+            },
+            '& .MuiDataGrid-virtualScroller': {
+              ...scrollbarStyles
+            },
+            '& .MuiDataGrid-columnHeaders': {
+              backgroundColor: '#5FB4FC',
+              color: '#FAFAFA',
+              fontSize: '16px',
+              lineHeight: '16px',
+              fontFamily: 'Inter',
+              fontWeight: 600
+            },
+            '& .css-1yi8l0w-MuiButtonBase-root-MuiCheckbox-root': {
+              color: '#A82548'
+            },
+            '& .MuiDataGrid-row:nth-of-type(even)': {
+              backgroundColor: '#DBEEFF' // Color para filas pares
+            },
+            '& .MuiDataGrid-cellContent': {
+              color: '#0075D9',
+              fontSize: '16px',
+              lineHeight: '16px',
+              fontFamily: 'Inter',
+              fontWeight: 400
+            }
+          }}
+        />
 
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                <Button sx={{ width: '115px', padding: '12px, 32px, 12px, 32px', borderRadius: '25px', backgroundColor: '#A82548', height: '44px', '&:hover': { backgroundColor: '#A82548' } }} onClick={() => { handleSelectEmails() }}>
-                    <Typography sx={{ color: '#FAFAFA', fontWeight: 500, fontSize: '14px', lineHeight: '20px' }}>
-                        {isLoading ? <CircularProgress /> : 'Agregar'}
-                    </Typography>
-                </Button>
-            </Box>
-        </>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <Button
+            sx={{
+              width: '115px',
+              padding: '12px, 32px, 12px, 32px',
+              borderRadius: '25px',
+              backgroundColor: '#A82548',
+              height: '44px',
+              '&:hover': { backgroundColor: '#A82548' }
+            }}
+            onClick={() => {
+              handleSelectEmails();
+            }}
+          >
+            <Typography
+              sx={{ color: '#FAFAFA', fontWeight: 500, fontSize: '14px', lineHeight: '20px' }}
+            >
+              {isLoading ? <CircularProgress /> : 'Agregar'}
+            </Typography>
+          </Button>
+        </Box>
+      </>
     );
 };
 export default RolesNewEvent;
