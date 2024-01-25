@@ -41,17 +41,17 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
   const [dataBanks, setDataBanks] = useState([null])
   const [dataMP, setDataMP] = useState([null])
 
-  const updateAlojamientoData = (newData) => {
+  const updateAlojamientoData = (newData: any) => {
     setAlojamientoData(newData);
     // console.log('data de alojamiento desde NewEditEvent -> ', alojamientoData);
   };
 
-  const updateDataBanks = (newData) => {
+  const updateDataBanks = (newData: any) => {
     setDataBanks(newData);
     //console.log('data bancaria -> ', dataBanks);
   }
 
-  const updateDataMP = (newData) => {
+  const updateDataMP = (newData: any) => {
     setDataMP(newData);
     //console.log('data MP -> ', dataMP);
   }
@@ -188,3 +188,4 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
   );
 }
 
+ 
