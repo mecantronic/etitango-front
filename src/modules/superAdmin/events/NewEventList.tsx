@@ -142,9 +142,6 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
         
         setShowCheckbox(false);
       }
-      // if (selectedRows.length === 0) {
-      //   setShowCheckbox(false);
-      // }
     } catch (error) {
       console.error('Error al eliminar los eventos', error);
     }
@@ -295,12 +292,6 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
               fontFamily: 'inter',
               fontWeight: 600
           },
-          // '& .MuiDataGrid-row': {
-          //   '&.Mui-selected': {
-          //     border: '2px solid #A82548',
-          //     backgroundColor: 'inherit'
-          //   },
-          // },
           '& .MuiDataGrid-row': {
             ...(!showCheckbox && {
               '&.Mui-selected': {
@@ -344,7 +335,6 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
       selectionModel={selectedRows}
       onSelectionModelChange={(newSelection) => {
         setSelectedRows(newSelection as string[]);
-        console.log("IDs: " , newSelection)
       }
     }
       

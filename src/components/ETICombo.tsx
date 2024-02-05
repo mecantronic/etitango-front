@@ -621,7 +621,7 @@ const ETICombos: React.FC<ETICombosProps> = ({ setFieldValue, selectedEvent, val
                         const success = await deleteImageUrlFromEvent(idEvent);
                         if (success) {
                           setImageUrlEvent('');
-                          console.log('La imagen se elimino correctamente.');
+                          
                         }
                       } catch (error) {
                         console.error('eliminar imagen fallo ', error);
