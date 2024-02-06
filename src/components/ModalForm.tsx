@@ -174,14 +174,6 @@ const ModalForm: React.FC<SimpleModalProps> = ({
     }
   };
 
-  const handleBlur = (event) => {
-    const time = event.target.value;
-    const isValidTime = /^([01]\d|2[0-3]):([0-5]\d)$/.test(time);
-    if (!isValidTime && time !== '') {
-      console.log('Por favor, ingresa la hora en formato HH:MM');
-      setValue('');
-    }
-  };
   const useStyles = makeStyles({
     root: {
       '& .MuiFormHelperText-root': {

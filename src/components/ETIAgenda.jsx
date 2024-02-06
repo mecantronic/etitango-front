@@ -6,16 +6,8 @@ import { Box, Button, Grid, Typography, Table, TableBody, TableCell, TableContai
 import { KeyboardArrowDown, KeyboardArrowUp, } from '@mui/icons-material';
 import { makeStyles } from "@mui/styles";
 import ModalForm from './ModalForm';
-import ETIModalDeleteEvent from './ETIModalDeleteEvent';
 
 const ETIAgenda = ( { idEvent, eventData, updateDataAgenda } ) => {
-
-  // console.log('EventData desde ETIAgenda -> ', eventData);
-  // console.log('Agenda desde ETIAgenda -> ', eventData?.Agenda);
-
-  // const dateStartValue = eventData?.dateStart;
-  // const dateEndValue = eventData?.dateEnd;
-  // console.log('fechas inicio fin -> ', dateStartValue, dateEndValue);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -26,9 +18,6 @@ const ETIAgenda = ( { idEvent, eventData, updateDataAgenda } ) => {
   const [showDeleteButton, setShowDeleteButton] = useState(false);
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
-  
-  console.log('este es la data del modal desde agenda ->', dataFromModalForm);
 
   useEffect(() => {
     if (eventData && eventData?.Agenda) {
@@ -67,10 +56,6 @@ const ETIAgenda = ( { idEvent, eventData, updateDataAgenda } ) => {
   };
 
   const handleDelete = () => {
-    // Lógica para eliminar el ultimo item de la agenda
-    // Puedes utilizar la información de idEvent y agendaData
-    // para implementar la eliminación.
-    console.log('Eliminar agenda');
     handleMenuClose();
     setShowDeleteButton(true);
   };
@@ -124,9 +109,6 @@ const ETIAgenda = ( { idEvent, eventData, updateDataAgenda } ) => {
   
   const classes = useStyles();
 
-  // useEffect(() => {
-  //   console.log('ciudad desde ETIAgenda useEffect -> ', eventData.city);
-  // },[])
   return (
     <Box sx={{display: 'flex', mt: 2}}>
       <Grid container rowSpacing={0} columnSpacing={{ md: 0 }}>
