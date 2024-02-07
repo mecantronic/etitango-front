@@ -81,14 +81,9 @@ export default function EditEvent() {
       if (id) {
         const eventExists = await getDocument(`events/${id}`);
         if (eventExists) {
-          //const { dateStart, name, additionalFields } = eventExists;
-          //console.log('datos: ', new Date(dateStart.seconds * 1000), name, additionalFields);
           const event = await getEvent(id);
           setEvent(event);
-          console.log('Evento: ', event);
-          
           setImageEvent(event.imageUrl);
-          //console.log('este es la imagen url del evento: ', event.imageUrl);
         } else {
           navigate(`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}`);
         }
@@ -115,8 +110,6 @@ export default function EditEvent() {
   const save = async (values: any, setSubmitting: Function) => {
     try {
       const eventId = await createOrUpdateDoc('events', values, id === 'new' ? undefined : id);
-      console.log('la id del evento ', eventId);
-
       if (eventId && imageUrl) {
         await updateEventWithImageUrl(eventId, imageUrl)
       }
@@ -127,7 +120,6 @@ export default function EditEvent() {
       //TODO global error handling this.setState({errors: error.response.event})
     }
   };
-  //console.log('este es image event: ', imageEvent)
   return (
     <Translation
       ns={[SCOPES.COMMON.FORM, SCOPES.MODULES.SIGN_UP, SCOPES.MODULES.PROFILE]}
@@ -150,7 +142,7 @@ export default function EditEvent() {
             //border: '2px solid red'
           }}
           >
-            {/* <EventListTable events={events} isLoading={isLoading} /> */}
+          
           </Box>
           {loading ? (
             <CircularProgress />
@@ -169,89 +161,6 @@ export default function EditEvent() {
                 justifyContent="center"
                 spacing={3}
               >
-                {/* Form para crear el evento */}
-                {/* <Grid item sx={{ my: 3, typography: 'h5', color: 'secondary.main' }}>
-                  EVENTS
-                </Grid> */}
-                {/* <Formik
-                  enableReinitialize
-                  initialValues={{
-                    dateEnd: event?.dateEnd || '',
-                    dateSignupOpen: event?.dateSignupOpen || '',
-                    dateStart: event?.dateStart || '',
-                    location: event?.location || '',
-                    name: event?.name || ''
-                  }}
-                  validationSchema={EventFormSchema}
-                  onSubmit={async (values, { setSubmitting }) => {
-                    await save(values, setSubmitting);
-                  }}
-                >
-                  {({ isSubmitting, setFieldValue }) => (
-                    <Form>
-                      <Grid container spacing={2}>
-                        <Grid item md={6} sm={6} xs={12}>
-                          <Field
-                            name="name"
-                            label={t('name')}
-                            component={TextField}
-                            required
-                            fullWidth
-                          />
-                        </Grid>
-                        <Grid item md={6} sm={6} xs={12}>
-                          <Field
-                            name="location"
-                            label={t('location')}
-                            component={TextField}
-                            required
-                            fullWidth
-                          />
-                        </Grid>
-                        <Grid item md={4} sm={4} xs={12}>
-                          <ETIDatePicker
-                            textFieldProps={{ fullWidth: true }}
-                            borderColor={false}
-                            specialCase={true}
-                            fieldName="dateStart"
-                            setFieldValue={setFieldValue}
-                          />
-                        </Grid>
-                        <Grid item md={4} sm={4} xs={12}>
-                          <ETIDatePicker
-                            textFieldProps={{ fullWidth: true }}
-                            borderColor={false}
-                            specialCase={true}
-                            fieldName="dateEnd"
-                            setFieldValue={setFieldValue}
-                          />
-                        </Grid>
-                        <Grid item md={4} sm={4} xs={12}>
-                          <ETIDatePicker
-                            textFieldProps={{ fullWidth: true }}
-                            borderColor={false}
-                            specialCase={true}
-                            fieldName="dateSignupOpen"
-                            setFieldValue={setFieldValue}
-                          />
-                        </Grid>
-                    
-                        <Grid container justifyContent="flex-end">
-                          <Grid item>
-                            <Button
-                              variant="contained"
-                              color="secondary"
-                              type="submit"
-                              disabled={isSubmitting}
-                            >
-                              Save
-                            </Button>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Form>
-                  )}
-                </Formik> */}
 
                 <Box sx={{
                   display: 'flex',
@@ -261,45 +170,10 @@ export default function EditEvent() {
                   width: '100%',
                 }}
                 >
-                  {/* <ETIAgenda 
-                    dateStart={event?.dateStart}
-                    name={event?.name}
-                    additionalFields={event?.additionalFields}
-                  />
-                   */}
-                  {/* <ETIAlojamiento />
-                  <ETIDataBanks />
-                  <ETIMercadoPago /> */}
+                
                 </Box>
               </Grid>
 
-              {/* Carga de imagen para el Evento */}
-              {/* <Box sx={{
-                marginLeft: '100px',
-                maxHeight: '300px',
-                maxWidth: '50%',
-                width: '100%',
-                overflow: 'auto',
-                //border: '2px solid red'
-              }}>
-                <Box
-                  component="img"
-                  sx={{
-                    height: 233,
-                    width: 350,
-                    maxHeight: { xs: 233, md: 167 },
-                    maxWidth: { xs: 350, md: 250 },
-                  }}
-                  alt="Imagen representativa del evento"
-                  src={imageEvent ? imageEvent : '/img/imageNotFound.png'}
-                />
-
-                <CloudinaryUploadWidget
-                  uwConfig={uwConfig}
-                  setPublicId={setPublicId}
-                  onImageUpload={(uploadedImageUrl: string) => setImageUrl(uploadedImageUrl)}
-                />
-              </Box> */}
             </Container>
           )}
           </Box>

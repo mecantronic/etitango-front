@@ -33,7 +33,6 @@ const GeneralInfo = ({ idNewEventCreate } : {idNewEventCreate: string}) => {
         const eventoSeleccionado = evts.find(element => element.id === idNewEventCreate) || ultimoEvento;
         setEventData(eventoSeleccionado);
         setSelectedRows([eventoSeleccionado.id])
-        //console.log("La bestia", ultimoEvento)
       } else {
         setEventData(null);
       }

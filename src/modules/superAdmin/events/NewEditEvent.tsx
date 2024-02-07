@@ -19,53 +19,48 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
   const alerText2: string = 'Tienes cambios que no seran guardados.'
   const EventFormSchema = object({
     firstPay: string().required(alertText),
-    firstDatePay: mixed()  // Hacer que acepte varios tipos, incluyendo fechas
+    firstDatePay: mixed()  
     .transform((originalValue) => {
-      // Transforma el valor a una fecha si no está vacío
       return originalValue ? new Date(originalValue) : originalValue;
     })
-    .nullable(true) // Permitir que el valor sea nulo
+    .nullable(true) 
     .required(alertText)
     .test({
       name: 'is-valid-date',
       test: (value) => {
-        // Verifica si la fecha es válida, solo si no es nula
+        
         return !value || (value instanceof Date && !isNaN(value.getTime()));
       },
-      message: alertText, // Mensaje personalizado en caso de fecha inválida
+      message: alertText, 
     }),
     firstTimePay: string().required(alertText),
     secondPay: string().required(alertText),
-    secondDatePay: mixed()  // Hacer que acepte varios tipos, incluyendo fechas
+    secondDatePay: mixed()  
     .transform((originalValue) => {
-      // Transforma el valor a una fecha si no está vacío
       return originalValue ? new Date(originalValue) : originalValue;
     })
-    .nullable(true) // Permitir que el valor sea nulo
+    .nullable(true)
     .required(alertText)
     .test({
       name: 'is-valid-date',
       test: (value) => {
-        // Verifica si la fecha es válida, solo si no es nula
         return !value || (value instanceof Date && !isNaN(value.getTime()));
       },
-      message: alertText, // Mensaje personalizado en caso de fecha inválida
+      message: alertText, 
     }),
     secondTimePay: string().required(alertText),
-    refundDeadline: mixed()  // Hacer que acepte varios tipos, incluyendo fechas
+    refundDeadline: mixed()  
     .transform((originalValue) => {
-      // Transforma el valor a una fecha si no está vacío
       return originalValue ? new Date(originalValue) : originalValue;
     })
-    .nullable(true) // Permitir que el valor sea nulo
+    .nullable(true) 
     .required(alertText)
     .test({
       name: 'is-valid-date',
       test: (value) => {
-        // Verifica si la fecha es válida, solo si no es nula
         return !value || (value instanceof Date && !isNaN(value.getTime()));
       },
-      message: alertText, // Mensaje personalizado en caso de fecha inválida
+      message: alertText, 
     }),
     timeRefundDeadline: string().required(alertText),
     limitParticipants: string().required(alertText),
@@ -81,14 +76,7 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
   const [isEditingDataBanks, setIsEditingDataBanks] = useState(true);
   const [isEditingDataMP, setIsEditingDataMP] = useState(true);
   const [updateAgenda, setUpdateAgenda] = useState(null);
-
-  
   const [productValues, setProductValues] = useState([null])
-
-  console.log('Esta es la img desde editevetn ->, ', eventImage);
-  console.log('agenda actualizada -> ', updateAgenda);
-  
-  
 
   const updateAlojamientoData = (newData:any) => {
     setAlojamientoData(newData);
@@ -107,7 +95,6 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
 
 
   useEffect(() => {
-    console.log('selected event Cambio', selectedEvent);
   }, [selectedEvent])
 
   const handleCreateEvent = async (values: any, setSubmitting: Function) => {
@@ -212,7 +199,7 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
               }}
               validationSchema={EventFormSchema}
               onSubmit={async (values, { setSubmitting }) => {
-                console.log('Submitting with values:', values);
+                
                 await handleCreateEvent(values, setSubmitting)
               }}
             >
