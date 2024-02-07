@@ -393,7 +393,7 @@ const ETICombos: React.FC<ETICombosProps> = ({ setFieldValue, selectedEvent, val
                       name="firstPay"
                       placeholder="10000"
                       component={TextField}
-                      required
+                      // required
                       error={touched['firstPay'] && !!errors['firstPay']}
                       helperText={touched['firstPay'] && errors['firstPay']}
                       fullWidth
@@ -450,7 +450,7 @@ const ETICombos: React.FC<ETICombosProps> = ({ setFieldValue, selectedEvent, val
                       name="secondPay"
                       placeholder="10000"
                       component={TextField}
-                      required
+                      // required
                       error={touched['secondPay'] && !!errors['secondPay']}
                       helperText={touched['secondPay'] && errors['secondPay']}
                       fullWidth
@@ -542,7 +542,7 @@ const ETICombos: React.FC<ETICombosProps> = ({ setFieldValue, selectedEvent, val
                       name="limitParticipants"
                       placeholder="1000"
                       component={TextField}
-                      required
+                      // required
                       error={touched['limitParticipants'] && !!errors['limitParticipants']}
                       helperText={touched['limitParticipants'] && errors['limitParticipants']}
                       fullWidth

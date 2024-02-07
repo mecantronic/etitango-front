@@ -17,58 +17,56 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
 
   const alertText: string = 'Este campo no puede estar vacío';
   const alerText2: string = 'Tienes cambios que no seran guardados.'
-  const EventFormSchema = object({
+  const EventFormSchema = object().shape({
     firstPay: string().required(alertText),
-    firstDatePay: mixed()  // Hacer que acepte varios tipos, incluyendo fechas
-    .transform((originalValue) => {
-      // Transforma el valor a una fecha si no está vacío
-      return originalValue ? new Date(originalValue) : originalValue;
-    })
-    .nullable(true) // Permitir que el valor sea nulo
-    .required(alertText)
-    .test({
-      name: 'is-valid-date',
-      test: (value) => {
-        // Verifica si la fecha es válida, solo si no es nula
-        return !value || (value instanceof Date && !isNaN(value.getTime()));
-      },
-      message: alertText, // Mensaje personalizado en caso de fecha inválida
-    }),
-    firstTimePay: string().required(alertText),
-    secondPay: string().required(alertText),
-    secondDatePay: mixed()  // Hacer que acepte varios tipos, incluyendo fechas
-    .transform((originalValue) => {
-      // Transforma el valor a una fecha si no está vacío
-      return originalValue ? new Date(originalValue) : originalValue;
-    })
-    .nullable(true) // Permitir que el valor sea nulo
-    .required(alertText)
-    .test({
-      name: 'is-valid-date',
-      test: (value) => {
-        // Verifica si la fecha es válida, solo si no es nula
-        return !value || (value instanceof Date && !isNaN(value.getTime()));
-      },
-      message: alertText, // Mensaje personalizado en caso de fecha inválida
-    }),
-    secondTimePay: string().required(alertText),
-    refundDeadline: mixed()  // Hacer que acepte varios tipos, incluyendo fechas
-    .transform((originalValue) => {
-      // Transforma el valor a una fecha si no está vacío
-      return originalValue ? new Date(originalValue) : originalValue;
-    })
-    .nullable(true) // Permitir que el valor sea nulo
-    .required(alertText)
-    .test({
-      name: 'is-valid-date',
-      test: (value) => {
-        // Verifica si la fecha es válida, solo si no es nula
-        return !value || (value instanceof Date && !isNaN(value.getTime()));
-      },
-      message: alertText, // Mensaje personalizado en caso de fecha inválida
-    }),
-    timeRefundDeadline: string().required(alertText),
-    limitParticipants: string().required(alertText),
+    firstDatePay: mixed()
+      .when('firstPay', {
+        is: (firstPay: any) => firstPay && firstPay.trim().length > 0,
+        then: mixed()
+          .transform((originalValue) => (originalValue ? new Date(originalValue) : originalValue))
+          .nullable(true)
+          .required(alertText)
+          .test({
+            name: 'is-valid-date',
+            test: (value) => !value || (value instanceof Date && !isNaN(value.getTime())),
+            message: alertText,
+          }),
+        otherwise: mixed().nullable(true),
+      }),
+    firstTimePay: string()
+      .when(['firstPay', 'firstDatePay'], {
+        is: (firstPay: any, firstDatePay: any) => (firstPay && firstPay.trim().length > 0) || (firstDatePay && firstDatePay !== null),
+        then: string().required(alertText),
+        otherwise: string().nullable(true),
+      }),
+      secondPay: string(),
+      secondDatePay: mixed() 
+      .transform((originalValue) => {
+        return originalValue ? new Date(originalValue) : originalValue;
+      })
+      .nullable(true)
+      .test({
+        name: 'is-valid-date',
+        test: (value) => {
+          return !value || (value instanceof Date && !isNaN(value.getTime()));
+        },
+        message: alertText,
+      }),
+      secondTimePay: string(),
+      refundDeadline: mixed()
+      .transform((originalValue) => {
+        return originalValue ? new Date(originalValue) : originalValue;
+      })
+      .nullable(true)
+      .test({
+        name: 'is-valid-date',
+        test: (value) => {
+          return !value || (value instanceof Date && !isNaN(value.getTime()));
+        },
+        message: alertText,
+      }),
+      timeRefundDeadline: string(),
+      limitParticipants: string(),
   });
   const idEvent = selectedEvent?.id
   const [eventImage, setEventImage] = useState('')
@@ -80,23 +78,23 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
   const [isEditingAlojamiento, setIsEditingAlojamiento] = useState(true);
   const [isEditingDataBanks, setIsEditingDataBanks] = useState(true);
   const [isEditingDataMP, setIsEditingDataMP] = useState(true);
-  
+
   const [productValues, setProductValues] = useState([null])
 
   console.log('Esta es la img desde editevetn ->, ', eventImage);
-  
 
-  const updateAlojamientoData = (newData:any) => {
+
+  const updateAlojamientoData = (newData: any) => {
     setAlojamientoData(newData);
     // console.log('data de alojamiento desde NewEditEvent -> ', alojamientoData);
   };
 
-  const updateDataBanks = (newData:any) => {
+  const updateDataBanks = (newData: any) => {
     setDataBanks(newData);
     //console.log('data bancaria -> ', dataBanks);
   }
 
-  const updateDataMP = (newData:any) => {
+  const updateDataMP = (newData: any) => {
     setDataMP(newData);
     //console.log('data MP -> ', dataMP);
   }
@@ -110,35 +108,35 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
   const handleCreateEvent = async (values: any, setSubmitting: Function) => {
     try {
       setIsLoading(true)
-      if(!changeEvent2){
+      if (!changeEvent2) {
         if (alojamientoData && alojamientoData.length > 0) {
           values.alojamiento = alojamientoData;
         }
-    
+
         if (dataBanks && dataBanks.length > 0) {
           values.datosBancarios = dataBanks;
         }
-    
+
         if (dataMP && dataMP.length > 0) {
-          values.linkMercadoPago = dataMP;  
+          values.linkMercadoPago = dataMP;
         }
         if (productValues && productValues.length > 0) {
           values.combos = productValues;
         }
 
-       if(!isEditingAlojamiento || !isEditingDataBanks || !isEditingDataMP){
+        if (!isEditingAlojamiento || !isEditingDataBanks || !isEditingDataMP) {
           alert(alerText2)
           return;
         }
-        if(eventImage){
+        if (eventImage) {
           values.imageUrl = eventImage;
         }
 
         setTimeout(async () => {
-        await createOrUpdateDoc('events', values, idEvent === 'new' ? undefined : idEvent);
+          await createOrUpdateDoc('events', values, idEvent === 'new' ? undefined : idEvent);
           setChangeEvent3(true);
           setIsLoading(false);
-      
+
           setShowSuccessImage(true);
 
           setTimeout(() => {
@@ -180,20 +178,20 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
           <Box sx={{ width: '100%' }}>
             <ETIEventDate selectedEvent={selectedEvent} changeEvent={setChangeEvent2} />
           </Box>
-            <Box sx={{border: '1px solid #E0E0E0', marginLeft: '20px', marginRight: '20px'}}></Box>
+          <Box sx={{ border: '1px solid #E0E0E0', marginLeft: '20px', marginRight: '20px' }}></Box>
           <Grid container >
             <Formik
               enableReinitialize
               initialValues={{
-                firstPay: selectedEvent?.firstPay || '',
+                firstPay: selectedEvent?.firstPay || undefined,
                 firstDatePay: selectedEvent?.firstDatePay || null,
-                firstTimePay: selectedEvent?.firstTimePay || '',
-                secondPay: selectedEvent?.secondPay || '',
+                firstTimePay: selectedEvent?.firstTimePay || undefined,
+                secondPay: selectedEvent?.secondPay || undefined,
                 secondDatePay: selectedEvent?.secondDatePay || null,
-                secondTimePay: selectedEvent?.secondTimePay || '',
+                secondTimePay: selectedEvent?.secondTimePay || undefined,
                 refundDeadline: selectedEvent?.refundDeadline || null,
-                timeRefundDeadline: selectedEvent?.timeRefundDeadline || '',
-                limitParticipants: selectedEvent?.limitParticipants || '',
+                timeRefundDeadline: selectedEvent?.timeRefundDeadline || undefined,
+                limitParticipants: selectedEvent?.limitParticipants || undefined,
                 alojamiento: selectedEvent?.alojamiento || null,
                 datosBancarios: selectedEvent?.datosBancarios || null,
                 linkMercadoPago: selectedEvent?.linkMercadoPago || null
@@ -211,27 +209,27 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
                       <Grid item md={12} sm={12} xs={12}>
                         <ETIAgenda idEvent={idEvent} eventData={selectedEvent} />
                       </Grid>
-                      
+
                       <Grid item md={12} sm={12} xs={12}>
-                        <ETIAlojamiento idEvent={idEvent} event={selectedEvent} updateAlojamientoData={updateAlojamientoData} isEditingRows={setIsEditingAlojamiento}/>
+                        <ETIAlojamiento idEvent={idEvent} event={selectedEvent} updateAlojamientoData={updateAlojamientoData} isEditingRows={setIsEditingAlojamiento} />
                       </Grid>
 
                       <Grid item md={12} sm={12} xs={12}>
-                        <ETIDataBanks idEvent={idEvent} event={selectedEvent} dataBanks={updateDataBanks} isEditingRows={setIsEditingDataBanks} /> 
+                        <ETIDataBanks idEvent={idEvent} event={selectedEvent} dataBanks={updateDataBanks} isEditingRows={setIsEditingDataBanks} />
                       </Grid>
 
                       <Grid item md={12} sm={12} xs={12}>
-                        <ETIMercadoPago idEvent={idEvent} event={selectedEvent} dataMP={updateDataMP} isEditingRows={setIsEditingDataMP} /> 
+                        <ETIMercadoPago idEvent={idEvent} event={selectedEvent} dataMP={updateDataMP} isEditingRows={setIsEditingDataMP} />
                       </Grid>
 
                       <Grid item md={12} sm={12} xs={12}>
-                        <ETICombos setFieldValue={setFieldValue} values={values} selectedEvent={selectedEvent} setComboValues={setProductValues} errors={errors} touched={touched} EventImage={setEventImage}/>
+                        <ETICombos setFieldValue={setFieldValue} values={values} selectedEvent={selectedEvent} setComboValues={setProductValues} errors={errors} touched={touched} EventImage={setEventImage} />
                       </Grid>
                     </Grid>
                   </Box>
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end', margin: '20px' }}>
                     <Button type='submit' disabled={isSubmitting} sx={{ width: '115px', padding: '12px, 32px, 12px, 32px', borderRadius: '25px', backgroundColor: '#A82548', height: '44px', '&:hover': { backgroundColor: '#A82548' } }}>
-                      {isLoading ? <CircularProgress sx={{ color: '#ffffff' }} size={30} /> : <><Typography sx={{ color: '#FAFAFA', fontWeight: 500, fontSize: '14px', lineHeight: '20px' }}>{showSuccessImage ? 'Guardado' : 'Guardar'}</Typography>{showSuccessImage && <img src={'/img/icon/Vector.svg'} height={15} width={15} style={{marginLeft: '10px'}}/>}</>}
+                      {isLoading ? <CircularProgress sx={{ color: '#ffffff' }} size={30} /> : <><Typography sx={{ color: '#FAFAFA', fontWeight: 500, fontSize: '14px', lineHeight: '20px' }}>{showSuccessImage ? 'Guardado' : 'Guardar'}</Typography>{showSuccessImage && <img src={'/img/icon/Vector.svg'} height={15} width={15} style={{ marginLeft: '10px' }} />}</>}
                     </Button>
                   </Box>
                 </Form>
