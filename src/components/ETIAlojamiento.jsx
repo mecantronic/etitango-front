@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Grid, Typography, Menu, MenuItem, } from '@mui/material';
+import { Box, Button, Grid, Typography, Menu, MenuItem, ListItemIcon, } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { createOrUpdateDoc } from 'helpers/firestore'; 
 import ETIModalMaps from './ETIModalMaps';
@@ -61,13 +61,6 @@ const ETIAlojamiento = ( { idEvent, event, updateAlojamientoData, isEditingRows 
   
 
   const handleAddRow = () => {
-    // setIdCounter(idCounter + 1);
-    // const newRow = { id: idCounter, name: '', address: ''};
-    // setRows((prevRows) => {
-    //   const updatedRows = [...prevRows, newRow];
-    //   console.log('rows after adding:', updatedRows);
-    //   return updatedRows;
-    // });
     const updateRows = rows.map((row) => {
       const edits = editRowsModel[row.id];
       return edits ? {...row, ...edits} : row;
@@ -80,11 +73,6 @@ const ETIAlojamiento = ( { idEvent, event, updateAlojamientoData, isEditingRows 
   };
   
   const handleRemoveRow = () => {
-    // if(rows.length > 0){
-    //   const newRows = rows.slice(0, -1);
-    //   setRows(newRows);
-    //   console.log('rows after removing:', newRows);
-    // }
     const updatedRows = rows.map((row) => {
       const edits = editRowsModel[row.id];
       return edits ? {...row, ...edits} : row;
@@ -114,8 +102,6 @@ const ETIAlojamiento = ( { idEvent, event, updateAlojamientoData, isEditingRows 
 
   const handleConfirmClick = async () => {
     const id = idEvent;
-
-    // Verifica si hay cambios antes de enviar la información
     if (isDataModified) {
       const updatedRows = Object.keys(editRowsModel).map((id) => {
         const row = rows.find((r) => r.id === parseInt(id));
@@ -125,8 +111,6 @@ const ETIAlojamiento = ( { idEvent, event, updateAlojamientoData, isEditingRows 
       for (const row of updatedRows) {
         await createOrUpdateDoc('events', row, id);
       }
-
-      // Actualiza el estado isDataModified después de enviar la información
       setIsDataModified(false);
     }
 
@@ -176,8 +160,22 @@ const ETIAlojamiento = ( { idEvent, event, updateAlojamientoData, isEditingRows 
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
           >
-            <MenuItem onClick={handleEditClick}>Editar</MenuItem>
-            <MenuItem onClick={handleRemoveRow}>Eliminar</MenuItem>
+            <MenuItem onClick={handleEditClick}>
+            <ListItemIcon>
+                <img src={'/img/icon/btnEdit.svg'}/>
+            </ListItemIcon>
+            <Typography sx={{ fontWeight: 600, fontSize: '14px', color: '#0075D9', alignItems: 'center' }}>
+                Editar
+            </Typography>
+            </MenuItem>
+            <MenuItem onClick={handleRemoveRow}>
+            <ListItemIcon>
+                <img src={'/img/icon/btnTrash.svg'}/>
+            </ListItemIcon>
+            <Typography sx={{ fontWeight: 600, fontSize: '14px', color: '#0075D9', alignItems: 'center' }}>
+                Eliminar
+            </Typography>
+            </MenuItem>
           </Menu>
           <Button
             variant='contained'

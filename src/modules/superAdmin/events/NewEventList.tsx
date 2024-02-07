@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
 import { Button, Paper, Box, Typography, Grid, PaginationItem, Modal } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams, DataGridProps, GridCell } from '@mui/x-data-grid';
 import { useTranslation } from 'react-i18next';
@@ -22,6 +22,10 @@ import Checkbox from '@mui/material/Checkbox';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { db } from 'etiFirebase';
 import ETIModalDeleteEvent from 'components/ETIModalDeleteEvent';
+import * as firestoreUserHelper from 'helpers/firestore/users';
+import { UserFullData, UserRolesListData } from 'shared/User';
+import { isSuperAdmin } from 'helpers/firestore/users';
+import { UserContext } from 'helpers/UserContext';
 
 const useStyles = makeStyles({
   root: {
@@ -40,7 +44,11 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
   // const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const fields = events[0] ? Object.keys(events[0]) : [];
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [loading, setLoading] = useState(false)
   const [showCheckbox, setShowCheckbox] = useState(false)
+  const [usuarios, setUsuarios] = useState<UserFullData[]>([]);
+  const { user } = useContext(UserContext)
+  const userIsSuperAdmin = isSuperAdmin(user)
   const [open, setOpen] = React.useState(false)
   const sortedEvents = [...events].sort((a, b) => {
     const dateA = new Date(a.dateStart).getTime();
@@ -74,6 +82,23 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
     }
     
   }, [!showCheckbox]);
+  
+  useEffect(() => {
+    setLoading(true)
+    let usuarios2: Function;
+
+    const fetchData = async () => {
+        usuarios2 = await firestoreUserHelper.getAllUsers(setUsuarios, setLoading)
+    };
+    fetchData().catch((error) => {
+        console.error(error);
+    });
+    return () => {
+        if (usuarios2) {
+            usuarios2()
+        }
+    };
+}, []);
 
   const classes = useStyles();
   const columns: GridColDef[] = [ 
@@ -117,9 +142,6 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
         
         setShowCheckbox(false);
       }
-      // if (selectedRows.length === 0) {
-      //   setShowCheckbox(false);
-      // }
     } catch (error) {
       console.error('Error al eliminar los eventos', error);
     }
@@ -129,22 +151,22 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
     
     return (
       <Grid >
-        {!showCheckbox ? (
-        <Button onClick={() => setShowCheckbox(!showCheckbox)}>
+       
+        
+        {!showCheckbox && userIsSuperAdmin ? (
+            <Button onClick={() => setShowCheckbox(!showCheckbox)}>
             <img src="/img/icon/btnDelete.svg" alt="Icono Trash" />
             </Button>
-          ) : (
+          ) : userIsSuperAdmin ? (
             <Button onClick={handleOpenModal}>
             <img src="/img/icon/btnTrashWhite.svg" alt="Icono Borrar" />
           </Button>
-          )}
+          ): null}
           <Modal
           open={open}
           onClose={() => handleCloseModal()}>
-          <ETIModalDeleteEvent open={open} handleCloseModal={handleCloseModal} handleDeleteButton={handleDeleteButton}></ETIModalDeleteEvent>
+          <ETIModalDeleteEvent open={open} handleCloseModal={handleCloseModal} handleDeleteButton={handleDeleteButton} title1={'¿Eliminar elementos seleccionados?'} title2={'Los ETI seleccionados serán eliminados'}></ETIModalDeleteEvent>
           </Modal>
-           
-           
       </Grid>
     );
   }
@@ -232,8 +254,6 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
             }
           },
         
-         
-          
         }}
         onRowClick={(event) => {
           if (!showCheckbox) {
@@ -272,12 +292,6 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
               fontFamily: 'inter',
               fontWeight: 600
           },
-          // '& .MuiDataGrid-row': {
-          //   '&.Mui-selected': {
-          //     border: '2px solid #A82548',
-          //     backgroundColor: 'inherit'
-          //   },
-          // },
           '& .MuiDataGrid-row': {
             ...(!showCheckbox && {
               '&.Mui-selected': {
@@ -321,7 +335,6 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
       selectionModel={selectedRows}
       onSelectionModelChange={(newSelection) => {
         setSelectedRows(newSelection as string[]);
-        console.log("IDs: " , newSelection)
       }
     }
       

@@ -20,7 +20,7 @@ const RolesList = ({ eventId }: { eventId?: string }) => {
 
     let unsubscribe: Function;
     let usuarios2: Function;
-    console.log('eventid aqui en roles list',eventId);
+    
 
     const fetchData = async () => {
       unsubscribe = await firestoreUserHelper.getAdmins(setUsers, setIsLoading, eventId);

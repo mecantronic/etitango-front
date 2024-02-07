@@ -15,6 +15,7 @@ import { ETIDatePicker } from './form/DatePicker';
 import { createOrUpdateDoc, deleteImageUrlFromEvent } from 'helpers/firestore';
 import ETITimePicker2 from './ETITimePicker2';
 import { getEvent, getEvents } from 'helpers/firestore/events';
+import { update } from 'lodash';
 
 interface ETICombosProps {
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
@@ -46,11 +47,13 @@ const ETICombos: React.FC<ETICombosProps> = ({ setFieldValue, selectedEvent, val
   const [enable, setEnable] = useState(false);
   const handleClose = () => {
     setOpen(false);
+    
   };
   const [IsLoading, setIsLoading] = useState(true);
   const [fieldCount, setFieldCount] = useState(0);
   const [productValues, setProductValues] = useState<string[]>([]);
   const [fieldValues, setFieldValues] = useState(Array.from({ length: 1 }, (_, index) => `Producto ${index + 1}`));
+  const [filledFields, setFilledFields] = useState<boolean[]>(fieldValues.map(() => false));
 
   useEffect(() => {
     if (combos) {
@@ -89,11 +92,13 @@ const ETICombos: React.FC<ETICombosProps> = ({ setFieldValue, selectedEvent, val
 
 
   const handleProductChange = (index: number, newValue: string) => {
-    setFieldValues((prevValues) => {
-      const updatedValues = [...prevValues];
+      const updatedValues = [...fieldValues];
       updatedValues[index] = newValue;
-      return updatedValues;
-    });
+      setFieldValues(updatedValues)
+    
+    const newFilledFields = [...filledFields];
+    newFilledFields[index] = !!newValue;
+    setFilledFields(newFilledFields);
   };
 
   const handleDelete = (productToDelete: string) => {
@@ -154,7 +159,7 @@ const ETICombos: React.FC<ETICombosProps> = ({ setFieldValue, selectedEvent, val
     },
     filled: {
       '& .MuiOutlinedInput-root': {
-        width: '120px',
+        // width: '120px',
         paddingLeft: '10px',
         fontFamily: 'inter',
         '& fieldset': {
@@ -336,7 +341,7 @@ const ETICombos: React.FC<ETICombosProps> = ({ setFieldValue, selectedEvent, val
                             fullWidth
                             // disabled={index < 3}
                             sx={{ marginTop: 3 }}
-                            classes={{ root: classes.root }}
+                            classes={{   root: filledFields[index] ? classes.filled : classes.root  }}
 
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleProductChange(index, e.target.value)}
                           />
@@ -621,7 +626,7 @@ const ETICombos: React.FC<ETICombosProps> = ({ setFieldValue, selectedEvent, val
                         const success = await deleteImageUrlFromEvent(idEvent);
                         if (success) {
                           setImageUrlEvent('');
-                          console.log('La imagen se elimino correctamente.');
+                          
                         }
                       } catch (error) {
                         console.error('eliminar imagen fallo ', error);

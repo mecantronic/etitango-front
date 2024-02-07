@@ -78,11 +78,11 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
   const [isEditingAlojamiento, setIsEditingAlojamiento] = useState(true);
   const [isEditingDataBanks, setIsEditingDataBanks] = useState(true);
   const [isEditingDataMP, setIsEditingDataMP] = useState(true);
-
+  const [updateAgenda, setUpdateAgenda] = useState(null);
   const [productValues, setProductValues] = useState([null])
 
-  console.log('Esta es la img desde editevetn ->, ', eventImage);
 
+  
 
   const updateAlojamientoData = (newData: any) => {
     setAlojamientoData(newData);
@@ -101,8 +101,6 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
 
 
   useEffect(() => {
-    console.log('selected event Cambio', selectedEvent);
-
   }, [selectedEvent])
 
   const handleCreateEvent = async (values: any, setSubmitting: Function) => {
@@ -111,10 +109,12 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
       if (!changeEvent2) {
         if (alojamientoData && alojamientoData.length > 0) {
           values.alojamiento = alojamientoData;
+          
         }
 
         if (dataBanks && dataBanks.length > 0) {
           values.datosBancarios = dataBanks;
+          
         }
 
         if (dataMP && dataMP.length > 0) {
@@ -122,14 +122,20 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
         }
         if (productValues && productValues.length > 0) {
           values.combos = productValues;
+          
         }
 
         if (!isEditingAlojamiento || !isEditingDataBanks || !isEditingDataMP) {
           alert(alerText2)
+          setIsLoading(false);
           return;
         }
         if (eventImage) {
           values.imageUrl = eventImage;
+        }
+
+        if(updateAgenda){
+          await createOrUpdateDoc('events', { Agenda: updateAgenda }, idEvent);
         }
 
         setTimeout(async () => {
@@ -198,7 +204,7 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
               }}
               validationSchema={EventFormSchema}
               onSubmit={async (values, { setSubmitting }) => {
-                console.log('Submitting with values:', values);
+                
                 await handleCreateEvent(values, setSubmitting)
               }}
             >
@@ -207,7 +213,7 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
                   <Box sx={{ margin: '0px 20px 0px 20px', backgroundColor: '#FAFAFA', borderRadius: '0px 0px 12px 12px', p: 2 }}>
                     <Grid container spacing={2}>
                       <Grid item md={12} sm={12} xs={12}>
-                        <ETIAgenda idEvent={idEvent} eventData={selectedEvent} />
+                        <ETIAgenda idEvent={idEvent} eventData={selectedEvent}  updateDataAgenda={setUpdateAgenda}/>
                       </Grid>
 
                       <Grid item md={12} sm={12} xs={12}>
