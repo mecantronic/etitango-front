@@ -8,7 +8,6 @@ import { makeStyles } from "@mui/styles";
 import ModalForm from './ModalForm';
 
 const ETIAgenda = ( { idEvent, eventData, updateDataAgenda } ) => {
-  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [dataFromModalForm, setDataFromModalForm] = useState([]);
@@ -16,7 +15,6 @@ const ETIAgenda = ( { idEvent, eventData, updateDataAgenda } ) => {
   const [updatedEvent, setUpdatedEvent] = useState();
   const [anchorEl, setAnchorEl] = useState(null);
   const [showDeleteButton, setShowDeleteButton] = useState(false);
-
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
@@ -108,7 +106,7 @@ const ETIAgenda = ( { idEvent, eventData, updateDataAgenda } ) => {
   });
   
   const classes = useStyles();
-
+  
   return (
     <Box sx={{display: 'flex', mt: 2}}>
       <Grid container rowSpacing={0} columnSpacing={{ md: 0 }}>

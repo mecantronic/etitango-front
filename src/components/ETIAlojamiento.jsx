@@ -61,13 +61,6 @@ const ETIAlojamiento = ( { idEvent, event, updateAlojamientoData, isEditingRows 
   
 
   const handleAddRow = () => {
-    // setIdCounter(idCounter + 1);
-    // const newRow = { id: idCounter, name: '', address: ''};
-    // setRows((prevRows) => {
-    //   const updatedRows = [...prevRows, newRow];
-    //   console.log('rows after adding:', updatedRows);
-    //   return updatedRows;
-    // });
     const updateRows = rows.map((row) => {
       const edits = editRowsModel[row.id];
       return edits ? {...row, ...edits} : row;
@@ -80,11 +73,6 @@ const ETIAlojamiento = ( { idEvent, event, updateAlojamientoData, isEditingRows 
   };
   
   const handleRemoveRow = () => {
-    // if(rows.length > 0){
-    //   const newRows = rows.slice(0, -1);
-    //   setRows(newRows);
-    //   console.log('rows after removing:', newRows);
-    // }
     const updatedRows = rows.map((row) => {
       const edits = editRowsModel[row.id];
       return edits ? {...row, ...edits} : row;
@@ -114,8 +102,6 @@ const ETIAlojamiento = ( { idEvent, event, updateAlojamientoData, isEditingRows 
 
   const handleConfirmClick = async () => {
     const id = idEvent;
-
-    // Verifica si hay cambios antes de enviar la información
     if (isDataModified) {
       const updatedRows = Object.keys(editRowsModel).map((id) => {
         const row = rows.find((r) => r.id === parseInt(id));
@@ -125,8 +111,6 @@ const ETIAlojamiento = ( { idEvent, event, updateAlojamientoData, isEditingRows 
       for (const row of updatedRows) {
         await createOrUpdateDoc('events', row, id);
       }
-
-      // Actualiza el estado isDataModified después de enviar la información
       setIsDataModified(false);
     }
 

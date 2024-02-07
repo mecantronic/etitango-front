@@ -19,6 +19,7 @@ import { ETIDatePicker } from './form/DatePicker';
 import moment from 'moment-timezone';
 import { makeStyles } from '@mui/styles';
 import * as Yup from 'yup';
+import { useField } from 'formik';
 
 interface SimpleModalProps {
   idEvent: string;
@@ -76,7 +77,7 @@ const ModalForm: React.FC<SimpleModalProps> = ({
 
       // Obtener el evento actualizado
       const updatedEvent = await getDocument(`events/${eventId}`);
-      console.log('aganda? -> ', updatedEvent?.Agenda);
+      
       
 
       // Actualizar los datos en el componente padre
@@ -112,6 +113,7 @@ const ModalForm: React.FC<SimpleModalProps> = ({
   const [value, setValue] = useState('');
   const { id } = useParams();
   const [timeValues, setTimeValues] = useState<string[]>(['']);
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -137,10 +139,13 @@ const ModalForm: React.FC<SimpleModalProps> = ({
 
   const [additionalFields, setAdditionalFields] = useState<{ description: string; time: string }[]>(
     [{ description: '', time: '' }]
+    
   );
+  const [filledFields, setFilledFields] = useState<boolean[]>(additionalFields.map(() => false));
 
   const handleDateTimeChange = (index: number, type: FieldType, value: string) => {
     const newFields = [...additionalFields];
+    
     newFields[index][type] = value;
     setAdditionalFields(newFields);
   
@@ -154,6 +159,10 @@ const ModalForm: React.FC<SimpleModalProps> = ({
     const newFields = [...additionalFields];
     newFields[index]['description'] = value;
     setAdditionalFields(newFields);
+
+    const newFilledFields = [...filledFields];
+    newFilledFields[index] = !!value;
+    setFilledFields(newFilledFields);
   };
 
   const handleAddField = () => {
@@ -218,6 +227,7 @@ const ModalForm: React.FC<SimpleModalProps> = ({
   });
 
   const classes = useStyles();
+
 
   return (
     <Modal
@@ -341,7 +351,8 @@ const ModalForm: React.FC<SimpleModalProps> = ({
                     </Box>
                   </Grid>
                 </Grid>
-                {additionalFields.map((field, index) => (
+                {additionalFields.map((field, index : number) => (
+                  
                   <>
                     <Grid
                       container
@@ -366,13 +377,11 @@ const ModalForm: React.FC<SimpleModalProps> = ({
                           component={TextField}
                           required
                           fullWidth
-                          onChange={(event: { target: { value: string } }) =>
+                          onChange={(event: { target: { value: any } }) =>
                             handleDescriptionChange(index, event.target.value)
                           }
                           classes={{
-                            root: values[`descripcionDeLaActividad_${index}`]
-                              ? classes.filled
-                              : classes.root
+                            root: filledFields[index] ? classes.filled : classes.root
                           }}
                         />
                       </Grid>
