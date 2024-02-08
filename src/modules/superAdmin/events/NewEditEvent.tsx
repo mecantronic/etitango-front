@@ -17,6 +17,7 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
 
   const alertText: string = 'Este campo no puede estar vacío';
   const alerText2: string = 'Tienes cambios que no seran guardados.'
+  const alerText3: string = 'Completa todos los campos.'
   const EventFormSchema = object().shape({
     firstPay: string().required(alertText),
     firstDatePay: mixed()
@@ -86,19 +87,15 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
 
   const updateAlojamientoData = (newData: any) => {
     setAlojamientoData(newData);
-    // console.log('data de alojamiento desde NewEditEvent -> ', alojamientoData);
   };
 
   const updateDataBanks = (newData: any) => {
     setDataBanks(newData);
-    //console.log('data bancaria -> ', dataBanks);
   }
 
   const updateDataMP = (newData: any) => {
     setDataMP(newData);
-    //console.log('data MP -> ', dataMP);
   }
-
 
   useEffect(() => {
   }, [selectedEvent])
@@ -108,21 +105,48 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
       setIsLoading(true)
       if (!changeEvent2) {
         if (alojamientoData && alojamientoData.length > 0) {
-          values.alojamiento = alojamientoData;
-          
+          const alojamientoIsValid = alojamientoData.every(
+            (alojamiento) => alojamiento?.establecimiento && alojamiento?.direccion
+          );
+        
+          if (alojamientoIsValid) {
+            values.alojamiento = alojamientoData;
+          } else {
+            alert(alerText3);
+            setIsLoading(false);
+            return;
+          }
         }
 
         if (dataBanks && dataBanks.length > 0) {
-          values.datosBancarios = dataBanks;
-          
+          const databanksIsValid = dataBanks.every(
+            (databanks) => databanks?.nombre && databanks?.alias && databanks?.cbu
+          );
+
+          if (databanksIsValid) {
+            values.datosBancarios = dataBanks;
+          } else {
+            alert(alerText3);
+            setIsLoading(false);
+            return;
+          }
+        }
+    
+        if (dataMP && dataMP.length == 1) {
+          const dataMPIsValid = dataMP.every(
+            (dataMp) => dataMp?.link
+          )
+          if (dataMPIsValid){
+            values.linkMercadoPago = dataMP;
+          } else {
+            alert(alerText3);
+            setIsLoading(false)
+            return;
+          }
         }
 
-        if (dataMP && dataMP.length > 0) {
-          values.linkMercadoPago = dataMP;
-        }
         if (productValues && productValues.length > 0) {
           values.combos = productValues;
-          
         }
 
         if (!isEditingAlojamiento || !isEditingDataBanks || !isEditingDataMP) {
