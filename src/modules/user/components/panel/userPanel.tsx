@@ -15,6 +15,7 @@ import { UserContext } from 'helpers/UserContext';
 import ComisionGeneroContact from 'modules/home/comision-de-genero/ComisionGeneroContact';
 import ComisionGeneroProtocol from 'modules/home/comision-de-genero/ComisionGeneroProtocol';
 import GeneralInfo from 'modules/superAdmin/events/GeneralInfo';
+import { auth } from '../../../../etiFirebase';
 
 
 export default function UserPanel() {
@@ -198,7 +199,7 @@ export default function UserPanel() {
           padding: { xs: '10px', lg: '30px 0px 20px 30px' },
           width: { xs: '271px', lg: '255px' },
           zIndex: { xs: 1000 },
-          display: { xs: 'block', lg: 'flex' },
+          display: { xs: 'block', lg: 'block' },
           position: { xs: 'absolute', lg: 'initial' },
           left: { xs: 0, lg: 'initial' },
           right: { lg: 0 },
@@ -389,12 +390,13 @@ export default function UserPanel() {
               </List>
             </Collapse>
           </List>
-            <Button>
-              <img src={'/img/icon/salirUserPanel.svg'} height={25} width={25} />
-              <Typography sx={{fontFamily: 'Roboto', fontWeight: 600, fontSize: '16px', lineHeight: '22.4px', ml: 1, color: '#FAFAFA'}}>
-                Salir
-              </Typography>
-              </Button>
+          {/* Cuando se agregue validacion para abrir y cerrar la barra agregar aqui asi se muestre o no el btn de salir. */}
+          <Button onClick={() => auth.signOut()} href={'/'}>
+            <img src={'/img/icon/salirUserPanel.svg'} height={25} width={25} />
+            <Typography sx={{ fontFamily: 'Roboto', fontWeight: 600, fontSize: '16px', lineHeight: '22.4px', ml: 1, color: '#FAFAFA' }}>
+              Salir
+            </Typography>
+          </Button>
         </Box>
         <Box sx={{ margin: '0 auto', padding: '40px 0px', }}>
           {activeComponent}
