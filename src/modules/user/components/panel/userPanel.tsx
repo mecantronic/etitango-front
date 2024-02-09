@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { useContext, useEffect, useState } from 'react';
-import { Grid, Box, List, ListItemButton, ListItemText, ListItemIcon, Collapse, ListItem, Icon, Stack, Typography } from '@mui/material';
+import { Box, List, ListItemButton, ListItemText, ListItemIcon, Collapse, ListItem, Icon, Stack, Typography, Button } from '@mui/material';
 import NewEvent from '../../../superAdmin/events/NewEvent'
 import UserHome from 'modules/user';
 import Profile from 'modules/user/profile';
@@ -169,7 +169,7 @@ export default function UserPanel() {
   });
 
   const itemButtonStyle = {
-    borderBottomLeftRadius: '25px', borderTopLeftRadius: '25px', borderTopRightRadius: { xs: '25px', md: '0px' }, borderBottomRightRadius: { xs: '25px', md: '0px' }, padding: '12px 0px 12px 12px', marginBottom: '10px', color: '#FAFAFA'
+    borderBottomLeftRadius: '25px', borderTopLeftRadius: '25px', borderTopRightRadius: { xs: '25px', lg: '0px' }, borderBottomRightRadius: { xs: '25px', lg: '0px' }, padding: '12px 0px 12px 12px', marginBottom: '10px', color: '#FAFAFA'
   }
 
   const itemButtonStyle2 = {
@@ -195,18 +195,18 @@ export default function UserPanel() {
       <Box sx={{ display: 'flex', position: 'relative', minHeight: '100vh' }}>
         <Box sx={{
           backgroundColor: '#5FB4FC',
-          padding: { xs: '10px', md: '30px 0px 20px 30px' },
-          width: { xs: '271px', md: '255px' },
+          padding: { xs: '10px', lg: '30px 0px 20px 30px' },
+          width: { xs: '271px', lg: '255px' },
           zIndex: { xs: 1000 },
-          display: { xs: 'block', md: 'flex' },
-          position: { xs: 'absolute', md: 'initial' },
-          left: { xs: 0, md: 'initial' },
-          right: { md: 0 },
-          height: { xs: '100%', md: 'auto' },
+          display: { xs: 'block', lg: 'flex' },
+          position: { xs: 'absolute', lg: 'initial' },
+          left: { xs: 0, lg: 'initial' },
+          right: { lg: 0 },
+          height: { xs: '100%', lg: 'auto' },
         }}
         >
           <List sx={{ padding: '8px 0px 8px 15px', overflow: 'auto' }}>
-            <Box sx={{ height: 70, display: { xs: 'block', md: 'none' } }}>
+            <Box sx={{ height: '50px', display: { xs: 'block', lg: 'none' } }}>
               <Stack direction="column" sx={{ height: 20, mt: '5px', }}>
                 <Typography fontFamily={'Montserrat'} color={'white'} sx={{ fontWeight: 600, fontSize: '18px' }}>
                   {user?.data?.nameFirst} {user?.data?.nameLast}
@@ -217,7 +217,7 @@ export default function UserPanel() {
                   </Typography>}
               </Stack>
             </Box>
-            <Box sx={{ border: { xs: '1px solid #FAFAFA', md: '1px solid #5FB4FC' }, mt: { xs: 2, md: 0 }, mb: { xs: 2, md: 0 } }} />
+            <Box sx={{ border: { xs: '1px solid #FAFAFA', lg: '1px solid #5FB4FC' }, mt: { xs: 2, lg: 0 }, mb: { xs: 2, lg: 0 } }} />
             {filteredButtons.map((button, index) => (
               <ListItemButton key={index} onClick={() => { handleButtonClick(index), handleListItemClick(button.startIndex) }} sx={{
                 ...itemButtonStyle,
@@ -389,8 +389,14 @@ export default function UserPanel() {
               </List>
             </Collapse>
           </List>
+            <Button>
+              <img src={'/img/icon/salirUserPanel.svg'} height={25} width={25} />
+              <Typography sx={{fontFamily: 'Roboto', fontWeight: 600, fontSize: '16px', lineHeight: '22.4px', ml: 1, color: '#FAFAFA'}}>
+                Salir
+              </Typography>
+              </Button>
         </Box>
-        <Box sx={{ margin: '0 auto', padding: 10 }}>
+        <Box sx={{ margin: '0 auto', padding: '40px 0px', }}>
           {activeComponent}
         </Box>
       </Box>
