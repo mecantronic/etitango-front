@@ -13,9 +13,10 @@ interface ETITimePicker2Props {
   showBorders?: boolean;
   error: any;
   helperText: any;   
+  isMobile: boolean;
 }
 
-const ETITimePicker2: React.FC<ETITimePicker2Props> = ({ value, onChange, isDisabled, showBorders = true, error, helperText}) => {
+const ETITimePicker2: React.FC<ETITimePicker2Props> = ({ value, onChange, isDisabled, showBorders = true, error, helperText, isMobile}) => {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
@@ -50,7 +51,9 @@ const ETITimePicker2: React.FC<ETITimePicker2Props> = ({ value, onChange, isDisa
 
   return (
     <TextField
-      label=""
+      label={isMobile ? (
+        <span style={{ fontSize: '16px', fontWeight: '600' }}>A las</span>
+      ) : undefined}
       type="text"
       value={value}
       onChange={handleInputChange}
@@ -58,10 +61,10 @@ const ETITimePicker2: React.FC<ETITimePicker2Props> = ({ value, onChange, isDisa
       disabled={isDisabled}
       error={error}
       helperText={helperText}    
-      style={{ width: '102px', height: '48px', borderRadius: '12px'}}
+      style={{ width: isMobile ? '169px' : '102px', height: '48px', borderRadius: '12px'}}
       InputProps={{
         startAdornment: (
-          <InputAdornment position="start">
+          <InputAdornment position='start'>
             <AccessTimeIcon sx={{ color: '#A82548', fontSize: 'large' }} />
           </InputAdornment>
         ),

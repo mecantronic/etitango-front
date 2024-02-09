@@ -50,7 +50,7 @@ export const LocationPicker = ({
   colorFont,
   fontWeight,
   fontFamily,
-  isDisabled
+  isDisabled,
 }: {
   values: FormikValues;
   touched: any;
@@ -186,8 +186,8 @@ export const LocationPicker = ({
       </Grid>
       {isArgentina && (
         <> */}
-          <Grid item md={6} sm={6} xs={12}>
-            <Typography style={{fontFamily: fontFamily, color: colorFont, fontWeight: fontWeight}}>
+          <Grid item md={6} sm={6} xs={6} sx={{mr: {xs: -1, md: 0}}}>
+            <Typography sx={{fontFamily: fontFamily, color: colorFont, fontWeight: fontWeight}}>
                 Provincia            
             </Typography>
             <Autocomplete
@@ -213,7 +213,7 @@ export const LocationPicker = ({
               )}
             />
           </Grid>
-          <Grid item md={6} sm={6} xs={12}>
+          <Grid item md={6} sm={6} xs={6} sx={{mr: {xs: 0, md: 0}}}>
           <Typography style={{fontFamily: fontFamily, color: colorFont, fontWeight: fontWeight}}>
                 Ciudad            
             </Typography>

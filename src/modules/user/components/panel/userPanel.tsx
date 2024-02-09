@@ -196,7 +196,7 @@ export default function UserPanel() {
   return (
     <>
       <Grid container>
-        <Grid item xs={2} sx={{ backgroundColor: '#5FB4FC', padding: '30px 0px 20px 30px' }}>
+        <Grid item xs={0} sm={0} md={2} sx={{ backgroundColor: '#5FB4FC', padding: '30px 0px 20px 30px', display: {xs: 'none', sm: 'none', md: 'flex'} }}>
           <List sx={{ padding: '8px 0px 8px 15px', minHeight: '100vh' }}>
             {filteredButtons.map((button, index) => (
               <ListItemButton key={index} onClick={() => { handleButtonClick(index), handleListItemClick(button.startIndex) }} sx={{
@@ -370,8 +370,8 @@ export default function UserPanel() {
             </Collapse>
           </List>
         </Grid>
-        <Grid item xs={10}>
-          <Box sx={{ display: 'flex', justifyContent: 'center', padding: 10}}>
+        <Grid item xs={12} sm={12} md={10}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', padding: {sm: 10, xs: '20px'}}}>
             {activeComponent}
           </Box>
         </Grid>
