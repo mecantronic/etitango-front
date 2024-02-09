@@ -86,18 +86,6 @@ export default function UserPanel() {
     setActiveComponent(buttons[index].component);
   };
 
-  // const handleButtonClickComisionGenero = (index: any) => {
-  //   setActiveComponent(comisionGenero[index].component);
-  // };
-
-  // const handleButtonClickNustrosLinks = (index: any) => {
-  //   setActiveComponent(nustrosLinks[index].component);
-  // };
-
-  // const handleButtonClickEtis = (index: any) => {
-  //   setActiveComponent(Etis[index].component);
-  // };
-
   const handleListItemClick = (
     index: any,
   ) => {
@@ -189,7 +177,6 @@ export default function UserPanel() {
       filter: 'saturate(0) hue-rotate(90deg) brightness(0)'
     }
   };
-
 
   return (
     <>
@@ -404,6 +391,4 @@ export default function UserPanel() {
       </Box>
     </>
   );
-
-
 }
