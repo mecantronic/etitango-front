@@ -84,13 +84,6 @@ const ETIMercadoPago = ( { idEvent, event, dataMP, isEditingRows }) => {
   };
 
   const handleConfirmClick = async () => {
-    const updatedRows = Object.keys(editRowsModel).map((id) => {
-      const row = rows.find((r) => r.id === parseInt(id));
-      return { ...row, ...editRowsModel[id] };
-    });
-    for (const row of updatedRows) {
-      await createOrUpdateDoc('', row, row.id);
-    }
     setIsEditing(false);
     isEditingRows(isEditing);
   };

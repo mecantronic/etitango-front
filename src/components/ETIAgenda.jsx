@@ -6,7 +6,6 @@ import { Box, Button, Grid, Typography, Table, TableBody, TableCell, TableContai
 import { KeyboardArrowDown, KeyboardArrowUp, } from '@mui/icons-material';
 import { makeStyles } from "@mui/styles";
 import ModalForm from './ModalForm';
-import ETIModalDeleteEvent from './ETIModalDeleteEvent';
 
 const ETIAgenda = ( { idEvent, eventData, updateDataAgenda } ) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,7 +16,6 @@ const ETIAgenda = ( { idEvent, eventData, updateDataAgenda } ) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [showDeleteButton, setShowDeleteButton] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
 
   useEffect(() => {
     if (eventData && eventData?.Agenda) {
@@ -108,6 +106,7 @@ const ETIAgenda = ( { idEvent, eventData, updateDataAgenda } ) => {
   });
   
   const classes = useStyles();
+  
   return (
     <Box sx={{display: 'flex', mt: 2}}>
       <Grid container rowSpacing={0} columnSpacing={{ md: 0 }}>
