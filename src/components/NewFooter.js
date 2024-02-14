@@ -20,30 +20,31 @@ export default function NewFooter() {
   return (
 
     <Box
-      mt={0}
-      mb={0}
-      spacing={1}
-      paddingX={12}
-      paddingY={6}
-       sx={{ backgroundColor: 'rgba(33, 33, 33, 1)'}}
-      // direction={'column'}
-      
+     sx={{ 
+      backgroundColor: 'rgba(33, 33, 33, 1)',
+      mt:0,
+      mb:0,
+      spacing:1,
+      paddingX:{xs: 3, md: 12},
+      paddingY:6
+    }}
     >
       <Grid
       container
-      spacing={2}
+      spacing={4}
       > 
 
       {/* PRIMER COLUMNA  */}
       <Grid
-      
+      order={{ xs: 1, sm: 0, md: 0 }}
       item xs={12} sm={6} md={3}
       display={'flex'}
       direction={'column'}
       justifyContent={'space-between'}
+      
       >
         
-        <Typography fontFamily={'roboto'} fontWeight={'bold'} pl={6} color={'#5FB4FC'} >
+        <Typography fontFamily={'roboto'} fontWeight={'bold'} pl={{ xs: 0, md: 6}} color={'#5FB4FC'} >
             Más sobre ETI
             {/* {t('links.title').toUpperCase()} */}
           </Typography>
@@ -59,7 +60,7 @@ export default function NewFooter() {
                     display={'flex'}
                     href={link.href}
                     key={link.href}
-                    pl={8}
+                    pl={{xs: 2, md:8}}
                     mt={2}
                     
                   >
@@ -72,7 +73,7 @@ export default function NewFooter() {
     {/* SEGUNDA COLUMNA */}
       <Grid 
         item xs={12} sm={6} md={3}
-        
+        order={{ xs: 0, sm: 1, md: 1 }}
         >
             <Typography fontFamily={'roboto'} fontWeight={'bold'} color={'#5FB4FC'}>
               Quienes somos
@@ -89,14 +90,15 @@ export default function NewFooter() {
 {/* TERCERA COLUMNA */}
       <Grid
           item xs={12} sm={6} md={3}
+          order={{ xs: 2, sm: 2, md: 2 }}
           >
 
-          <Typography fontFamily={'roboto'} fontWeight={'bold'} pl={6}  color={'#5FB4FC'}>
+          <Typography fontFamily={'roboto'} fontWeight={'bold'} pl={{xs: 0, md:6}}  color={'#5FB4FC'}>
             Encuéntranos en 
             {/* {t('socialNetworks.title').toUpperCase()} */}
           </Typography>
          
-          <Link fontFamily={'roboto'} pl={8} mt={2} sx={{ display: 'flex', alignItems: 'center' }} underline='none' color={'#5FB4FC'} href="http://facebook.com/groups/305562943758" target="_blank">
+          <Link fontFamily={'roboto'} pl={{xs: 2, md: 8}} mt={2} sx={{ display: 'flex', alignItems: 'center' }} underline='none' color={'#5FB4FC'} href="http://facebook.com/groups/305562943758" target="_blank">
             Facebook
             <Avatar
               src="/img/icon/facebook.png"
@@ -111,8 +113,9 @@ export default function NewFooter() {
 
   {/* CUARTA COLUMNA */}
           <Grid
-          item xs={12} sm={6} md={3}
-          display={'flex'}
+          order={{ sm: 3, md: 3 }}
+          item xs={0} sm={6} md={3}
+          display={{xs: 'none', sm: 'flex', md: 'flex'}}
           alignItems={'flex-end'}
           direction={'column'}
           pr={8}      
@@ -124,6 +127,32 @@ export default function NewFooter() {
               /> 
 
         </Grid>
+
+        <Grid
+          order={{ xs: 3 }}
+          sx={{
+            
+            pt: 2,
+            width: '100%', 
+            height: '100%',
+            justifyContent: 'center', 
+            display: {
+              xs: 'flex',
+              sm: 'none'
+            }
+            }}>
+            <Link href="/">
+              <img
+              style={{
+                width: '140px',
+                height: '110px'
+              }}
+              src="/img/icon/ETILogo.svg"
+              alt="ETI"
+              
+            />
+            </Link>
+          </Grid>
 
       </Grid>
     </Box>
