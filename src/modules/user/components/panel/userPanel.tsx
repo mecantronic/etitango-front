@@ -1,8 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { useContext, useEffect, useState } from 'react';
-import { Grid, Box, List, ListItemButton, ListItemText, ListItemIcon, Collapse, ListItem, Icon } from '@mui/material';
+import { Box, List, ListItemButton, ListItemText, ListItemIcon, Collapse, ListItem, Icon, Stack, Typography, Button } from '@mui/material';
 import NewEvent from '../../../superAdmin/events/NewEvent'
-import EventsList from 'modules/superAdmin/events/EventsList';
 import UserHome from 'modules/user';
 import Profile from 'modules/user/profile';
 import Inscripcion from 'modules/inscripcion/Inscripcion';
@@ -16,6 +15,8 @@ import { UserContext } from 'helpers/UserContext';
 import ComisionGeneroContact from 'modules/home/comision-de-genero/ComisionGeneroContact';
 import ComisionGeneroProtocol from 'modules/home/comision-de-genero/ComisionGeneroProtocol';
 import GeneralInfo from 'modules/superAdmin/events/GeneralInfo';
+import { auth } from '../../../../etiFirebase';
+
 
 export default function UserPanel() {
 
@@ -33,21 +34,20 @@ export default function UserPanel() {
   const [comision, setComision] = React.useState(6);
   const [idNewEventCreate, setIdNewEventCreate] = React.useState('no cambio')
   const [initialLoad, setInitialLoad] = React.useState(true);
-  
+
   useEffect(() => {
     if (initialLoad) {
-      setActiveComponent(<UserHome />); // O el índice correspondiente a UserHome en tu arreglo
+      setActiveComponent(<UserHome />);
       setInitialLoad(false);
     } else {
       handleListItemClick(12);
     }
   }, [idNewEventCreate]);
 
-
   const buttons = [
     { label: 'Inscripciones', component: <Inscripcion />, roles: ['admin', 'superAdmin'], icon: '/img/icon/taskSquare.svg', startIndex: 1 },
     { label: 'Mis Datos', component: <Profile />, roles: ['admin', 'superAdmin'], icon: '/img/icon/user.svg', startIndex: 2 },
-    { label: 'Nuevo ETI', component: <NewEvent etiEventId={eventId} onChange={(idCreateNewEvent:string) => {setIdNewEventCreate(idCreateNewEvent);}} />, roles: ['superAdmin'], icon: '/img/icon/security-user.svg', startIndex: 3 },
+    { label: 'Nuevo ETI', component: <NewEvent etiEventId={eventId} onChange={(idCreateNewEvent: string) => { setIdNewEventCreate(idCreateNewEvent); }} />, roles: ['superAdmin'], icon: '/img/icon/security-user.svg', startIndex: 3 },
   ];
 
   const nustrosLinks = [
@@ -62,7 +62,7 @@ export default function UserPanel() {
 
   ]
   const Etis = [
-    { label: 'Información general', component: <GeneralInfo idNewEventCreate={idNewEventCreate}/>, startIndex: 12 },
+    { label: 'Información general', component: <GeneralInfo idNewEventCreate={idNewEventCreate} />, startIndex: 12 },
     { label: 'Presupuesto', component: <h1>Presupuesto</h1>, startIndex: 13 },
     { label: 'Inscripciones', component: <Inscripcion />, startIndex: 14 },
     { label: 'Merchandising', component: <h1>Merchandansing</h1>, startIndex: 15 },
@@ -85,18 +85,6 @@ export default function UserPanel() {
   const handleButtonClick = (index: any) => {
     setActiveComponent(buttons[index].component);
   };
-
-  // const handleButtonClickComisionGenero = (index: any) => {
-  //   setActiveComponent(comisionGenero[index].component);
-  // };
-
-  // const handleButtonClickNustrosLinks = (index: any) => {
-  //   setActiveComponent(nustrosLinks[index].component);
-  // };
-
-  // const handleButtonClickEtis = (index: any) => {
-  //   setActiveComponent(Etis[index].component);
-  // };
 
   const handleListItemClick = (
     index: any,
@@ -161,19 +149,16 @@ export default function UserPanel() {
 
   const filteredButtons = buttons.filter(button => {
     if (userIsSuperAdmin) {
-      // Si el usuario es superadmin, mostrar todos los botones
       return true;
     } else if (userIsAdmin) {
-      // Si el usuario es admin, mostrar todos los botones excepto el de 'Nuevo ETI'
       return button.label !== 'Nuevo ETI';
     } else {
-      // Si no es admin ni superadmin, asumir que es un usuario común y mostrar solo los botones de Inscripciones y Mis Datos
       return button.label === 'Inscripciones' || button.label === 'Mis Datos';
     }
   });
 
   const itemButtonStyle = {
-    borderBottomLeftRadius: '25px', borderTopLeftRadius: '25px', padding: '12px 0px 12px 12px', marginBottom: '10px', color: '#FAFAFA'
+    borderBottomLeftRadius: '25px', borderTopLeftRadius: '25px', borderTopRightRadius: { xs: '25px', lg: '0px' }, borderBottomRightRadius: { xs: '25px', lg: '0px' }, padding: '12px 0px 12px 12px', marginBottom: '10px', color: '#FAFAFA'
   }
 
   const itemButtonStyle2 = {
@@ -195,9 +180,32 @@ export default function UserPanel() {
 
   return (
     <>
-      <Grid container>
-        <Grid item xs={0} sm={0} md={2} sx={{ backgroundColor: '#5FB4FC', padding: '30px 0px 20px 30px', display: {xs: 'none', sm: 'none', md: 'flex'} }}>
-          <List sx={{ padding: '8px 0px 8px 15px', minHeight: '100vh' }}>
+      <Box sx={{ display: 'flex', position: 'relative', minHeight: '100vh' }}>
+        <Box sx={{
+          backgroundColor: '#5FB4FC',
+          padding: { xs: '10px', lg: '30px 0px 20px 30px' },
+          width: { xs: '271px', lg: '255px' },
+          zIndex: { xs: 1000 },
+          display: { xs: 'block', lg: 'block' },
+          position: { xs: 'absolute', lg: 'initial' },
+          left: { xs: 0, lg: 'initial' },
+          right: { lg: 0 },
+          height: { xs: '100%', lg: 'auto' },
+        }}
+        >
+          <List sx={{ padding: '8px 0px 8px 15px', overflow: 'auto' }}>
+            <Box sx={{ height: '50px', display: { xs: 'block', lg: 'none' } }}>
+              <Stack direction="column" sx={{ height: 20, mt: '5px', }}>
+                <Typography fontFamily={'Montserrat'} color={'white'} sx={{ fontWeight: 600, fontSize: '18px' }}>
+                  {user?.data?.nameFirst} {user?.data?.nameLast}
+                </Typography>
+                {user?.data?.roles && (user?.data?.roles.superadmin || user?.data?.roles.Superadmin || user?.data?.roles.superAdmin) &&
+                  <Typography fontFamily={'Roboto'} color={'white'} sx={{ textAlign: 'start', fontWeight: 400, fontSize: '14px' }}>
+                    Superadmin
+                  </Typography>}
+              </Stack>
+            </Box>
+            <Box sx={{ border: { xs: '1px solid #FAFAFA', lg: '1px solid #5FB4FC' }, mt: { xs: 2, lg: 0 }, mb: { xs: 2, lg: 0 } }} />
             {filteredButtons.map((button, index) => (
               <ListItemButton key={index} onClick={() => { handleButtonClick(index), handleListItemClick(button.startIndex) }} sx={{
                 ...itemButtonStyle,
@@ -369,15 +377,18 @@ export default function UserPanel() {
               </List>
             </Collapse>
           </List>
-        </Grid>
-        <Grid item xs={12} sm={12} md={10}>
-          <Box sx={{ display: 'flex', justifyContent: 'center', padding: {sm: 10, xs: '20px'}}}>
-            {activeComponent}
-          </Box>
-        </Grid>
-      </Grid>
+          {/* Cuando se agregue validacion para abrir y cerrar la barra agregar aqui asi se muestre o no el btn de salir. */}
+          <Button onClick={() => auth.signOut()} href={'/'}>
+            <img src={'/img/icon/salirUserPanel.svg'} height={25} width={25} />
+            <Typography sx={{ fontFamily: 'Roboto', fontWeight: 600, fontSize: '16px', lineHeight: '22.4px', ml: 1, color: '#FAFAFA' }}>
+              Salir
+            </Typography>
+          </Button>
+        </Box>
+        <Box sx={{ margin: '0 auto', padding: '40px 0px', }}>
+          {activeComponent}
+        </Box>
+      </Box>
     </>
   );
-
-
 }
