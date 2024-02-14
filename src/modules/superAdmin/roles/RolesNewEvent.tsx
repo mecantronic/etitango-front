@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { UserFullData, UserRolesListData } from 'shared/User';
 import * as firestoreUserHelper from 'helpers/firestore/users';
 import { Box, Button, Typography, CircularProgress } from '@mui/material';
-import { DataGrid, GridColDef, GridToolbarQuickFilter } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridToolbarQuickFilter, GRID_CHECKBOX_SELECTION_COL_DEF } from '@mui/x-data-grid';
+
 
 const RolesNewEvent = ({ handleClose, selectedRows, isMobile }: { handleClose: Function, selectedRows: any }) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +55,10 @@ const RolesNewEvent = ({ handleClose, selectedRows, isMobile }: { handleClose: F
             flex: 1,
             headerClassName: 'super-app-theme--header',
         },
+        {
+            ...GRID_CHECKBOX_SELECTION_COL_DEF,
+            width: 50,
+        }
     ]
 
     :
