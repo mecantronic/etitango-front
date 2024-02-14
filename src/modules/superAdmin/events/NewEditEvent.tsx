@@ -203,7 +203,7 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
 
   return (
     <>
-      <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto', width: '960px', boxShadow: 3, borderRadius: '12px', backgroundColor: '#FFFFFF' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto', boxShadow: 3, borderRadius: '12px', backgroundColor: '#FFFFFF' }}>
         <Box sx={{ display: 'flex', ...scrollbarStyles, flexDirection: 'column' }}>
           <Box sx={{ width: '100%' }}>
             <ETIEventDate selectedEvent={selectedEvent} changeEvent={setChangeEvent2} />

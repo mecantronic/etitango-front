@@ -227,7 +227,7 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
   return (
     <>
     <Box
-      sx={{display: 'flex', flexDirection: 'column', overflow: 'auto', width: '960px', height: '290px', boxShadow: 3, borderRadius: '12px', backgroundColor: '#FFFFFF'}}
+      sx={{display: 'flex', flexDirection: 'column', overflow: 'auto', height: '290px', boxShadow: 3, borderRadius: '12px', backgroundColor: '#FFFFFF'}}
     >
               <Box sx={{ color: '#FFFFFF', backgroundColor: '#4B84DB', padding: '12px 24px 12px 24px', fontWeight: 600, fontSize: '24px', lineHeight: '16px', fontFamily: 'Montserrat', height: '40px' }}>
                 ETIs
