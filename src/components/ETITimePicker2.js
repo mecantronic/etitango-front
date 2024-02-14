@@ -61,7 +61,7 @@ const ETITimePicker2: React.FC<ETITimePicker2Props> = ({ value, onChange, isDisa
       disabled={isDisabled}
       error={error}
       helperText={helperText}    
-      style={{ width: isMobile ? '169px' : '102px', height: '48px', borderRadius: '12px'}}
+      style={{ width: isMobile ? '160px' : '102px', height: '48px', borderRadius: '12px'}}
       InputProps={{
         startAdornment: (
           <InputAdornment position='start'>

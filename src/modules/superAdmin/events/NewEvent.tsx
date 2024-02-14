@@ -232,7 +232,7 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
           {loading ? (
             <CircularProgress />
           ) : (
-            <Box sx={{ display:'flex', flexDirection: 'column', boxShadow: 3, width: {md: 960, xs: 480}, borderRadius: '12px', overflow: 'auto', backgroundColor: '#FFFFFF' }}>
+            <Box sx={{ display:'flex', flexDirection: 'column', boxShadow: 3, width: {md: 960, xs: 380, sm: 480}, borderRadius: '12px', overflow: 'auto', backgroundColor: '#FFFFFF' }}>
               <Box sx={{ color: '#FFFFFF', backgroundColor: '#4B84DB', padding: '12px 24px 12px 24px', fontWeight: 600, fontSize: '24px', lineHeight: '16px', fontFamily: 'Montserrat', height: '40px' }}>
                 Nuevo ETI
               </Box>
@@ -298,7 +298,7 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                               <Grid item md={12} sm={12} xs={12} sx={{mt: {xs: 2, sm: 2, md: 0}}}>
                               <Typography sx={{ color: '#424242', fontWeight: 500, display: {xs: 'none', md: 'flex' } }}>Desde el</Typography>
                                 <Grid container alignItems={'flex-start'}>
-                                  <Grid item >
+                                  <Grid item sx={{mr: {xs: 0, sm: '19px'}}}>
                                     <ETIDatePicker
                                         textFieldProps={{ fullWidth: true }}
                                         fieldName="dateStart"
@@ -306,11 +306,12 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                                         borderColor={enable}
                                         specialCase={false}
                                         isMobile={isMobile} 
-                                        textOfLabel={'Desde el'}                                    />
+                                        textOfLabel={'Desde el'}                                    
+                                    />
                                   </Grid>
                                   <Typography sx={{ color: '#424242', mt: 2, ml: 2, mr: 2, fontWeight: 500, display: {xs: 'none', md: 'flex' }}}>a las</Typography>
                                   <Grid item >
-                                  <Grid item sx={{ml: {xs: 2, sm: 3, md: 0}}}>
+                                  <Grid item sx={{ml: {xs: '13px', sm: 3, md: 0}}}>
                                     <ETITimePicker2
                                       value={values['timeStart']}
                                       onChange={(value) => setFieldValue('timeStart', value)}
@@ -328,7 +329,7 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                               <Grid item md={12} sm={12} xs={12} sx={{mt: {xs: 2, sm: 2, md: 0}}}>
                               <Typography sx={{ color: '#424242', fontWeight: 500, display: {xs: 'none', md: 'flex' } }}>Hasta el</Typography>
                                 <Grid container alignItems={'flex-start'}>
-                                  <Grid item >
+                                  <Grid item sx={{mr: {xs: 0, sm: '19px'}}}>
                                     <ETIDatePicker
                                       textFieldProps={{ fullWidth: true }}
                                       fieldName="dateEnd"
@@ -341,7 +342,7 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                                   </Grid>
                                   <Typography sx={{ color: '#424242', mt: 2, ml: 2, mr: 2, fontWeight: 500, display: {xs: 'none', md: 'flex' }}}>a las</Typography>
                                   <Grid item >
-                                    <Grid item sx={{ml: {xs: 2, sm: 3, md: 0}}}>
+                                    <Grid item sx={{ml: {xs: '13px', sm: 3, md: 0}}}>
                                       <ETITimePicker2
                                         value={values['timeEnd']}
                                         onChange={(value) => setFieldValue('timeEnd', value)}
@@ -358,7 +359,7 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                               <Grid item md={12} sm={12} xs={12} sx={{mt: {xs: 2, sm: 2, md: 0}}}>
                                 <Typography sx={{ color: '#424242', fontWeight: 500, display: {xs: 'none', md: 'flex'}}}>Inicio de inscripciones</Typography>
                                 <Grid container alignItems={'flex-start'}>
-                                  <Grid item >
+                                  <Grid item sx={{mr: {xs: 0, sm: '19px'}}}>
                                     <ETIDatePicker
                                       textFieldProps={{ fullWidth: true }}
                                       fieldName="dateSignupOpen"
@@ -371,7 +372,7 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                                   </Grid>
                                   <Typography sx={{ color: '#424242', mt: 2, ml: 2, mr: 2, fontWeight: 500, display: {xs: 'none', md: 'flex' } }}>a las</Typography>
                                   <Grid item >
-                                    <Grid item sx={{ml: {xs: 2, sm: 3, md: 0}}}>
+                                    <Grid item sx={{ml: {xs: '13px', sm: 3, md: 0}}}>
                                       <ETITimePicker2
                                         value={values['timeSignupOpen']}
                                         onChange={(value) => setFieldValue('timeSignupOpen', value)}

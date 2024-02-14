@@ -45,13 +45,11 @@ const RolesNewEvent = ({ handleClose, selectedRows, isMobile }: { handleClose: F
     [
         {
             field: 'Nombre',
-            width: 150,
             flex: 1,
             headerClassName: 'super-app-theme--header',
         },
         {
             field: 'Email',
-            width: 250,
             flex: 1,
             headerClassName: 'super-app-theme--header',
         },
@@ -67,19 +65,16 @@ const RolesNewEvent = ({ handleClose, selectedRows, isMobile }: { handleClose: F
         {
             field: 'Nombre',
             width: 150,
-            flex: 1,
             headerClassName: 'super-app-theme--header',
         },
         {
             field: 'Apellido',
             width: 150,
-            flex: 1,
             headerClassName: 'super-app-theme--header',
         },
         {
             field: 'Email',
             width: 250,
-            flex: 1,
             headerClassName: 'super-app-theme--header',
         },
     ];
