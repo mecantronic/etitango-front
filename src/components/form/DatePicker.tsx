@@ -25,6 +25,7 @@ export const ETIDatePicker = ({
   specialCase,
   borderColor,
   isMobile,
+  textOfLabel,
 }: {
   fieldName: string;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
@@ -32,6 +33,7 @@ export const ETIDatePicker = ({
   specialCase: boolean;
   borderColor: boolean;
   isMobile: boolean;
+  textOfLabel: string;
 }) => {
   const [field] = useField(fieldName);
   const useStyles = makeStyles({
@@ -92,7 +94,7 @@ export const ETIDatePicker = ({
           },
         }}
         label={isMobile ? (
-          <span style={{ fontSize: '16px', fontWeight: '600' }}>Desde el</span>
+          <span style={{ fontSize: '16px', fontWeight: '600' }}>{textOfLabel}</span>
         ) : undefined}
         name={fieldName}
         value={isMobile ? (field.value || format(new Date(), 'dd/MM/yyyy')) : field.value}

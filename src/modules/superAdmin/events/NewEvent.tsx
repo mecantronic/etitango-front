@@ -150,7 +150,7 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
     border: '1px solid #000',
     boxShadow: 24,
     borderRadius: 6,
-    p: 4,
+    padding: isMobile ? '24px 16px 24px 16px' : '32px',
     overflow: 'auto',
     width: '900px',
     height: '500px',
@@ -300,13 +300,13 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                                 <Grid container alignItems={'flex-start'}>
                                   <Grid item >
                                     <ETIDatePicker
-                                      textFieldProps={{ fullWidth: true }}
-                                      fieldName="dateStart"
-                                      setFieldValue={setFieldValue}
-                                      borderColor={enable}
-                                      specialCase={false}
-                                      isMobile={isMobile}
-                                    />
+                                        textFieldProps={{ fullWidth: true }}
+                                        fieldName="dateStart"
+                                        setFieldValue={setFieldValue}
+                                        borderColor={enable}
+                                        specialCase={false}
+                                        isMobile={isMobile} 
+                                        textOfLabel={'Desde el'}                                    />
                                   </Grid>
                                   <Typography sx={{ color: '#424242', mt: 2, ml: 2, mr: 2, fontWeight: 500, display: {xs: 'none', md: 'flex' }}}>a las</Typography>
                                   <Grid item >
@@ -336,6 +336,7 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                                       borderColor={enable}
                                       specialCase={false}
                                       isMobile={isMobile}
+                                      textOfLabel={'Hasta el'} 
                                     />
                                   </Grid>
                                   <Typography sx={{ color: '#424242', mt: 2, ml: 2, mr: 2, fontWeight: 500, display: {xs: 'none', md: 'flex' }}}>a las</Typography>
@@ -365,6 +366,7 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                                       borderColor={enable}
                                       specialCase={false}
                                       isMobile={isMobile}
+                                      textOfLabel={'Inicio de inscripciones'} 
                                     />
                                   </Grid>
                                   <Typography sx={{ color: '#424242', mt: 2, ml: 2, mr: 2, fontWeight: 500, display: {xs: 'none', md: 'flex' } }}>a las</Typography>
@@ -381,7 +383,7 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                                     </Grid>
                                   </Grid>
                                   <Typography sx={{ color: '#424242', mt: 2, ml: 2, mr: 2, fontWeight: 500, display: {xs: 'none', md: 'flex' }}}>hasta el</Typography>
-                                  <Grid item sx={{mt: {xs: 4, sm: 4, md: 0}}}>
+                                  <Grid item sx={{mt: {xs: 4, sm: 4, md: 0}, display: {xs: 'none', sm: 'none', md: 'flex'}}}>
                                     <ETIDatePicker
                                       textFieldProps={{ fullWidth: true }}
                                       fieldName="dateSignupEnd"
@@ -389,10 +391,11 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                                       borderColor={enable}
                                       specialCase={false}
                                       isMobile={isMobile}
+                                      textOfLabel={''} 
                                     />
                                   </Grid>
                                   <Typography sx={{ color: '#424242', mt: 2, ml: 2, mr: 2, fontWeight: 500, display: {xs: 'none', md: 'flex' }}}>hasta las</Typography>
-                                  <Grid item sx={{mt: {xs: 4, sm: 4, md: 0}}}>
+                                  <Grid item sx={{mt: {xs: 4, sm: 4, md: 0}, display: {xs: 'none', sm: 'none', md: 'flex'}}}>
                                     <Grid item sx={{ml: {xs: 2, sm: 3, md: 0}}}>
                                       <ETITimePicker2
                                         value={values['timeSignupEnd']}
@@ -427,8 +430,8 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                                   </Box>
                                 </Grid>
                                   <Modal open={open} onClose={() => handleClose([])} >
-                                    <Box sx={{ ...style, display: 'flex', flexDirection: 'column',width: {xs: '390px', sm: '920px'} }}>
-                                      <RolesNewEvent handleClose={handleClose} selectedRows={admins} />
+                                    <Box sx={{ ...style, display: 'flex', flexDirection: 'column',width: {xs: '390px', md: '920px'} }}>
+                                      <RolesNewEvent isMobile={isMobile} handleClose={handleClose} selectedRows={admins} />
                                     </Box>
                                   </Modal>
                               </Grid>
