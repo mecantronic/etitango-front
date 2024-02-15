@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, {useEffect, useContext} from 'react';
-import { Button, Paper, Box, Typography, Grid, PaginationItem, Modal } from '@mui/material';
+import { Button, Paper, Box, Typography, Grid, PaginationItem, Modal, useMediaQuery, Theme, MenuItem, Menu, IconButton } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams, DataGridProps, GridCell } from '@mui/x-data-grid';
 import { useTranslation } from 'react-i18next';
 import { SCOPES } from 'helpers/constants/i18n';
@@ -49,7 +49,18 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
   const [usuarios, setUsuarios] = useState<UserFullData[]>([]);
   const { user } = useContext(UserContext)
   const userIsSuperAdmin = isSuperAdmin(user)
+  const [anchorEl, setAnchorEl] = useState(null);
+  const openMenu = Boolean(anchorEl);
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+    setTrashIconMobile(true)
+  };
+  const [trashIconMobile, setTrashIconMobile] = useState(false)
   const [open, setOpen] = React.useState(false)
+  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const sortedEvents = [...events].sort((a, b) => {
     const dateA = new Date(a.dateStart).getTime();
     const dateB = new Date(b.dateStart).getTime();
@@ -60,6 +71,7 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
       setOpen(true);
     } else {
     setShowCheckbox(false);
+    setTrashIconMobile(false)
     }
   };
 
@@ -102,19 +114,19 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
 
   const classes = useStyles();
   const columns: GridColDef[] = [ 
-    
     {
       field: 'dateStart',
       headerName: 'Fecha',
       width: 250,
+      flex: isMobile ? 1 : 0,
       cellClassName: 'custom-date-cell',
     },
     {
     field: 'name',
     headerName: 'Nombre',
     width: 600,
+    flex: isMobile ? 1 : 0,
     cellClassName: 'custom-date-cell',
-   
   },
   {
     ...GRID_CHECKBOX_SELECTION_COL_DEF,
@@ -146,28 +158,50 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
       console.error('Error al eliminar los eventos', error);
     }
   };
-
   function CustomFooter() {
-    
     return (
-      <Grid >
-       
-        
-        {!showCheckbox && userIsSuperAdmin ? (
-            <Button onClick={() => setShowCheckbox(!showCheckbox)}>
-            <img src="/img/icon/btnDelete.svg" alt="Icono Trash" />
-            </Button>
-          ) : userIsSuperAdmin ? (
-            <Button onClick={handleOpenModal}>
-            <img src="/img/icon/btnTrashWhite.svg" alt="Icono Borrar" />
-          </Button>
-          ): null}
-          <Modal
-          open={open}
-          onClose={() => handleCloseModal()}>
-          <ETIModalDeleteEvent open={open} handleCloseModal={handleCloseModal} handleDeleteButton={handleDeleteButton} title1={'¿Eliminar elementos seleccionados?'} title2={'Los ETI seleccionados serán eliminados'}></ETIModalDeleteEvent>
-          </Modal>
-      </Grid>
+      isMobile ? 
+<Grid>
+  <IconButton
+    aria-label="more"
+    id="long-button"
+    aria-controls={openMenu ? 'long-menu' : undefined}
+    aria-expanded={openMenu ? 'true' : undefined}
+    aria-haspopup="true"
+    onClick={handleClick}
+  >
+    <img src="/img/icon/more-circle.svg" alt="DropdownETI" />
+  </IconButton>
+  <Menu
+    id="long-menu"
+    anchorEl={anchorEl}
+    open={openMenu}
+    onClose={handleClose}
+  >
+    <MenuItem onClick={handleClose}>
+      Eliminar
+    </MenuItem>
+  </Menu>
+</Grid>
+    :   
+     <Grid>   
+    {!showCheckbox && userIsSuperAdmin ? (
+        <Button onClick={() => setShowCheckbox(!showCheckbox)}>
+        <img src="/img/icon/btnDelete.svg" alt="Icono Trash" />
+        </Button>
+      ) : userIsSuperAdmin ? (
+        <Button onClick={handleOpenModal}>
+        <img src="/img/icon/btnTrashWhite.svg" alt="Icono Borrar" />
+      </Button>
+      ): null}
+      <Modal
+      open={open}
+      onClose={() => handleCloseModal()}
+      >
+      <ETIModalDeleteEvent open={open} handleCloseModal={handleCloseModal} handleDeleteButton={handleDeleteButton} title1={'¿Eliminar elementos seleccionados?'} title2={'Los ETI seleccionados serán eliminados'}></ETIModalDeleteEvent>
+      </Modal>
+  </Grid>
+
     );
   }
  
@@ -214,23 +248,48 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
   function CustomContainer() {
     return (
       <Grid container>
-        <Grid item xs={6}> <CustomFooter /></Grid>
-        <Grid item xs={6} >
+        <Grid item xs={6}> {!isMobile && <CustomFooter />}</Grid>
+        <Grid item xs={6}>
           <Box sx={{display: 'flex', justifyContent: 'flex-end', mr: 2}}>
             <CustomPagination />
           </Box>
           </Grid>
+          <Grid item xs={12}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
+          {trashIconMobile && (
+            <div>
+              {!showCheckbox && userIsSuperAdmin ? (
+                <Button onClick={() => { setShowCheckbox(!showCheckbox)}}>
+                  <img src="/img/icon/btnDelete.svg" alt="Icono Trash" />
+                </Button>
+              ) : userIsSuperAdmin ? (
+                <Button onClick={handleOpenModal}>
+                  <img src="/img/icon/btnTrashWhite.svg" alt="Icono Borrar" />
+                </Button>
+              ) : null}
+              <Modal
+                open={open}
+                onClose={handleCloseModal}
+              >
+                <ETIModalDeleteEvent open={open} handleCloseModal={handleCloseModal} handleDeleteButton={handleDeleteButton} title1={'¿Eliminar elementos seleccionados?'} title2={'Los ETI seleccionados serán eliminados'} />
+              </Modal>
+            </div>
+          )}
+        </Box>
+      </Grid>
       </Grid>
     );
   }
-  
+    
   return (
     <>
     <Box
-      sx={{display: 'flex', flexDirection: 'column', overflow: 'auto', height: '290px', boxShadow: 3, borderRadius: '12px', backgroundColor: '#FFFFFF'}}
+      sx={{display: 'flex', flexDirection: 'column', overflow: 'auto', height: '290px', boxShadow: {xs: 0, sm: 3}, borderRadius: {xs: '',sm:'12px'}, backgroundColor: {xs: '', sm:'#FFFFFF'}}}
     >
-              <Box sx={{ color: '#FFFFFF', backgroundColor: '#4B84DB', padding: '12px 24px 12px 24px', fontWeight: 600, fontSize: '24px', lineHeight: '16px', fontFamily: 'Montserrat', height: '40px' }}>
+              <Box sx={{display: 'flex',alignItems: 'center', justifyContent: 'space-between' ,color: {xs: '#4B84DB', sm: '#FFFFFF'}, backgroundColor: {xs: '', sm: '#4B84DB'}, padding: {xs: '', sm:'12px 24px 12px 24px'}, fontWeight: 600, fontSize: '24px', lineHeight: {xs: '', sm:'16px'}, fontFamily: 'Montserrat', height: '40px' }}>
                 ETIs
+
+              {isMobile && <CustomFooter />}
               </Box>
       
         <DataGrid
@@ -273,17 +332,15 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
               onSelectEvent(selectedEvent);
             }
           }
-        }}
-
-        
-      
+        }}     
         rowsPerPageOptions={[5]}
         getRowId={(row) => row.id}
-        rowHeight={22}
+        rowHeight={isMobile ? 35 : 22}
         headerHeight={22}
         pageSize={5}
         sx={{
-          m: '20px',
+          m: {xs: '',sm:'20px'},
+          borderColor: {xs: '#ffffff', sm: ''},
           '& .MuiDataGrid-columnHeaders': {
               backgroundColor: '#5FB4FC',
               color: '#FAFAFA',

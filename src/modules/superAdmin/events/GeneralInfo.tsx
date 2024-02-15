@@ -78,7 +78,7 @@ const GeneralInfo = ({ idNewEventCreate } : {idNewEventCreate: string}) => {
   return (
     <>
       <WithAuthentication roles={[UserRoles.SUPER_ADMIN]} />
-        <Box sx={{display: 'flex', flexDirection: 'column', width: {xs: '380px', md: '960px'}}}>
+        <Box sx={{display: 'flex', flexDirection: 'column', width: {xs: '380px', sm: '960px'}}}>
           {events.length > 0 ? (
             <>
             <NewEventList events={events} isLoading={isLoading} onDeleteEvent={handleDeleteEvent} onSelectEvent={setEventData} selectedRows={selectedRows} setSelectedRows={setSelectedRows} />
