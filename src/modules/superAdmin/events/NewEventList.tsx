@@ -115,15 +115,15 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
   const classes = useStyles();
   const columns: GridColDef[] = [ 
     {
-      field: 'dateStart',
-      headerName: 'Fecha',
+      field: isMobile ? 'name' : 'dateStart',
+      headerName: isMobile ? 'Nombre' : 'Fecha',
       width: 250,
       flex: isMobile ? 1 : 0,
       cellClassName: 'custom-date-cell',
     },
     {
-    field: 'name',
-    headerName: 'Nombre',
+    field: isMobile ? 'dateStart' : 'name',
+    headerName: isMobile ? 'Fecha' : 'Nombre',
     width: 600,
     flex: isMobile ? 1 : 0,
     cellClassName: 'custom-date-cell',
