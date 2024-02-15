@@ -10,6 +10,13 @@ const mergedTheme = createTheme({
   ...theme,
   components: {
     ...theme.components,
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: '#A82548', // Color deseado para el ícono
+        },
+      },
+    },
     MuiPickersCalendarHeader: {
       styleOverrides: {
         root: {
