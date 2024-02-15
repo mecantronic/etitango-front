@@ -11,16 +11,17 @@ import { useLocation } from 'react-router-dom';
 import { USERS } from 'helpers/firestore/users';
 import MenuIcon from "@mui/icons-material/Menu";
 import UserPanel from 'modules/user/components/panel/userPanel';
+import { useGlobalState } from 'helpers/UserPanelContext';
 
 
 const NewAppBar = () => {
   const [isSignedIn, setIsSignedIn] = useState(!!auth.currentUser); // Local signed-in state.
   const [userData, setUserData] = useState({})
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [openDashboard, setOpenDashboard] = useState(false)
+  // const [openDashboard, setOpenDashboard] = useState(false)
   const { t } = useTranslation(SCOPES.COMPONENTS.BAR, { useSuspense: false });
   const { pathname: currentRoute } = useLocation();
-  
+  const { toggleOpen } = useGlobalState()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,9 +51,9 @@ const NewAppBar = () => {
     setAnchorEl(null);
   };
 
-  const handleOpenDashboard = () => {
-    setOpenDashboard(true)
-  }
+  // const handleOpenDashboard = () => {
+  //   setOpenDashboard(true)
+  // }
 
 
 
@@ -79,7 +80,8 @@ const NewAppBar = () => {
             height: '97px', 
             display: {
               xs: 'none',
-              sm: 'block'
+              sm: 'none',
+              lg: 'block'
             }
             }}>
             <Link href="/">
@@ -95,12 +97,13 @@ const NewAppBar = () => {
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            onClick= {() => handleOpenDashboard()}
+            onClick= {() => toggleOpen()}
             sx={{
               mr: 2,
               display: {
                 xs: "flex",
-                sm: "none"
+                sm: "flex",
+                lg: 'none'
               }
             }}
           >
@@ -110,7 +113,7 @@ const NewAppBar = () => {
               width: '32px'
             }}/>
           </IconButton>
-          <UserPanel isOpen={openDashboard} ></UserPanel>
+        {/* <UserPanel isOpen={openDashboard} ></UserPanel> */}
 
           
           <Box
@@ -119,7 +122,8 @@ const NewAppBar = () => {
               justifyContent: 'flex-end',
               display: {
                 xs: 'none',
-                sm: 'flex'
+                sm: 'none',
+                lg: 'flex'
               }
                }}
             
@@ -216,7 +220,8 @@ const NewAppBar = () => {
           sx={{ 
             display: {
               xs: 'block',
-              sm: 'none'
+              sm: 'block',
+              lg: 'none'
             }
             }}>
             <Link href="/">

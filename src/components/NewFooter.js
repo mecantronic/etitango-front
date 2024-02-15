@@ -4,9 +4,12 @@ import { Grid, Link, Typography, Avatar, Paper, Box} from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import { useTranslation } from 'react-i18next';
 import { SCOPES } from 'helpers/constants/i18n.ts';
+import { useGlobalState } from 'helpers/UserPanelContext';
+
 
 
 export default function NewFooter() {
+  const {isOpen} = useGlobalState()
   const { t } = useTranslation([SCOPES.COMPONENTS.FOOTER, SCOPES.COMPONENTS.BAR], {
     useSuspense: false
   });
@@ -17,7 +20,9 @@ export default function NewFooter() {
     { href: '/comision-de-genero-who', title: t(`${SCOPES.COMPONENTS.BAR}.genderWho`) },
   
   ];
-  return (
+  
+
+  return !isOpen ? (
 
     <Box
      sx={{ 
@@ -26,7 +31,9 @@ export default function NewFooter() {
       mb:0,
       spacing:1,
       paddingX:{xs: 3, md: 12},
-      paddingY:6
+      paddingY:6,
+      zIndex: 0
+      
     }}
     >
       <Grid
@@ -157,5 +164,5 @@ export default function NewFooter() {
       </Grid>
     </Box>
 
-  );
+  ) : null
 }

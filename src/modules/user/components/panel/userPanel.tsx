@@ -16,7 +16,7 @@ import ComisionGeneroContact from 'modules/home/comision-de-genero/ComisionGener
 import ComisionGeneroProtocol from 'modules/home/comision-de-genero/ComisionGeneroProtocol';
 import GeneralInfo from 'modules/superAdmin/events/GeneralInfo';
 import { auth } from '../../../../etiFirebase';
-
+import { useGlobalState } from 'helpers/UserPanelContext';
 
 export default function UserPanel() {
 
@@ -34,6 +34,9 @@ export default function UserPanel() {
   const [comision, setComision] = React.useState(6);
   const [idNewEventCreate, setIdNewEventCreate] = React.useState('no cambio')
   const [initialLoad, setInitialLoad] = React.useState(true);
+  const {isOpen} = useGlobalState()
+  // const [isClose, setIsClose] = useState(isOpen)
+  const {toggleOpen} = useGlobalState()
 
   useEffect(() => {
     if (initialLoad) {
@@ -186,11 +189,12 @@ export default function UserPanel() {
           padding: { xs: '10px', lg: '30px 0px 20px 30px' },
           width: { xs: '271px', lg: '255px' },
           zIndex: { xs: 1000 },
-          display: { xs: 'block', lg: 'block' },
+          display: { xs: isOpen ? 'block' : 'none', lg: 'block' },
           position: { xs: 'absolute', lg: 'initial' },
           left: { xs: 0, lg: 'initial' },
           right: { lg: 0 },
           height: { xs: '100%', lg: 'auto' },
+          overflow: {xs: 'auto', lg: 'none'}
         }}
         >
           <List sx={{ padding: '8px 0px 8px 15px', overflow: 'auto' }}>
@@ -207,7 +211,7 @@ export default function UserPanel() {
             </Box>
             <Box sx={{ border: { xs: '1px solid #FAFAFA', lg: '1px solid #5FB4FC' }, mt: { xs: 2, lg: 0 }, mb: { xs: 2, lg: 0 } }} />
             {filteredButtons.map((button, index) => (
-              <ListItemButton key={index} onClick={() => { handleButtonClick(index), handleListItemClick(button.startIndex) }} sx={{
+              <ListItemButton key={index} onClick={() => { handleButtonClick(index), handleListItemClick(button.startIndex), toggleOpen() }} sx={{
                 ...itemButtonStyle,
                 ...(selectedIndex === button.startIndex && itemButtonActiveStyle),
                 ':hover': {
@@ -257,7 +261,7 @@ export default function UserPanel() {
                 <List component="div" disablePadding>
                   {Etis.map((button, index) => (
                     <ListItem key={index}>
-                      <ListItemButton onClick={() => { handleListItemClick(button.startIndex) }} sx={{
+                      <ListItemButton onClick={() => { handleListItemClick(button.startIndex), toggleOpen() }} sx={{
                         ...itemButtonStyle2,
                         ...(selectedIndex === button.startIndex && itemButtonActiveStyle),
                         ':hover': {
@@ -307,7 +311,7 @@ export default function UserPanel() {
               <List component="div" disablePadding>
                 {nustrosLinks.map((button, index) => (
                   <ListItem key={index}>
-                    <ListItemButton onClick={() => { handleListItemClick(button.startIndex) }} sx={{
+                    <ListItemButton onClick={() => { handleListItemClick(button.startIndex), toggleOpen() }} sx={{
                       ...itemButtonStyle2,
                       ...(selectedIndex === button.startIndex && itemButtonActiveStyle),
                       ':hover': {
@@ -356,7 +360,7 @@ export default function UserPanel() {
               <List component="div" disablePadding>
                 {comisionGenero.map((button, index) => (
                   <ListItem key={index}>
-                    <ListItemButton onClick={() => { handleListItemClick(button.startIndex) }} sx={{
+                    <ListItemButton onClick={() => { handleListItemClick(button.startIndex), toggleOpen() }} sx={{
                       ...itemButtonStyle2,
                       ...(selectedIndex === button.startIndex && itemButtonActiveStyle),
                       ':hover': {
@@ -377,13 +381,22 @@ export default function UserPanel() {
               </List>
             </Collapse>
           </List>
-          {/* Cuando se agregue validacion para abrir y cerrar la barra agregar aqui asi se muestre o no el btn de salir. */}
+          
+         <Box
+            sx={{ 
+              display: {
+                xs: 'block',
+                sm: 'block',
+                lg: 'none'
+              }
+         }}>
           <Button onClick={() => auth.signOut()} href={'/'}>
             <img src={'/img/icon/salirUserPanel.svg'} height={25} width={25} />
             <Typography sx={{ fontFamily: 'Roboto', fontWeight: 600, fontSize: '16px', lineHeight: '22.4px', ml: 1, color: '#FAFAFA' }}>
-              Salir
+              Cerrar sesión
             </Typography>
           </Button>
+          </Box>
         </Box>
         <Box sx={{ margin: '0 auto', padding: '40px 0px', }}>
           {activeComponent}
