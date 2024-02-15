@@ -24,3 +24,9 @@ code {
 .custom-icon-container img {
   fill: red; /* Cambia 'red' al color que desees */
 }
+
+@media screen and (max-width: 600px) {
+  .content {
+    background-color: #FFFFFF; 
+  }
+}
