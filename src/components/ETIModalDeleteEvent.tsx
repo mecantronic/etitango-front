@@ -1,13 +1,16 @@
 /* eslint-disable prettier/prettier */
 // eslint-disable-next-line prettier/prettier
-import { Box, Modal, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, useMediaQuery, Theme } from "@mui/material";
 
-const ETIModalDeleteEvent = ({handleCloseModal, open, handleDeleteButton, title1, title2} : {handleCloseModal : Function, open : boolean, handleDeleteButton: Function}) => {
+const ETIModalDeleteEvent = ({handleCloseModal, open, handleDeleteButton, title1, title2} : {handleCloseModal : Function, open : boolean, handleDeleteButton: Function, title1: string, title2: string}) => {
+    const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
 const styleModal = {
         position: 'absolute' as 'absolute',
-        top: '22.5%',
-        left: '46%',
+        top: {xs:'', sm: '22.5%'},
+        left: {xs:'', sm: '46%'},
+        bottom: {xs: '0', sm: ''},
+
         // transform: 'translate(-50%, -50%)',
         bgcolor: '#F5F5F5',
         border: '1px solid #000',
@@ -15,25 +18,27 @@ const styleModal = {
         borderRadius: 3,
         p: 3,
         overflow: 'none',
-        width: '422px',
+        width: {xs: '100%', sm: '422px'},
         // eslint-disable-next-line prettier/prettier
-        height: '209px',     
+        height: {xs: 'auto', sm: '209px'},     
  };
 
 return (
     <Box sx={{...styleModal}}>
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center'}}>
-             <Box sx={{ mb: 2}}>
+            <Box sx={{ mb: 2}}>
                 <Typography variant="h6">{title1}</Typography>
             </Box>
+             
 
             <Box sx={{borderBottom: '1px solid #E0E0E0', width: '100%'}}>
 
             </Box>
-
+            {!isMobile ? 
             <Box sx={{ mt: 2}}>
             <Typography sx={{fontFamily: 'roboto'}}>{title2}</Typography>
-            </Box>
+            </Box> : null
+            }
 
             <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between', width: '65%'}}>
                 <Box >
