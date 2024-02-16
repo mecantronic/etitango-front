@@ -99,6 +99,7 @@ const NewAppBar = () => {
             aria-label="open drawer"
             onClick= {() => toggleOpen()}
             sx={{
+              color: 'white',
               mr: 2,
               display: {
                 xs: "flex",
