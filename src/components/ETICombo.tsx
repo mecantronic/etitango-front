@@ -1,21 +1,21 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { Button, Grid, Box, Typography, Chip, Icon, Modal } from '@mui/material';
 import { Field } from 'formik';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import InputAdornment from '@mui/material/InputAdornment';
-import CloudinaryUploadWidget from 'components/CloudinaryUploadWidget';
 import { EtiEvent } from 'shared/etiEvent';
 import { ETIDatePicker } from './form/DatePicker';
-import { createOrUpdateDoc, deleteImageUrlFromEvent } from 'helpers/firestore';
 import ETITimePicker2 from './ETITimePicker2';
 import { getEvent, getEvents } from 'helpers/firestore/events';
-import { update } from 'lodash';
+import { ETIPortada } from './ETIPortada';
+import { MobileContext } from 'helpers/MobileContext';
 
 interface ETICombosProps {
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
@@ -36,6 +36,8 @@ interface ETICombosProps {
 
 const ETICombos: React.FC<ETICombosProps> = ({ setFieldValue, selectedEvent, values, errors, touched, setComboValues, EventImage }) => {
 
+  const { isMobile } = useContext(MobileContext)!;
+
   const idEvent = selectedEvent?.id;
   const combos = selectedEvent?.combos
   const eventImage = selectedEvent?.imageUrl;
@@ -47,7 +49,7 @@ const ETICombos: React.FC<ETICombosProps> = ({ setFieldValue, selectedEvent, val
   const [enable, setEnable] = useState(false);
   const handleClose = () => {
     setOpen(false);
-    
+
   };
   const [IsLoading, setIsLoading] = useState(true);
   const [fieldCount, setFieldCount] = useState(0);
@@ -92,10 +94,10 @@ const ETICombos: React.FC<ETICombosProps> = ({ setFieldValue, selectedEvent, val
 
 
   const handleProductChange = (index: number, newValue: string) => {
-      const updatedValues = [...fieldValues];
-      updatedValues[index] = newValue;
-      setFieldValues(updatedValues)
-    
+    const updatedValues = [...fieldValues];
+    updatedValues[index] = newValue;
+    setFieldValues(updatedValues)
+
     const newFilledFields = [...filledFields];
     newFilledFields[index] = !!newValue;
     setFilledFields(newFilledFields);
@@ -341,7 +343,7 @@ const ETICombos: React.FC<ETICombosProps> = ({ setFieldValue, selectedEvent, val
                             fullWidth
                             // disabled={index < 3}
                             sx={{ marginTop: 3 }}
-                            classes={{   root: filledFields[index] ? classes.filled : classes.root  }}
+                            classes={{ root: filledFields[index] ? classes.filled : classes.root }}
 
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleProductChange(index, e.target.value)}
                           />
@@ -392,7 +394,7 @@ const ETICombos: React.FC<ETICombosProps> = ({ setFieldValue, selectedEvent, val
                   Primera fecha de pago
                 </Typography>
                 <Grid container alignItems={'flex-start'}>
-                  <Grid sx={{width: '120px'}}>
+                  <Grid sx={{ width: '120px' }}>
                     {/**Add icons */}
                     <Field
                       name="firstPay"
@@ -408,7 +410,7 @@ const ETICombos: React.FC<ETICombosProps> = ({ setFieldValue, selectedEvent, val
                           <InputAdornment position="start">
                             <img src="/img/icon/dollar.svg" alt="dollar" />
                           </InputAdornment>
-                        )                       
+                        )
                       }}
                       value={values?.firstPay || ''}
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -450,7 +452,7 @@ const ETICombos: React.FC<ETICombosProps> = ({ setFieldValue, selectedEvent, val
                   Segunda fecha de pago
                 </Typography>
                 <Grid container alignItems={'flex-start'}>
-                  <Grid sx={{width: '120px'}}>
+                  <Grid sx={{ width: '120px' }}>
                     <Field
                       name="secondPay"
                       placeholder="10000"
@@ -569,84 +571,15 @@ const ETICombos: React.FC<ETICombosProps> = ({ setFieldValue, selectedEvent, val
                 </Grid>
                 <hr style={{ border: '1px solid #E0E0E0', marginLeft: '-16px', marginRight: '-16px', marginTop: '20px' }} />
               </Grid>
-
-
-
-              {/**Front Page, buttons and Cloudinary*/}
-              <Grid>
-                <Typography sx={{ color: '#212121', fontWeight: 500, fontSize: '20px' }}>
-                  Portada
-                </Typography>
-              </Grid>
             </Grid>
-            <Grid container alignItems="center">
-              {/** Add Cloudinary  */}
-              <Box
-                sx={{
-                  display: 'flex',
-                  maxHeight: '300px',
-                  marginTop: '20px'
-                }}
-              >
-                <Box
-                  component="img"
-                  sx={{
-                    height: 550,
-                    width: 450,
-                    maxHeight: { xs: 550, md: 190 },
-                    maxWidth: { xs: 450, md: 360 },
-                    borderRadius: '16px'
-                  }}
-                  alt="Imagen representativa del evento"
-                  src={imageUrlEvent ? imageUrlEvent : '/img/imageNotFound.svg'}
-                />
-
-                <Box sx={{ display: 'flex', alignItems: 'center', ml: 5 }}>
-                  <CloudinaryUploadWidget
-                    uwConfig={uwConfig}
-                    onImageUpload={(uploadedImageUrl: string) =>
-                      handleUpdateImage(uploadedImageUrl)
-                    }
-                  />
-
-                  <Button
-                    sx={{
-                      width: '115px',
-                      padding: '12px, 32px, 12px, 32px',
-                      borderRadius: '12px',
-                      ml: 3,
-                      border: '1px solid #9E9E9E',
-                      backgroundColor: 'transparent',
-                      height: '44px',
-                      '&:hover': { backgroundColor: 'transparent' }
-                    }}
-
-                    onClick={async () => {
-                      try {
-                        const success = await deleteImageUrlFromEvent(idEvent);
-                        if (success) {
-                          setImageUrlEvent('');
-                          
-                        }
-                      } catch (error) {
-                        console.error('eliminar imagen fallo ', error);
-                      }
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        color: '#A82548',
-                        fontWeight: 500,
-                        fontSize: '14px',
-                        lineHeight: '20px'
-                      }}
-                    >
-                      Eliminar
-                    </Typography>
-                  </Button>
-                </Box>
-              </Box>
-            </Grid>
+            {isMobile ? 
+            
+              null
+            
+            : 
+              <ETIPortada selectedEvent={selectedEvent} EventImage={EventImage} />
+            }
+            
           </Grid>
         </Grid>
       </Box>

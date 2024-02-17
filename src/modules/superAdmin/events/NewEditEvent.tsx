@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable prettier/prettier */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Grid, Box, Typography, CircularProgress } from '@mui/material';
 import { Form, Formik } from 'formik';
 import { mixed, object, string } from 'yup';
@@ -12,11 +12,13 @@ import ETIDataBanks from 'components/ETIDataBanks.jsx';
 import ETIMercadoPago from 'components/ETIMercadoPago.jsx';
 import ETICombos from 'components/ETICombo';
 import ETIEventDate from 'components/ETIEventDates';
-import { useMediaQuery, Theme} from '@mui/material';
+import { useMediaQuery, Theme } from '@mui/material';
+import { MobileContext } from 'helpers/MobileContext';
+import { ETIPortada } from 'components/ETIPortada';
 
 export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEvent2, setChangeEvent3 }: { selectedEvent: EtiEvent | null, setChangeEvent2: Function, changeEvent2: boolean, setChangeEvent3: Function }) {
-  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
-  console.log('este es isMobile en editEvent ', isMobile);
+
+  const { isMobile } = useContext(MobileContext)!;
 
   const alertText: string = 'Este campo no puede estar vacío';
   const alerText2: string = 'Tienes cambios que no seran guardados.'
@@ -209,11 +211,11 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
     if (isMobile) {
       setStep(step + 1);
       console.log('hola');
-      
+
     }
   }
 
-  const buttonText = step === 1 ? 'Comenzar' : step === 2 ? 'Siguiente' : 'Finalizar';
+  const buttonText = step === 1 ? 'Comenzar' : step === 2 ? 'Siguiente' : 'Siguiente';
 
   return (
     <>
@@ -298,7 +300,7 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
               </Grid>
               <Box sx={{ display: 'flex', justifyContent: 'flex-end', margin: '20px' }}>
                 <Button
-                  onClick={() =>  handleNextStep()}
+                  onClick={() => handleNextStep()}
                   sx={{
                     width: '115px',
                     padding: '12px, 32px, 12px, 32px',
@@ -338,23 +340,72 @@ export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEve
                   await handleCreateEvent(values, setSubmitting)
                 }}
               >
-                 {({ setFieldValue, values, errors, isSubmitting, touched }) => (
+                {({ setFieldValue, values, errors, isSubmitting, touched }) => (
                   <Form>
                     <ETICombos setFieldValue={setFieldValue} values={values} selectedEvent={selectedEvent} setComboValues={setProductValues} errors={errors} touched={touched} EventImage={setEventImage} />
+                  </Form>
+                )}
+              </Formik>
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end', margin: '20px' }}>
+                    <Button
+                      onClick={() => handleNextStep()}
+                      sx={{
+                        width: '115px',
+                        padding: '12px, 32px, 12px, 32px',
+                        borderRadius: '25px',
+                        backgroundColor: '#A82548',
+                        height: '44px',
+                        '&:hover': { backgroundColor: '#A82548' },
+                      }}
+                    >
+                      {buttonText}
+                    </Button>
+                  </Box>
+            </Grid>
+          )}
+
+          {step === 4 && (
+            <Grid item md={12} sm={12} xs={12} sx={{ margin: '0px 20px 0px 20px', p: 2 }}>
+              <Formik
+                enableReinitialize
+                initialValues={{
+                  firstPay: selectedEvent?.firstPay || undefined,
+                  firstDatePay: selectedEvent?.firstDatePay || null,
+                  firstTimePay: selectedEvent?.firstTimePay || undefined,
+                  secondPay: selectedEvent?.secondPay || undefined,
+                  secondDatePay: selectedEvent?.secondDatePay || null,
+                  secondTimePay: selectedEvent?.secondTimePay || undefined,
+                  refundDeadline: selectedEvent?.refundDeadline || null,
+                  timeRefundDeadline: selectedEvent?.timeRefundDeadline || undefined,
+                  limitParticipants: selectedEvent?.limitParticipants || undefined,
+                  alojamiento: selectedEvent?.alojamiento || null,
+                  datosBancarios: selectedEvent?.datosBancarios || null,
+                  linkMercadoPago: selectedEvent?.linkMercadoPago || null
+                }}
+                validationSchema={EventFormSchema}
+                onSubmit={async (values, { setSubmitting }) => {
+
+                  await handleCreateEvent(values, setSubmitting)
+                }}
+              >
+                {({ setFieldValue, values, errors, isSubmitting, touched }) => (
+                  <Form>
+                    <ETIPortada selectedEvent={selectedEvent} EventImage={setEventImage} />
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', margin: '20px' }}>
                       <Button type='submit' disabled={isSubmitting} sx={{ width: '115px', padding: '12px, 32px, 12px, 32px', borderRadius: '25px', backgroundColor: '#A82548', height: '44px', '&:hover': { backgroundColor: '#A82548' } }}>
                         {isLoading ? <CircularProgress sx={{ color: '#ffffff' }} size={30} /> : <><Typography sx={{ color: '#FAFAFA', fontWeight: 500, fontSize: '14px', lineHeight: '20px' }}>{showSuccessImage ? 'Guardado' : 'Guardar'}</Typography>{showSuccessImage && <img src={'/img/icon/Vector.svg'} height={15} width={15} style={{ marginLeft: '10px' }} />}</>}
                       </Button>
                     </Box>
                   </Form>
-                 )}
+                )}
               </Formik>
-              
+
             </Grid>
           )}
+
         </>
       ) : (
-        // Código para la versión no móvil
+
         <>
           <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto', width: '960px', boxShadow: 3, borderRadius: '12px', backgroundColor: '#FFFFFF' }}>
             <Box sx={{ display: 'flex', ...scrollbarStyles, flexDirection: 'column' }}>

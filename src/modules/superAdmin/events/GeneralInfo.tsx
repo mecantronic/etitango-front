@@ -10,7 +10,6 @@ import { deleteDoc, doc } from 'firebase/firestore';
 import { db } from 'etiFirebase';
 import { Box } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useMediaQuery, Theme} from '@mui/material';
 
 
 const GeneralInfo = ({ idNewEventCreate } : {idNewEventCreate: string}) => {
@@ -22,7 +21,6 @@ const GeneralInfo = ({ idNewEventCreate } : {idNewEventCreate: string}) => {
   const [changeEvent3, setChangeEvent3] = useState(false)
   // const [showEvent, setShowEven] = useState(false)
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
-  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
   useEffect(() => {
     const fetchData = async () => {
