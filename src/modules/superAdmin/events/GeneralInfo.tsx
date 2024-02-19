@@ -21,7 +21,6 @@ const GeneralInfo = ({ idNewEventCreate } : {idNewEventCreate: string}) => {
   const [changeEvent3, setChangeEvent3] = useState(false)
   // const [showEvent, setShowEven] = useState(false)
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,7 +82,7 @@ const GeneralInfo = ({ idNewEventCreate } : {idNewEventCreate: string}) => {
             <>
             <NewEventList events={events} isLoading={isLoading} onDeleteEvent={handleDeleteEvent} onSelectEvent={setEventData} selectedRows={selectedRows} setSelectedRows={setSelectedRows} />
             <Box sx={{mt: 5}}>
-              <NewEditEvent selectedEvent={eventData} setChangeEvent2={setChangeEvent2} changeEvent2={changeEvent2} setChangeEvent3={setChangeEvent3}></NewEditEvent>
+              <NewEditEvent selectedEvent={eventData} setChangeEvent2={setChangeEvent2} changeEvent2={changeEvent2} setChangeEvent3={setChangeEvent3} ></NewEditEvent>
             </Box>
             </>
            ) : (

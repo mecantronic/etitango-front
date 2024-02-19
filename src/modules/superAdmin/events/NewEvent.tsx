@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable prettier/prettier */
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, CircularProgress, Grid, Box, Typography, Modal, Chip, Icon } from '@mui/material';
 import WithAuthentication from '../../withAuthentication';
 import { Translation } from 'react-i18next';
@@ -18,7 +18,8 @@ import { LocationPicker } from 'components/form/LocationPicker';
 import { makeStyles } from '@mui/styles';
 import ETITimePicker2 from 'components/ETITimePicker2';
 import { assignEventAdmins } from '../../../helpers/firestore/users';
-import { useMediaQuery, Theme} from '@mui/material';
+import { UserContext } from 'helpers/UserContext'; 
+import { useGlobalState } from 'helpers/UserPanelContext';
 
 const AddButton = ({ onClick, isMobile }) => (
   <Button
@@ -47,7 +48,7 @@ const AddButton = ({ onClick, isMobile }) => (
 
 export default function NewEvent(props: { etiEventId: string, onChange: Function }) {
   
-  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
+  const { isMobile } = useGlobalState();
   const { etiEventId, onChange } = props
   const alertText: string = 'Este campo no puede estar vacío';
   const EventFormSchema = object({
