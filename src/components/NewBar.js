@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { AppBar, Avatar, Box, Button, Link, Menu, Toolbar, Typography, MenuItem, Stack } from '@mui/material';
+import { AppBar, Avatar, Box, Button, Link, Menu, Toolbar, Typography, MenuItem, Stack, IconButton } from '@mui/material';
 import Container from '@mui/material/Container';
 import { getDocument } from 'helpers/firestore';
 import { auth } from '../etiFirebase';
@@ -9,15 +9,19 @@ import { SCOPES } from 'helpers/constants/i18n.ts';
 import { PRIVATE_ROUTES, ROUTES } from '../App.js';
 import { useLocation } from 'react-router-dom';
 import { USERS } from 'helpers/firestore/users';
+import MenuIcon from "@mui/icons-material/Menu";
+import UserPanel from 'modules/user/components/panel/userPanel';
+import { useGlobalState } from 'helpers/UserPanelContext';
 
 
 const NewAppBar = () => {
   const [isSignedIn, setIsSignedIn] = useState(!!auth.currentUser); // Local signed-in state.
   const [userData, setUserData] = useState({})
   const [anchorEl, setAnchorEl] = React.useState(null);
+  // const [openDashboard, setOpenDashboard] = useState(false)
   const { t } = useTranslation(SCOPES.COMPONENTS.BAR, { useSuspense: false });
   const { pathname: currentRoute } = useLocation();
-  
+  const { toggleOpen } = useGlobalState()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,6 +51,12 @@ const NewAppBar = () => {
     setAnchorEl(null);
   };
 
+  // const handleOpenDashboard = () => {
+  //   setOpenDashboard(true)
+  // }
+
+
+
 
   return (
 
@@ -65,7 +75,15 @@ const NewAppBar = () => {
         >
        
           <Box
-          sx={{ width: '128px', height: '97px'}}>
+          sx={{ 
+            width: '128px', 
+            height: '97px', 
+            display: {
+              xs: 'none',
+              sm: 'none',
+              lg: 'block'
+            }
+            }}>
             <Link href="/">
               <img
               src="/img/icon/ETILogo.svg"
@@ -74,10 +92,42 @@ const NewAppBar = () => {
             />
             </Link>
           </Box>
+
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick= {() => toggleOpen()}
+            sx={{
+              color: 'white',
+              mr: 2,
+              display: {
+                xs: "flex",
+                sm: "flex",
+                lg: 'none'
+              }
+            }}
+          >
+            <MenuIcon 
+            sx={{
+              height: '32px',
+              width: '32px'
+            }}/>
+          </IconButton>
+        {/* <UserPanel isOpen={openDashboard} ></UserPanel> */}
+
           
           <Box
-            sx={{ flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'flex-end' }}
-            display={'flex'}
+            sx={{ 
+              flexDirection: { xs: 'column', sm: 'row' }, 
+              justifyContent: 'flex-end',
+              display: {
+                xs: 'none',
+                sm: 'none',
+                lg: 'flex'
+              }
+               }}
+            
             id="botonera"
           >
             {isSignedIn ? (
@@ -165,6 +215,27 @@ const NewAppBar = () => {
                 {t('signin').toUpperCase()}
               </Button>
             )}
+          </Box>
+
+          <Box
+          sx={{ 
+            display: {
+              xs: 'block',
+              sm: 'block',
+              lg: 'none'
+            }
+            }}>
+            <Link href="/">
+              <img
+              src="/img/icon/ETILogo.svg"
+              alt="ETI"
+              style={{
+                width: '76px', 
+                height: '64px', 
+              }}  
+              
+            />
+            </Link>
           </Box>
 
          

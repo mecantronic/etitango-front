@@ -3,15 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { UserFullData, UserRolesListData } from 'shared/User';
 import * as firestoreUserHelper from 'helpers/firestore/users';
 import { Box, Button, Typography, CircularProgress } from '@mui/material';
-import { DataGrid, GridColDef, GridToolbarQuickFilter } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridToolbarQuickFilter, GRID_CHECKBOX_SELECTION_COL_DEF } from '@mui/x-data-grid';
 
-const RolesNewEvent = ({ handleClose, selectedRows }: { handleClose: Function, selectedRows: any }) => {
+
+const RolesNewEvent = ({ handleClose, selectedRows, isMobile }: { handleClose: Function, selectedRows: any }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [usuarios, setUsuarios] = useState<UserFullData[]>([]);
     const [selectedUserInfo, setSelectedUserInfo] = React.useState({});
     const [filteredUsuarios, setFilteredUsuarios] = useState<UserFullData[]>([]);
     const [selecteTabledData, setSelectedTableData] = React.useState([]);
-
+    
     useEffect(() => {
         setIsLoading(true);
 
@@ -39,7 +40,28 @@ const RolesNewEvent = ({ handleClose, selectedRows }: { handleClose: Function, s
         setFilteredUsuarios(filteredData);
     }, [usuarios, selectedRows]);
  
- const columns: GridColDef[] = [
+    const columns: GridColDef[] = 
+    isMobile ? 
+    [
+        {
+            field: 'Nombre',
+            flex: 1,
+            headerClassName: 'super-app-theme--header',
+        },
+        {
+            field: 'Email',
+            flex: 1,
+            headerClassName: 'super-app-theme--header',
+        },
+        {
+            ...GRID_CHECKBOX_SELECTION_COL_DEF,
+            width: 50,
+        }
+    ]
+
+    :
+
+    [
         {
             field: 'Nombre',
             width: 150,
@@ -58,7 +80,7 @@ const RolesNewEvent = ({ handleClose, selectedRows }: { handleClose: Function, s
     ];
 
     const getUserDataValues = ({ nameFirst, nameLast, id, email }: UserRolesListData) => {
-        return { id, Email: email, Nombre: nameFirst, Apellido: nameLast };
+        return { id, Email: email, Nombre: isMobile ? `${nameFirst} ${nameLast}` : nameFirst, Apellido: nameLast };
     };
 
     const handleSelectEmails = async () => {

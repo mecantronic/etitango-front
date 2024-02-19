@@ -3,6 +3,10 @@ import React from 'react';
 import { DatePicker } from 'formik-mui-x-date-pickers';
 import { makeStyles } from '@mui/styles';
 import { Field, useField } from 'formik';
+import { format } from 'date-fns';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import EventIcon from '@mui/icons-material/Event'; 
 
 interface Localization {
   title: {
@@ -20,12 +24,16 @@ export const ETIDatePicker = ({
   textFieldProps,
   specialCase,
   borderColor,
+  isMobile,
+  textOfLabel,
 }: {
   fieldName: string;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   textFieldProps: any;
   specialCase: boolean;
   borderColor: boolean;
+  isMobile: boolean;
+  textOfLabel: string;
 }) => {
   const [field] = useField(fieldName);
   const useStyles = makeStyles({
@@ -83,9 +91,13 @@ export const ETIDatePicker = ({
         inputProps={{
           style: {
             fontFamily: 'inter'
-          }
+          },
         }}
+        label={isMobile ? (
+          <span style={{ fontSize: '16px', fontWeight: '600' }}>{textOfLabel}</span>
+        ) : undefined}
         name={fieldName}
+        value={isMobile ? (field.value || format(new Date(), 'dd/MM/yyyy')) : field.value}
         onChange={(value: any) => {
           if (value && value.toDate) {
             setFieldValue(fieldName, value.toDate());
