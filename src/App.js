@@ -37,7 +37,7 @@ import NewFooter from 'components/NewFooter';
 import UserPanel from 'modules/user/components/panel/userPanel';
 import NewEditEvent from 'modules/superAdmin/events/NewEditEvent';
 import EditEvent from 'modules/superAdmin/events/EditEvent';
-import { MobileProvider } from 'helpers/MobileContext';
+import { GlobalStateProvider, useGlobalState } from 'helpers/UserPanelContext';
 i18n
   .use(initReactI18next)
   .use(Backend)
@@ -99,17 +99,20 @@ function App() {
         });
       }, 10000);
     }
+
   };
   return (
     <div className="container">
-      <MobileProvider>
+      <GlobalStateProvider >
         <UserContext.Provider value={{ user, setUser }}>
           <NotificationContext.Provider value={{ notification, setNotification }}>
+        
             <NewAppBar />
             <div className='content'>
               <Notification {...notification} />
               <Routes>
-                <Route path={ROUTES.DASHBOARD} element={<UserPanel />} />
+                <Route path={ROUTES.DASHBOARD} element={<UserPanel />}  />
+           
                 <Route path="historia-del-eti" element={<HistoriaEti />} exact />
                 <Route path="manifiesto-etiano" element={<ManifiestoETiano />} exact />
                 <Route path="comision-de-genero-contact" element={<ComisionGeneroContact />} exact />
@@ -143,9 +146,10 @@ function App() {
               </Routes>
             </div>
             <NewFooter />
+          
           </NotificationContext.Provider>
         </UserContext.Provider>
-      </MobileProvider>
+      </GlobalStateProvider>
     </div>
   );
 }

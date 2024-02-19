@@ -15,7 +15,7 @@ import { ETIDatePicker } from './form/DatePicker';
 import ETITimePicker2 from './ETITimePicker2';
 import { getEvent, getEvents } from 'helpers/firestore/events';
 import { ETIPortada } from './ETIPortada';
-import { MobileContext } from 'helpers/MobileContext';
+import { useGlobalState } from 'helpers/UserPanelContext';
 
 interface ETICombosProps {
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
@@ -36,7 +36,7 @@ interface ETICombosProps {
 
 const ETICombos: React.FC<ETICombosProps> = ({ setFieldValue, selectedEvent, values, errors, touched, setComboValues, EventImage }) => {
 
-  const { isMobile } = useContext(MobileContext)!;
+  const { isMobile } = useGlobalState();
 
   const idEvent = selectedEvent?.id;
   const combos = selectedEvent?.combos

@@ -12,13 +12,12 @@ import ETIDataBanks from 'components/ETIDataBanks.jsx';
 import ETIMercadoPago from 'components/ETIMercadoPago.jsx';
 import ETICombos from 'components/ETICombo';
 import ETIEventDate from 'components/ETIEventDates';
-import { useMediaQuery, Theme } from '@mui/material';
-import { MobileContext } from 'helpers/MobileContext';
+import { useGlobalState } from 'helpers/UserPanelContext';
 import { ETIPortada } from 'components/ETIPortada';
 
 export default function NewEditEvent({ selectedEvent, setChangeEvent2, changeEvent2, setChangeEvent3 }: { selectedEvent: EtiEvent | null, setChangeEvent2: Function, changeEvent2: boolean, setChangeEvent3: Function }) {
 
-  const { isMobile } = useContext(MobileContext)!;
+  const { isMobile } = useGlobalState();
 
   const alertText: string = 'Este campo no puede estar vacío';
   const alerText2: string = 'Tienes cambios que no seran guardados.'
