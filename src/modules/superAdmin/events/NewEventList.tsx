@@ -57,13 +57,13 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
     setAnchorEl(null);
   };
   const handleCloseOptions = () => {
-    setTrashIconMobile(true)
+    setTrashIconMobile(!trashIconMobile);
+    setShowCheckbox(!showCheckbox);
     setAnchorEl(null);
-
   }
   const [trashIconMobile, setTrashIconMobile] = useState(false)
   const [open, setOpen] = React.useState(false)
-  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
   const sortedEvents = [...events].sort((a, b) => {
     const dateA = new Date(a.dateStart).getTime();
     const dateB = new Date(b.dateStart).getTime();
@@ -239,15 +239,15 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
         <Grid item xs={12}>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           
-                {!showCheckbox && userIsSuperAdmin ? (
-                  <Button onClick={() => { setShowCheckbox(!showCheckbox) }}>
+                {userIsSuperAdmin ? (
+                  <Button 
+                  sx={{minWidth: {xs: '0px', md: '0px'}, padding: {xs: '10px 0px 0px 0px', md: '10px 0px 0px 0px'}}}
+                  onClick={handleOpenModal}
+                  >
                     <img src="/img/icon/btnDelete.svg" alt="Icono Trash" />
                   </Button>
-                ) : userIsSuperAdmin ? (
-                  <Button onClick={handleOpenModal}>
-                    <img src="/img/icon/btnTrashWhite.svg" alt="Icono Borrar" />
-                  </Button>
                 ) : null}
+
                 <Modal
                   open={open}
                   onClose={handleCloseModal}
@@ -263,13 +263,14 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
   return (
     <>
       <Box
-        sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto', height: '290px', boxShadow: { xs: 0, sm: 3 }, borderRadius: { xs: '', sm: '12px' }, backgroundColor: { xs: '', sm: '#FFFFFF' } }}
+        sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto', height: trashIconMobile ? '335px' : '290px' , boxShadow: { xs: 0, md: 3 }, borderRadius: { xs: '', md: '12px' }, backgroundColor: { xs: '', md: '#FFFFFF' } }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: { xs: '#4B84DB', sm: '#FFFFFF' }, backgroundColor: { xs: '', sm: '#4B84DB' }, padding: { xs: '', sm: '12px 24px 12px 24px' }, fontWeight: 600, fontSize: '24px', lineHeight: { xs: '', sm: '16px' }, fontFamily: 'Montserrat', height: '40px' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: { xs: '#4B84DB', md: '#FFFFFF' }, backgroundColor: { xs: '', md: '#4B84DB' }, padding: { xs: '', md: '12px 24px 12px 24px' }, fontWeight: 600, fontSize: '24px', lineHeight: { xs: '', md: '16px' }, fontFamily: 'Montserrat', height: '40px' }}>
           ETIs
 
           {isMobile && <Box>
             <Button
+              sx={{minWidth: {xs: '0px', md: '0px'}, padding: {xs: '0px', md: '0px'}}}
               onClick={handleClick}
             >
               <img src="/img/icon/more-circle.svg" alt="DropdownETI" />
@@ -333,8 +334,8 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
           headerHeight={22}
           pageSize={5}
           sx={{
-            m: { xs: '', sm: '20px' },
-            borderColor: { xs: '#ffffff', sm: '' },
+            m: { xs: '', md: '20px' },
+            borderColor: { xs: '#ffffff', md: '' },
             '& .MuiDataGrid-columnHeaders': {
               backgroundColor: '#5FB4FC',
               color: '#FAFAFA',
