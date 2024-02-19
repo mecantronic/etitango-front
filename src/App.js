@@ -38,7 +38,6 @@ import UserPanel from 'modules/user/components/panel/userPanel';
 import NewEditEvent from 'modules/superAdmin/events/NewEditEvent';
 import EditEvent from 'modules/superAdmin/events/EditEvent';
 import { GlobalStateProvider, useGlobalState } from 'helpers/UserPanelContext';
-
 i18n
   .use(initReactI18next)
   .use(Backend)
@@ -105,51 +104,51 @@ function App() {
   return (
     <div className="container">
       <GlobalStateProvider >
-      <UserContext.Provider value={{ user, setUser }}>
-        <NotificationContext.Provider value={{ notification, setNotification }}>
+        <UserContext.Provider value={{ user, setUser }}>
+          <NotificationContext.Provider value={{ notification, setNotification }}>
         
-          <NewAppBar />
-          <div className='content'>
-          <Notification {...notification} />
-          <Routes>
-            <Route path={ROUTES.DASHBOARD} element={<UserPanel />} />
+            <NewAppBar />
+            <div className='content'>
+              <Notification {...notification} />
+              <Routes>
+                <Route path={ROUTES.DASHBOARD} element={<UserPanel />}  />
            
-            <Route path="historia-del-eti" element={<HistoriaEti />} exact />
-            <Route path="manifiesto-etiano" element={<ManifiestoETiano />} exact />
-            <Route path="comision-de-genero-contact" element={<ComisionGeneroContact />} exact />
-            <Route path="comision-de-genero-protocol" element={<ComisionGeneroProtocol />} exact />
-            <Route path="comision-de-genero-who" element={<ComisionGeneroWho />} exact />
-            {/* <Route path="info-general" element={<NewEditEvent />} exact /> */}
-            <Route path={ROUTES.SIGNUP} element={withUserMenu(Inscripcion)()} exact />
-            <Route path={ROUTES.SIGNUPS} element={withUserMenu(SignupList)()} exact />
-            <Route
-              path={ROUTES.ATTENDANCE}
-              element={withUserMenu(SignupList)({ isAttendance: true })}
-              exact
-            />
-            <Route path={ROUTES.SIGN_IN} element={<SignInScreen />} exact />
-            <Route path={ROUTES.SUPERADMIN} element={<SuperAdmin />} />
-            <Route path={`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}`} element={<EventsList />} />
-            {/* <Route path={`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}${ROUTES.EDIT}/:id`} element={<NewEditEvent />} /> */}
-            <Route path={`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}${ROUTES.EDIT}/:id`} element={<EditEvent />} />
-            <Route path={`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}/:id`} element={<NewEvent />} />
-            <Route path={`${ROUTES.SUPERADMIN}${ROUTES.ROLES}`} element={<RolesList />} />
-            <Route path={ROUTES.USER} element={withUserMenu(UserHome)()} />
-            <Route path={`${ROUTES.BANKS}/:id`} element={<Bank />} />
-            <Route path={ROUTES.PROFILE} element={withUserMenu(Profile)()} />
-            <Route path={ROUTES.HOME} element={<Home />} />
-            <Route path={`${ROUTES.SUPERADMIN}${ROUTES.TEMPLATES}`} element={<TemplatesList />} />
-            <Route
-              path={`${ROUTES.SUPERADMIN}${ROUTES.TEMPLATES}/:id`}
-              element={<EditTemplate />}
-            />
-            <Route path={ROUTES.INSTRUCTIONS} element={<Instructions />} />
-          </Routes>
-          </div>
-          <NewFooter />
+                <Route path="historia-del-eti" element={<HistoriaEti />} exact />
+                <Route path="manifiesto-etiano" element={<ManifiestoETiano />} exact />
+                <Route path="comision-de-genero-contact" element={<ComisionGeneroContact />} exact />
+                <Route path="comision-de-genero-protocol" element={<ComisionGeneroProtocol />} exact />
+                <Route path="comision-de-genero-who" element={<ComisionGeneroWho />} exact />
+                {/* <Route path="info-general" element={<NewEditEvent />} exact /> */}
+                <Route path={ROUTES.SIGNUP} element={withUserMenu(Inscripcion)()} exact />
+                <Route path={ROUTES.SIGNUPS} element={withUserMenu(SignupList)()} exact />
+                <Route
+                  path={ROUTES.ATTENDANCE}
+                  element={withUserMenu(SignupList)({ isAttendance: true })}
+                  exact
+                />
+                <Route path={ROUTES.SIGN_IN} element={<SignInScreen />} exact />
+                <Route path={ROUTES.SUPERADMIN} element={<SuperAdmin />} />
+                <Route path={`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}`} element={<EventsList />} />
+                {/* <Route path={`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}${ROUTES.EDIT}/:id`} element={<NewEditEvent />} /> */}
+                <Route path={`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}${ROUTES.EDIT}/:id`} element={<EditEvent />} />
+                <Route path={`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}/:id`} element={<NewEvent />} />
+                <Route path={`${ROUTES.SUPERADMIN}${ROUTES.ROLES}`} element={<RolesList />} />
+                <Route path={ROUTES.USER} element={withUserMenu(UserHome)()} />
+                <Route path={`${ROUTES.BANKS}/:id`} element={<Bank />} />
+                <Route path={ROUTES.PROFILE} element={withUserMenu(Profile)()} />
+                <Route path={ROUTES.HOME} element={<Home />} />
+                <Route path={`${ROUTES.SUPERADMIN}${ROUTES.TEMPLATES}`} element={<TemplatesList />} />
+                <Route
+                  path={`${ROUTES.SUPERADMIN}${ROUTES.TEMPLATES}/:id`}
+                  element={<EditTemplate />}
+                />
+                <Route path={ROUTES.INSTRUCTIONS} element={<Instructions />} />
+              </Routes>
+            </div>
+            <NewFooter />
           
-        </NotificationContext.Provider>
-      </UserContext.Provider>
+          </NotificationContext.Provider>
+        </UserContext.Provider>
       </GlobalStateProvider>
     </div>
   );

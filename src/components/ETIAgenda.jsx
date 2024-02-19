@@ -174,7 +174,7 @@ const ETIAgenda = ( { idEvent, eventData, updateDataAgenda } ) => {
                   <React.Fragment key={index}>
                     <TableRow>
                       <TableCell>
-                        <IconButton size="small" onClick={() => handleClick(index)}>
+                        <IconButton size="small" sx={{color: '#0075D9'}} onClick={() => handleClick(index)}>
                           {open[index] ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
                         </IconButton>
                       </TableCell>
