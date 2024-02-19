@@ -1,29 +1,21 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useContext } from 'react';
-import { Button, Paper, Box, Typography, Grid, PaginationItem, Modal, useMediaQuery, Theme, MenuItem, Menu, IconButton } from '@mui/material';
-import { DataGrid, GridColDef, GridRenderCellParams, DataGridProps, GridCell } from '@mui/x-data-grid';
-import { useTranslation } from 'react-i18next';
-import { SCOPES } from 'helpers/constants/i18n';
+import { Button, Box, Grid, PaginationItem, Modal, useMediaQuery, Theme, MenuItem, Menu } from '@mui/material';
 import { EtiEvent } from 'shared/etiEvent';
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import {
   gridPageCountSelector,
   gridPageSelector,
   useGridApiContext,
   useGridSelector,
-  GridFooterContainer,
-  GridSelectionModel,
-  GRID_CHECKBOX_SELECTION_COL_DEF
+  GRID_CHECKBOX_SELECTION_COL_DEF,
+  DataGrid,
+  GridColDef,
+  GridCell
 } from "@mui/x-data-grid";
 import Pagination from "@mui/material/Pagination";
 import { makeStyles } from '@mui/styles';
-import Checkbox from '@mui/material/Checkbox';
-import { deleteDoc, doc } from 'firebase/firestore';
-import { db } from 'etiFirebase';
 import ETIModalDeleteEvent from 'components/ETIModalDeleteEvent';
-import * as firestoreUserHelper from 'helpers/firestore/users';
-import { UserFullData, UserRolesListData } from 'shared/User';
 import { isSuperAdmin } from 'helpers/firestore/users';
 import { UserContext } from 'helpers/UserContext';
 
@@ -41,12 +33,7 @@ const useStyles = makeStyles({
 
 export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, onDeleteEvent: (id: string) => Promise<void>, onSelectEvent: Function, selectedRows: string[], setSelectedRows: Function }) {
   const { events, isLoading, onDeleteEvent, onSelectEvent, selectedRows, setSelectedRows } = props;
-  // const [selectedRows, setSelectedRows] = useState<string[]>([]);
-  const fields = events[0] ? Object.keys(events[0]) : [];
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [loading, setLoading] = useState(false)
   const [showCheckbox, setShowCheckbox] = useState(false)
-  const [usuarios, setUsuarios] = useState<UserFullData[]>([]);
   const { user } = useContext(UserContext)
   const userIsSuperAdmin = isSuperAdmin(user)
   const [anchorEl, setAnchorEl] = useState(null);
@@ -97,23 +84,6 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
     }
 
   }, [!showCheckbox]);
-
-  useEffect(() => {
-    setLoading(true)
-    let usuarios2: Function;
-
-    const fetchData = async () => {
-      usuarios2 = await firestoreUserHelper.getAllUsers(setUsuarios, setLoading)
-    };
-    fetchData().catch((error) => {
-      console.error(error);
-    });
-    return () => {
-      if (usuarios2) {
-        usuarios2()
-      }
-    };
-  }, []);
 
   const classes = useStyles();
   const columns: GridColDef[] = [
@@ -231,31 +201,31 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
       <Grid container>
         <Grid item xs={6}> {!isMobile && <CustomFooter />}</Grid>
         <Grid item xs={6}>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mr: {xs: 0, md: 2} }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mr: { xs: 0, md: 2 } }}>
             <CustomPagination />
           </Box>
         </Grid>
         {trashIconMobile && (
-        <Grid item xs={12}>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          
-                {userIsSuperAdmin ? (
-                  <Button 
-                  sx={{minWidth: {xs: '0px', md: '0px'}, padding: {xs: '10px 0px 0px 0px', md: '10px 0px 0px 0px'}}}
-                  onClick={handleOpenModal}
-                  >
-                    <img src="/img/icon/btnDelete.svg" alt="Icono Trash" />
-                  </Button>
-                ) : null}
+          <Grid item xs={12}>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
 
-                <Modal
-                  open={open}
-                  onClose={handleCloseModal}
+              {userIsSuperAdmin ? (
+                <Button
+                  sx={{ minWidth: { xs: '0px', md: '0px' }, padding: { xs: '10px 0px 0px 0px', md: '10px 0px 0px 0px' } }}
+                  onClick={handleOpenModal}
                 >
-                  <ETIModalDeleteEvent open={open} handleCloseModal={handleCloseModal} handleDeleteButton={handleDeleteButton} title1={'¿Eliminar elementos seleccionados?'} title2={'Los ETI seleccionados serán eliminados'} />
-                </Modal>          
-          </Box>
-        </Grid> )}
+                  <img src="/img/icon/btnDelete.svg" alt="Icono Trash" />
+                </Button>
+              ) : null}
+
+              <Modal
+                open={open}
+                onClose={handleCloseModal}
+              >
+                <ETIModalDeleteEvent open={open} handleCloseModal={handleCloseModal} handleDeleteButton={handleDeleteButton} title1={'¿Eliminar elementos seleccionados?'} title2={'Los ETI seleccionados serán eliminados'} />
+              </Modal>
+            </Box>
+          </Grid>)}
       </Grid>
     );
   }
@@ -263,14 +233,14 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
   return (
     <>
       <Box
-        sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto', height: trashIconMobile ? '335px' : '290px' , boxShadow: { xs: 0, md: 3 }, borderRadius: { xs: '', md: '12px' }, backgroundColor: { xs: '', md: '#FFFFFF' } }}
+        sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto', height: trashIconMobile ? '335px' : '290px', boxShadow: { xs: 0, md: 3 }, borderRadius: { xs: '', md: '12px' }, backgroundColor: { xs: '', md: '#FFFFFF' } }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: { xs: '#4B84DB', md: '#FFFFFF' }, backgroundColor: { xs: '', md: '#4B84DB' }, padding: { xs: '', md: '12px 24px 12px 24px' }, fontWeight: 600, fontSize: '24px', lineHeight: { xs: '', md: '16px' }, fontFamily: 'Montserrat', height: '40px' }}>
           ETIs
 
           {isMobile && <Box>
             <Button
-              sx={{minWidth: {xs: '0px', md: '0px'}, padding: {xs: '0px', md: '0px'}}}
+              sx={{ minWidth: { xs: '0px', md: '0px' }, padding: { xs: '0px', md: '0px' } }}
               onClick={handleClick}
             >
               <img src="/img/icon/more-circle.svg" alt="DropdownETI" />
@@ -319,7 +289,7 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
                   prevSelectedRows.filter((rowId) => rowId !== selectedEventId)
                 );
               } else {
-                setSelectedRows((prevSelectedRows: string[]) => [selectedEventId]);
+                setSelectedRows([selectedEventId]);
               }
 
               const selectedEvent = events.find((event) => event.id === selectedEventId);
@@ -379,9 +349,7 @@ export function NewEventList(props: { events: EtiEvent[]; isLoading: boolean, on
                 color: '#A82548',
                 backgroundColor: 'transparent',
               },
-
             }
-
           }}
           hideFooterSelectedRowCount={true}
           selectionModel={selectedRows}
