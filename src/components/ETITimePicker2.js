@@ -52,7 +52,7 @@ const ETITimePicker2: React.FC<ETITimePicker2Props> = ({ value, onChange, isDisa
   return (
     <TextField
       label={isMobile ? (
-        <span style={{ fontSize: '16px', fontWeight: '600' }}>A las</span>
+        <span style={{ fontSize: '16px', fontWeight: '700' }}>A las</span>
       ) : undefined}
       type="text"
       value={value}

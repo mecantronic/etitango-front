@@ -7,6 +7,7 @@ import { format } from 'date-fns';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import EventIcon from '@mui/icons-material/Event'; 
+import { Typography } from '@mui/material';
 
 interface Localization {
   title: {
@@ -94,7 +95,7 @@ export const ETIDatePicker = ({
           },
         }}
         label={isMobile ? (
-          <span style={{ fontSize: '16px', fontWeight: '600' }}>{textOfLabel}</span>
+          <Typography sx={{ fontSize: {xs: '12px', lg: '16px'}, fontWeight: {xs: '700', lg: '600'} }}>{textOfLabel}</Typography>
         ) : undefined}
         name={fieldName}
         value={isMobile ? (field.value || format(new Date(), 'dd/MM/yyyy')) : field.value}
