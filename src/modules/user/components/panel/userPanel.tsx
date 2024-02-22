@@ -398,7 +398,7 @@ export default function UserPanel() {
           </Button>
           </Box>
         </Box>
-        <Box sx={{ margin: '0 auto', padding: '40px 0px', }}>
+        <Box sx={{ margin: {xs: '24px', sm: '36px', md: '48px', lg: '0 auto'}, padding: '40px 0px', }}>
           {activeComponent}
         </Box>
       </Box>

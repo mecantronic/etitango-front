@@ -32,8 +32,8 @@ const AddButton = ({ onClick, isMobile }) => (
       color: isMobile ? '#FFFFFF' : '#A82548',
       backgroundColor: isMobile ? '#5FB4FC' : 'transparent',
       display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
+      justifyContent: 'center'
+      
     }}
     onClick={onClick}
   >
@@ -233,8 +233,24 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
           {loading ? (
             <CircularProgress />
           ) : (
-            <Box sx={{ display:'flex', flexDirection: 'column', boxShadow: 3, width: {md: 960, xs: 380, sm: 480}, borderRadius: '12px', overflow: 'auto', backgroundColor: '#FFFFFF' }}>
-              <Box sx={{ color: '#FFFFFF', backgroundColor: '#4B84DB', padding: '12px 24px 12px 24px', fontWeight: 600, fontSize: '24px', lineHeight: '16px', fontFamily: 'Montserrat', height: '40px' }}>
+            <Box sx={{ 
+              display:'flex', 
+              flexDirection: 'column', 
+              boxShadow: {xs: '', md: 3, lg: 3}, 
+              width: { 
+                xs: 380,
+                sm: '100%',
+                md: '100%',
+                lg: 960, 
+              },
+             
+              borderRadius: '12px', 
+              overflow: 'auto', 
+              backgroundColor: '#FFFFFF',
+               
+              }}>
+                
+              <Box sx={{ color: { xs: '#4B84DB', md: '#FFFFFF' }, backgroundColor: { xs: '', md: '#4B84DB' }, padding: {xs: '3px 24px 12px 3px', sm: '12px 24px 12px 24px'}, fontWeight: 600, fontSize: '24px', lineHeight: '16px', fontFamily: 'Montserrat', height: '40px' }}>
                 Nuevo ETI
               </Box>
 
@@ -267,7 +283,7 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                           <Box sx={{ margin: {sm: '20px', xs: 0}, backgroundColor: {xs: '#FFFFFF', sm: '#FAFAFA'}, borderRadius: '12px', p: 2 }}>
 
                             <Grid container gap={2}>
-                              <Typography sx={{ color: '#212121', fontWeight: 500 }}>Nombre para el evento</Typography>
+                              <Typography sx={{ color: '#212121', fontWeight: {xs: 600, md: 500, lg: 500}, fontSize: {xs: '12px', md: '16px', lg: '16px'}, mb: {xs: '-12px', md: ''} }}>Nombre para el evento</Typography>
                               <Grid item md={12} sm={12} xs={12}>
                                 <Field
                                   name="name"
@@ -291,7 +307,9 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                                   specialCase={false}
                                   colorFont={'#424242'}
                                   fontFamily={'Montserrat'}
-                                  fontWeight={500}
+                                  // fontWeight={500}
+                                  fontWeight = {{xs: '600', md: '500', lg: '500'}}
+                                  fontSize= {{xs: '12px', md: '16px', lg: '16px'}}
                                   isDisabled={false}
                                 />
                               </Grid>
@@ -421,7 +439,10 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                                         {admins.map((admin: any, index) => (
                                           <Chip key={index} label={admin.name} onDelete={() => handleDelete(admin.email)} variant="outlined" sx={{ m: 1, borderRadius: '8px', color: '#A82548', fontFamily: 'Roboto', fontWeight: 500, fontSize: '14px' }} />
                                         ))}
-                                      </>) : <Typography sx={{ display: 'flex', alignItems: {xs: 'none', md: 'center'}, ml: 1, color: '#9E9E9E', fontFamily: 'Roboto' }}> Organizadores </Typography>}
+
+
+
+                                      </>) : <Typography sx={{ display: 'flex', alignItems: {xs: 'none', md: 'center'}, ml: 1, color: {xs: '#212121', md: '#9E9E9E'}, fontFamily: 'Roboto', fontSize: {xs: '12px', md: '16px', lg: '16px'}, fontWeight: {xs: 500, lg: 400, md: 400} }}> Organizadores </Typography>}
                                     </Box>
                                     <Grid item sx={{display: {xs: 'none', md: 'flex'}}}>
                                       <AddButton onClick={handleOpen} isMobile={isMobile}/>
@@ -439,6 +460,9 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
                               </Grid>
                             </Grid>
                           </Box>
+                        
+                           {isMobile && <Box sx={{border:'1px solid #E0E0E0', margin: '18px 18px 0px 18px'}}></Box>}
+
                           <Box sx={{ display: 'flex', justifyContent: 'flex-end', margin: '20px' }}>
                             <Button type='submit' disabled={isSubmitting} sx={{ width: {md: '115px', xs: '100%'}, padding: '12px, 32px, 12px, 32px', borderRadius: '25px', backgroundColor: '#A82548', height: '44px', '&:hover': { backgroundColor: '#A82548' } }}>
                               {isLoading ? <CircularProgress sx={{ color: '#ffffff' }} size={30} /> : <Typography sx={{ color: '#FAFAFA', fontWeight: 500, fontSize: '14px', lineHeight: '20px' }}>Crear</Typography>}
