@@ -238,8 +238,9 @@ export default function NewEvent(props: { etiEventId: string, onChange: Function
               flexDirection: 'column', 
               boxShadow: {xs: '', md: 3, lg: 3}, 
               width: { 
-                xs: '100%', 
-                
+                xs: 380,
+                sm: '100%',
+                md: '100%',
                 lg: 960, 
               },
              
