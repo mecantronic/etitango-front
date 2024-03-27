@@ -38,7 +38,8 @@ const rawTheme = createTheme({
       lavender: '#DFEAFF',
       aliceBlue: '#DBEEFF',
       peach: '#FDE4AA',
-      perseanOrange: '#E68650'
+      perseanOrange: '#E68650',
+      uranianBlue: '#C0E5FF',
     },
     status: {
       success: '#91F18B',
@@ -70,6 +71,7 @@ const rawTheme = createTheme({
     fontWeightLight: 300,
     fontWeightRegular: 400,
     fontWeightMedium: 500,
+    fontWeightSemiBold: 600,
     fontWeightBold: 700,
     h1: {
       fontSize: 60
@@ -222,6 +224,29 @@ const rawTheme = createTheme({
         }
       }
     },
+    label: {
+      desktop: {
+        fontFamily: 'Montserrat',
+        fontWeight: 500,
+        fontSize: '16px'
+      },
+      mobile: {
+        fontFamily: 'Montserrat',
+        fontWeight: 600,
+        fontSize: '12px'
+      },
+      button: {
+        fontFamily: 'Montserrat',
+        fontWeight: 500,
+        fontSize: '14px'
+      },
+      mobilePicker: {
+        fontFamily: 'Montserrat',
+        fontWeight: 600,
+        fontSize: '16px'
+      }
+   }, 
+
     body: {
       bold: {
         xl: {
