@@ -21,10 +21,12 @@ import { getDocument } from 'helpers/firestore';
 import { USERS } from 'helpers/firestore/users';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
+import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import { useGlobalState } from 'helpers/UserPanelContext';
 import { UserRoles } from 'shared/User';
 import { fullName } from 'helpers/firestore/users';
 import { ROUTES } from 'App';
+import theme from 'theme';
 
 const EtiAppBar = () => {
   const [isSignedIn, setIsSignedIn] = useState(!!auth.currentUser); // Local signed-in state.
@@ -34,6 +36,14 @@ const EtiAppBar = () => {
   const { toggleOpen } = useGlobalState();
   const name = fullName(userData);
   const isSuperAdmin = userData?.roles?.[UserRoles.SUPER_ADMIN];
+  const [anchorElNavGender, setAnchorElNavGender] = React.useState(null);
+  const openGenderMenu = Boolean(anchorElNavGender);
+  const handleOpenNavGenderMenu = (event) => {
+    setAnchorElNavGender(event.currentTarget);
+  };
+  const handleCloseNavGenderMenu = () => {
+    setAnchorElNavGender(null);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,8 +73,14 @@ const EtiAppBar = () => {
 
   const links = [
     { href: '/historia-del-eti', title: t('history') },
-    { href: '/manifiesto-etiano', title: t('manifest') },
-    { href: '/comision-de-genero-who', title: t('commission') }
+    { href: '/manifiesto-etiano', title: t('manifest') }
+    // { href: '/comision-de-genero-who', title: t('commission') }
+  ];
+
+  const linksGender = [
+    { href: '/comision-de-genero-who', title: t('genderWho') },
+    { href: '/comision-de-genero-protocol', title: t('genderProtocol') },
+    { href: '/comision-de-genero-contact', title: t('genderContact') }
   ];
 
   return (
@@ -138,6 +154,56 @@ const EtiAppBar = () => {
                 {link.title}
               </Link>
             ))}
+            <Button
+              id="gender-button"
+              aria-controls={openGenderMenu ? 'gender-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={openGenderMenu ? 'true' : undefined}
+              onClick={handleOpenNavGenderMenu}
+              sx={{
+                margin: 0,
+                '&:hover': {
+                  backgroundColor: 'transparent'
+                }
+              }}
+            >
+              <Typography typography="body.regular.xl" color="background.white">
+                {t('gender')}
+              </Typography>
+              <KeyboardArrowDownOutlinedIcon
+                sx={{ color: 'background.white' }}
+              ></KeyboardArrowDownOutlinedIcon>
+            </Button>
+            <Menu
+              id="gender-menu"
+              anchorEl={anchorElNavGender}
+              open={openGenderMenu}
+              onClose={handleCloseNavGenderMenu}
+              anchorReference={'anchorEl'}
+              MenuListProps={{
+                'aria-labelledby': 'gender-button'
+              }}
+              PaperProps={{
+                style: {
+                  backgroundColor: theme.palette.details.aliceBlue
+                }
+              }}
+            >
+              {linksGender.map((link) => (
+                <Link
+                  variant="h6"
+                  underline="none"
+                  color="details.frenchBlue"
+                  href={link.href}
+                  sx={{ fontSize: 14 }}
+                  key={link.href}
+                  display="flex"
+                  padding="5px"
+                >
+                  {link.title}
+                </Link>
+              ))}
+            </Menu>
           </Box>
           <Box
             sx={{
