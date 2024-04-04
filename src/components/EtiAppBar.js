@@ -74,7 +74,6 @@ const EtiAppBar = () => {
   const links = [
     { href: '/historia-del-eti', title: t('history') },
     { href: '/manifiesto-etiano', title: t('manifest') }
-    // { href: '/comision-de-genero-who', title: t('commission') }
   ];
 
   const linksGender = [

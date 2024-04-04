@@ -39,7 +39,7 @@ const rawTheme = createTheme({
       aliceBlue: '#DBEEFF',
       peach: '#FDE4AA',
       perseanOrange: '#E68650',
-      uranianBlue: '#C0E5FF',
+      uranianBlue: '#C0E5FF'
     },
     status: {
       success: '#91F18B',
@@ -250,7 +250,7 @@ const rawTheme = createTheme({
         fontWeight: 400,
         fontSize: '14px'
       }
-   }, 
+    },
 
     body: {
       bold: {
