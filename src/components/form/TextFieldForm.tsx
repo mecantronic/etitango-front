@@ -1,5 +1,9 @@
 import { Field, useField } from 'formik';
 import { TextField } from 'formik-mui';
+import { useGlobalState } from 'helpers/UserPanelContext';
+import { Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { SCOPES } from 'helpers/constants/i18n';
 
 export const TextFieldForm = ({
   fieldName,
@@ -8,14 +12,25 @@ export const TextFieldForm = ({
   fieldName: string;
   placeHolder: string;
 }) => {
+  const { isMobile } = useGlobalState();
   const [field] = useField(fieldName);
+  const { t } = useTranslation(SCOPES.MODULES.ETI, { useSuspense: false });
+
   return (
     <Field
       component={TextField}
+      label={
+        isMobile ? (
+          <Typography typography={'label.mobilePicker'} sx={{ color: 'greyScale.800' }}>
+            {t('label.name')}
+          </Typography>
+        ) : null
+      }
       required
       fullWidth
       placeholder={placeHolder}
       name={fieldName}
+      InputLabelProps={{ shrink: true, required: false }}
       sx={{
         '& .MuiOutlinedInput-root': {
           fontFamily: 'roboto',
