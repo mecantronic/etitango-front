@@ -180,7 +180,7 @@ export default function EventForm() {
                             <Grid container gap={2}>
                               <Typography
                                 typography={{ xs: 'label.mobile', md: 'label.desktop' }}
-                                sx={{ color: 'greyScale.800' }}
+                                sx={{ color: 'greyScale.800', display: { xs: 'none', md: 'flex' } }}
                               >
                                 {t('label.name')}
                               </Typography>
@@ -206,7 +206,10 @@ export default function EventForm() {
                               <Grid item md={12} sm={12} xs={12}>
                                 <Typography
                                   typography={{ xs: 'label.mobile', md: 'label.desktop' }}
-                                  sx={{ color: 'greyScale.800' }}
+                                  sx={{
+                                    color: 'greyScale.800',
+                                    display: { xs: 'none', md: 'flex' }
+                                  }}
                                 >
                                   {t('label.dateStart')}
                                 </Typography>
@@ -244,7 +247,10 @@ export default function EventForm() {
                               <Grid item md={12} sm={12} xs={12}>
                                 <Typography
                                   typography={{ xs: 'label.mobile', md: 'label.desktop' }}
-                                  sx={{ color: 'greyScale.800' }}
+                                  sx={{
+                                    color: 'greyScale.800',
+                                    display: { xs: 'none', md: 'flex' }
+                                  }}
                                 >
                                   {t('label.dateEnd')}
                                 </Typography>
@@ -281,7 +287,10 @@ export default function EventForm() {
                               <Grid item lg={4.8} md={12} sm={12} xs={12}>
                                 <Typography
                                   typography={{ xs: 'label.mobile', md: 'label.desktop' }}
-                                  sx={{ color: 'greyScale.800' }}
+                                  sx={{
+                                    color: 'greyScale.800',
+                                    display: { xs: 'none', md: 'flex' }
+                                  }}
                                 >
                                   {t('label.dateSignupOpen')}
                                 </Typography>
@@ -332,7 +341,7 @@ export default function EventForm() {
                                 <Typography
                                   typography={{ xs: 'label.mobile', md: 'label.desktop' }}
                                   sx={{
-                                    display: { xs: 'flex', md: 'flex', lg: 'none' },
+                                    display: { xs: 'none', md: 'flex', lg: 'none' },
                                     color: 'greyScale.800'
                                   }}
                                 >

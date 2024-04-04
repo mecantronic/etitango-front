@@ -232,7 +232,7 @@ const EtiAppBar = () => {
                   <Stack direction="column">
                     <Typography typography="title.regular.h5">{name}</Typography>
                     {isSuperAdmin && (
-                      <Typography typography="title.regular.h6" sx={{ textAlign: 'end' }}>
+                      <Typography typography="label.superAdmin" sx={{ textAlign: 'end' }}>
                         {t('superadmin')}
                       </Typography>
                     )}

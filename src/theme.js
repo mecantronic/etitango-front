@@ -244,6 +244,11 @@ const rawTheme = createTheme({
         fontFamily: 'Montserrat',
         fontWeight: 600,
         fontSize: '16px'
+      },
+      superAdmin: {
+        fontFamily: 'Montserrat',
+        fontWeight: 400,
+        fontSize: '14px'
       }
    }, 
 

@@ -6,6 +6,7 @@ import { FormikValues, useField } from 'formik';
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
 import { SCOPES } from 'helpers/constants/i18n';
 import { useTranslation } from 'react-i18next';
+import { useGlobalState } from 'helpers/UserPanelContext';
 
 export const EtiLocationPicker = ({
   values,
@@ -27,6 +28,7 @@ export const EtiLocationPicker = ({
   const [provinces, setProvinces] = useState<string[]>([]);
   const [cities, setCities] = useState<string[]>([]);
   const { t } = useTranslation(SCOPES.COMMON.FORM, { useSuspense: false });
+  const { isMobile } = useGlobalState();
 
   useEffect(() => {
     const getFormData = async () => {
@@ -83,12 +85,11 @@ export const EtiLocationPicker = ({
   return (
     <Grid container spacing={3}>
       <Grid item md={6} sm={6} xs={6}>
-        <Typography
-          typography={{ xs: 'label.mobile', md: 'label.desktop' }}
-          style={{ color: colorFont }}
-        >
-          {t('province')}
-        </Typography>
+        {!isMobile ? (
+          <Typography typography={{ md: 'label.desktop' }} style={{ color: colorFont }}>
+            {t('province')}
+          </Typography>
+        ) : null}
         <Autocomplete
           disablePortal
           fullWidth
@@ -106,24 +107,31 @@ export const EtiLocationPicker = ({
               helperText={touched['province'] && errors['province']}
               variant="outlined"
               placeholder={t('province')}
+              label={
+                isMobile ? (
+                  <Typography typography={'label.mobilePicker'} sx={{ color: 'greyScale.800' }}>
+                    {t('province')}
+                  </Typography>
+                ) : null
+              }
               InputProps={{
                 ...params.InputProps,
                 startAdornment: <FmdGoodOutlinedIcon sx={{ color: 'principal.secondary' }} />
               }}
               sx={{
-                ...inputStyle
+                ...inputStyle,
+                mt: { xs: 2, md: 0 }
               }}
             />
           )}
         />
       </Grid>
       <Grid item md={6} sm={6} xs={6}>
-        <Typography
-          typography={{ xs: 'label.mobile', md: 'label.desktop' }}
-          style={{ color: colorFont }}
-        >
-          {t('city')}
-        </Typography>
+        {!isMobile ? (
+          <Typography typography={{ md: 'label.desktop' }} style={{ color: colorFont }}>
+            {t('city')}
+          </Typography>
+        ) : null}
         <Autocomplete
           disablePortal
           fullWidth
@@ -141,12 +149,20 @@ export const EtiLocationPicker = ({
               helperText={touched['city'] && errors['city']}
               variant="outlined"
               placeholder={t('city')}
+              label={
+                isMobile ? (
+                  <Typography typography={'label.mobilePicker'} sx={{ color: 'greyScale.800' }}>
+                    {t('city')}
+                  </Typography>
+                ) : null
+              }
               InputProps={{
                 ...params.InputProps,
                 startAdornment: <FmdGoodOutlinedIcon sx={{ color: 'principal.secondary' }} />
               }}
               sx={{
-                ...inputStyle
+                ...inputStyle,
+                mt: { xs: 2, md: 0 }
               }}
             />
           )}

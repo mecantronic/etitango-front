@@ -1,6 +1,10 @@
 import React from 'react';
 import { DatePicker } from 'formik-mui-x-date-pickers';
 import { Field, useField } from 'formik';
+import { Typography } from '@mui/material';
+import { useGlobalState } from 'helpers/UserPanelContext';
+import { useTranslation } from 'react-i18next';
+import { SCOPES } from 'helpers/constants/i18n';
 
 export const ETIDatePicker = ({
   fieldName,
@@ -12,7 +16,10 @@ export const ETIDatePicker = ({
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   textFieldProps: any;
 }) => {
+  const { isMobile } = useGlobalState();
   const [field] = useField(fieldName);
+  const { t } = useTranslation(SCOPES.MODULES.ETI, { useSuspense: false });
+
   const inputStyle = {
     '& .MuiOutlinedInput-root': {
       fontFamily: 'roboto',
@@ -52,9 +59,23 @@ export const ETIDatePicker = ({
       <Field
         component={DatePicker}
         disablePast
+        label={
+          isMobile ? (
+            <Typography typography={'label.mobilePicker'} sx={{ color: 'greyScale.800' }}>
+              {fieldName === 'dateStart'
+                ? t('label.dateStart')
+                : fieldName === 'dateEnd'
+                ? t('label.dateEnd')
+                : fieldName === 'dateSignupOpen'
+                ? t('label.dateSignupOpen')
+                : t('label.dateEnd')}
+            </Typography>
+          ) : null
+        }
         textField={{
           ...textFieldProps,
           sx: inputStyle,
+          InputLabelProps: { shrink: true },
           onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => {
             e.preventDefault();
           }
