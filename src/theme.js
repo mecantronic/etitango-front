@@ -39,7 +39,8 @@ const rawTheme = createTheme({
       aliceBlue: '#DBEEFF',
       peach: '#FDE4AA',
       perseanOrange: '#E68650',
-      uranianBlue: '#C0E5FF'
+      uranianBlue: '#C0E5FF',
+      folly: '#EE4254'
     },
     status: {
       success: '#91F18B',

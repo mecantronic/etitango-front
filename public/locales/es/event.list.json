@@ -1,1 +1,13 @@
-{}
+{
+    "eti": "ETIs",
+    "title": "¿Eliminar elementos seleccionados?",
+    "subtitle": "Los ETI seleccionados serán eliminados",
+    "name": "Nombre",
+    "date": "Fecha",
+    "delete": "Eliminar",
+    "notEvents": "No hay eventos creados",
+    "remove": "Borrar", 
+    "cancel": "Cancelar"
+
+
+}
