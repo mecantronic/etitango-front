@@ -19,12 +19,12 @@ const EventsList = ({ idNewEventCreate }: { idNewEventCreate: string }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const evts = await firestoreEventHelper.getEvents();
-      setEvents(evts);
-      if (evts.length > 0) {
-        const orderedEvents = evts.sort((a: any, b: any) => b.dateStart - a.dateStart);
+      const event = await firestoreEventHelper.getEvents();
+      setEvents(event);
+      if (event.length > 0) {
+        const orderedEvents = event.sort((a: any, b: any) => b.dateStart - a.dateStart);
         const lastEvent = orderedEvents[0];
-        const selectedEvent = evts.find((element) => element.id === idNewEventCreate) || lastEvent;
+        const selectedEvent = event.find((element) => element.id === idNewEventCreate) || lastEvent;
         setEventData(selectedEvent);
         setSelectedRows([selectedEvent.id]);
       } else {
@@ -58,7 +58,7 @@ const EventsList = ({ idNewEventCreate }: { idNewEventCreate: string }) => {
           display: 'flex',
           flexDirection: 'column',
           width: { xs: '100%', lg: 960 },
-          textAlign: 'center'
+          
         }}
       >
         {events.length > 0 ? (
@@ -73,7 +73,7 @@ const EventsList = ({ idNewEventCreate }: { idNewEventCreate: string }) => {
             />
           </>
         ) : (
-          <Typography typography="title.semiBold.h3">{t('notEvents')}</Typography>
+          <Typography sx={{textAlign: 'center'}} typography="title.semiBold.h3">{t('notEvents')}</Typography>
         )}
       </Box>
     </>

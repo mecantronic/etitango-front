@@ -114,15 +114,13 @@ export function EventListTable(props: {
       field: isMobile ? 'name' : 'dateStart',
       headerName: isMobile ? t('name') : t('date'),
       width: 250,
-      flex: isTablet ? 1 : 0, 
-      cellClassName: 'custom-date-cell'
+      flex: isTablet ? 1 : 0
     },
     {
       field: isMobile ? 'dateStart' : 'name',
       headerName: isMobile ? t('date') : t('name'),
       width: 600,
-      flex: isTablet ? 1 : 0,
-      cellClassName: 'custom-date-cell'
+      flex: isTablet ? 1 : 0
     },
     {
       ...GRID_CHECKBOX_SELECTION_COL_DEF,
@@ -163,12 +161,14 @@ export function EventListTable(props: {
           <Button onClick={() => setShowCheckbox(!showCheckbox)}>
             <DeleteIcon sx={{ color: 'status.error', height: '32px', width: '32px' }}></DeleteIcon>
           </Button>
-        ) : userIsSuperAdmin && (
-          <Button onClick={handleOpenModal}>
-            <DeleteForeverIcon
-              sx={{ color: 'status.error', height: '32px', width: '32px' }}
-            ></DeleteForeverIcon>
-          </Button>
+        ) : (
+          userIsSuperAdmin && (
+            <Button onClick={handleOpenModal}>
+              <DeleteForeverIcon
+                sx={{ color: 'status.error', height: '32px', width: '32px' }}
+              ></DeleteForeverIcon>
+            </Button>
+          )
         )}
         <Modal open={open} onClose={() => handleCloseModal()}>
           <ETIModalDeleteEvent
@@ -232,7 +232,7 @@ export function EventListTable(props: {
         {trashIconMobile && (
           <Grid item xs={12}>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              {(userIsSuperAdmin && isMobile) && (
+              {userIsSuperAdmin && isMobile && (
                 <Button
                   sx={{
                     minWidth: { xs: '0px', md: '0px' },
@@ -263,7 +263,6 @@ export function EventListTable(props: {
 
   return (
     <>
-    
       <Box
         sx={{
           display: 'flex',
@@ -306,8 +305,7 @@ export function EventListTable(props: {
             </Box>
           )}
         </Box>
-        
-      
+
         <DataGrid
           className={classes.root}
           rows={sortedEvents.map(getEtiEventValues)}
@@ -349,8 +347,8 @@ export function EventListTable(props: {
           }}
           rowsPerPageOptions={[5]}
           getRowId={(row) => row.id}
-          rowHeight={isMobile ? 38 : 25.2}
-          headerHeight={30}
+          rowHeight={isMobile ? 25 : 24}
+          headerHeight={28}
           pageSize={5}
           sx={{
             m: { xs: '', md: '20px' },
@@ -360,8 +358,7 @@ export function EventListTable(props: {
               color: 'greyScale.50',
               fontSize: '16px',
               lineHeight: '16px',
-              fontFamily: 'Montserrat',
-              fontWeight: 600
+              fontFamily: 'Montserrat'
             },
             '& .MuiDataGrid-row': {
               ...(!showCheckbox && {
@@ -384,13 +381,15 @@ export function EventListTable(props: {
             '& .MuiDataGrid-row:nth-of-type(even)': {
               backgroundColor: 'details.aliceBlue'
             },
+            '& .MuiDataGrid-cellContent[name]': {
+              fontWeight: 500
+            },
             '& .MuiDataGrid-cellContent': {
               color: 'details.frenchBlue',
               fontSize: '16px',
               lineHeight: '16px',
               fontFamily: 'roboto',
-              fontWeight: 400,
-             
+              fontWeight: 400
             },
             '& .css-1yi8l0w-MuiButtonBase-root-MuiCheckbox-root': {
               color: 'details.folly',
@@ -401,7 +400,16 @@ export function EventListTable(props: {
                 backgroundColor: 'transparent'
               }
             },
-            '&, [class^=MuiDataGrid]': { border: 'none' }
+            '&, [class^=MuiDataGrid]': { border: 'none' },
+            '&>.MuiDataGrid-main': {
+              '&>.MuiDataGrid-columnHeaders': {
+                borderBottom: 'none'
+              },
+
+              '& div div div div >.MuiDataGrid-cell': {
+                borderBottom: 'none'
+              }
+            }
           }}
           hideFooterSelectedRowCount={true}
           selectionModel={selectedRows}
@@ -409,11 +417,7 @@ export function EventListTable(props: {
             setSelectedRows(newSelection as string[]);
           }}
         />
-   
-        
-        
       </Box>
-      
     </>
   );
 }
