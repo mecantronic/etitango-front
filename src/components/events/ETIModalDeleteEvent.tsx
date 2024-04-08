@@ -73,7 +73,7 @@ const ETIModalDeleteEvent = ({
           <Box sx={{ justifyContent: 'center' }}>
             <Button
               sx={{
-                color: 'white',
+                color: 'background.white',
                 backgroundColor: 'principal.secondary',
                 '&:hover': { backgroundColor: 'principal.secondary' },
                 height: '44px',
