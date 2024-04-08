@@ -33,6 +33,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import { useTranslation } from 'react-i18next';
 import { SCOPES } from 'helpers/constants/i18n';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 const useStyles = makeStyles({
   root: {
@@ -297,8 +298,9 @@ export function EventListTable(props: {
                 <MoreHorizOutlinedIcon sx={{ color: 'details.azure' }}> </MoreHorizOutlinedIcon>
               </Button>
               <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-                <MenuItem onClick={handleCloseOptions}>
-                  <Typography typography="label.button">{t('delete')}</Typography>
+                <MenuItem onClick={handleCloseOptions} sx={{height: '24px', width: '141px'}}>
+                  <DeleteOutlineOutlinedIcon sx={{ color: 'principal.secondary', marginRight: '8px'}}/>
+                  <Typography sx={{color: 'details.frenchBlue'}} typography="label.menuDelete">{t('delete')}</Typography>
                 </MenuItem>
               </Menu>
             </Box>

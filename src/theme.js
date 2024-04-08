@@ -241,6 +241,11 @@ const rawTheme = createTheme({
         fontWeight: 500,
         fontSize: '14px'
       },
+      menuDelete: {
+        fontFamily: 'Montserrat',
+        fontWeight: 600,
+        fontSize: '14px'
+      },
       mobilePicker: {
         fontFamily: 'Montserrat',
         fontWeight: 600,
