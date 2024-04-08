@@ -237,17 +237,19 @@ export function EventListTable(props: {
         {trashIconMobile && userIsSuperAdmin && (
           <Grid item xs={12}>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Button
-                sx={{
-                  minWidth: { xs: '0px', md: '0px' },
-                  padding: { xs: '10px 0px 0px 0px', md: '10px 0px 0px 0px' }
-                }}
-                onClick={handleOpenModal}
-              >
-                <DeleteIcon
-                  sx={{ color: 'status.error', height: '32px', width: '32px' }}
-                ></DeleteIcon>
-              </Button>
+              {userIsSuperAdmin && isMobile && (
+                <Button
+                  sx={{
+                    minWidth: { xs: '0px', md: '0px' },
+                    padding: { xs: '10px 0px 0px 0px', md: '10px 0px 0px 0px' }
+                  }}
+                  onClick={handleOpenModal}
+                >
+                  <DeleteIcon
+                    sx={{ color: 'status.error', height: '32px', width: '32px' }}
+                  ></DeleteIcon>
+                </Button>
+              )}
 
               <Modal open={open} onClose={handleCloseModal}>
                 <ETIModalDeleteEvent
