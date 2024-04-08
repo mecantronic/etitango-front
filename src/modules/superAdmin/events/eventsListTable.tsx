@@ -73,7 +73,6 @@ export function EventListTable(props: {
   const [trashIconMobile, setTrashIconMobile] = useState(false);
   const [open, setOpen] = React.useState(false);
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
-  const isTablet = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const sortedEvents = [...events].sort((a, b) => {
     const dateA = new Date(a.dateStart).getTime();
     const dateB = new Date(b.dateStart).getTime();
@@ -113,14 +112,14 @@ export function EventListTable(props: {
       field: isMobile ? 'name' : 'dateStart',
       headerName: isMobile ? t('name') : t('date'),
       width: 250,
-      flex: isTablet ? 1 : 0, 
+      flex: isMobile ? 1 : 0,
       cellClassName: 'custom-date-cell'
     },
     {
       field: isMobile ? 'dateStart' : 'name',
       headerName: isMobile ? t('date') : t('name'),
       width: 600,
-      flex: isTablet ? 1 : 0,
+      flex: isMobile ? 1 : 0,
       cellClassName: 'custom-date-cell'
     },
     {
@@ -262,7 +261,6 @@ export function EventListTable(props: {
 
   return (
     <>
-    
       <Box
         sx={{
           display: 'flex',
@@ -304,8 +302,7 @@ export function EventListTable(props: {
             </Box>
           )}
         </Box>
-        
-      
+
         <DataGrid
           className={classes.root}
           rows={sortedEvents.map(getEtiEventValues)}
@@ -387,8 +384,7 @@ export function EventListTable(props: {
               fontSize: '16px',
               lineHeight: '16px',
               fontFamily: 'roboto',
-              fontWeight: 400,
-             
+              fontWeight: 400
             },
             '& .css-1yi8l0w-MuiButtonBase-root-MuiCheckbox-root': {
               color: 'details.folly',
@@ -398,8 +394,7 @@ export function EventListTable(props: {
                 color: 'principal.secondary',
                 backgroundColor: 'transparent'
               }
-            },
-            '&, [class^=MuiDataGrid]': { border: 'none' }
+            }
           }}
           hideFooterSelectedRowCount={true}
           selectionModel={selectedRows}
@@ -407,11 +402,7 @@ export function EventListTable(props: {
             setSelectedRows(newSelection as string[]);
           }}
         />
-   
-        
-        
       </Box>
-      
     </>
   );
 }
