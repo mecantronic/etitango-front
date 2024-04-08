@@ -161,13 +161,13 @@ export function EventListTable(props: {
           <Button onClick={() => setShowCheckbox(!showCheckbox)}>
             <DeleteIcon sx={{ color: 'status.error', height: '32px', width: '32px' }}></DeleteIcon>
           </Button>
-        ) : userIsSuperAdmin ? (
+        ) : userIsSuperAdmin && (
           <Button onClick={handleOpenModal}>
             <DeleteForeverIcon
               sx={{ color: 'status.error', height: '32px', width: '32px' }}
             ></DeleteForeverIcon>
           </Button>
-        ) : null}
+        )}
         <Modal open={open} onClose={() => handleCloseModal()}>
           <ETIModalDeleteEvent
             handleCloseModal={handleCloseModal}
@@ -230,7 +230,7 @@ export function EventListTable(props: {
         {trashIconMobile && (
           <Grid item xs={12}>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              {userIsSuperAdmin && isMobile ? (
+              {(userIsSuperAdmin && isMobile) && (
                 <Button
                   sx={{
                     minWidth: { xs: '0px', md: '0px' },
@@ -242,7 +242,7 @@ export function EventListTable(props: {
                     sx={{ color: 'status.error', height: '32px', width: '32px' }}
                   ></DeleteIcon>
                 </Button>
-              ) : null}
+              )}
 
               <Modal open={open} onClose={handleCloseModal}>
                 <ETIModalDeleteEvent
@@ -344,8 +344,8 @@ export function EventListTable(props: {
           }}
           rowsPerPageOptions={[5]}
           getRowId={(row) => row.id}
-          rowHeight={isMobile ? 35 : 22}
-          headerHeight={22}
+          rowHeight={isMobile ? 38 : 28}
+          headerHeight={30}
           pageSize={5}
           sx={{
             m: { xs: '', md: '20px' },

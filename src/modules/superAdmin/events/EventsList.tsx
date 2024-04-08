@@ -57,7 +57,8 @@ const EventsList = ({ idNewEventCreate }: { idNewEventCreate: string }) => {
           margin: 'auto',
           display: 'flex',
           flexDirection: 'column',
-          width: { xs: '100%', lg: 960 }
+          width: { xs: '100%', lg: 960 },
+          textAlign: 'center'
         }}
       >
         {events.length > 0 ? (
