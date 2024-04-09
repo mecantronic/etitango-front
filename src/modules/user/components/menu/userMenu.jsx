@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ROUTES } from 'App.js';
 import { isUserDataComplete } from '../../../../helpers/validators';
@@ -19,6 +19,7 @@ import { Alert } from '../../../../components/alert/Alert';
 import { useGlobalState } from 'helpers/UserPanelContext';
 import { styles } from './userMenu.styles';
 import { getMenuItems } from './MenuItems';
+import { EventContext } from 'helpers/EventContext';
 
 export const UserMenu = (props) => {
   const { toggleOpen } = useGlobalState();
@@ -33,6 +34,7 @@ export const UserMenu = (props) => {
   const { userData, isSignedIn } = props;
   const userIsAdmin = userData.roles?.admin;
   const userIsSuperAdmin = userData.roles?.superadmin;
+  const { idNewEvent } = useContext(EventContext);
   const menuItems = getMenuItems();
   const checkUserData = () => {
     if (isUserDataComplete(userData)) {
@@ -42,13 +44,23 @@ export const UserMenu = (props) => {
     }
   };
 
+  useEffect(() => {
+    if (idNewEvent) {
+      toggleSubMenu(tBar('etis'));
+      handleClickSubMenu(tBar('generalInfo'), tBar('etis'));
+    }
+  }, [idNewEvent]);
+
   const toggleSubMenu = (name) => {
+    console.log('toglesubmenu', name);
     setSelectedIndexMenu(name);
     setSelectedIndexSubMenu('');
     setOpenSubMenus((prevState) => ({ ...prevState, [name]: !prevState[name] }));
   };
 
   const handleClickSubMenu = (indexSubMenuName, indexMenuName) => {
+    console.log('indexSubMenuName -> ', indexSubMenuName);
+    console.log('indexMenuName -> ', indexMenuName);
     setSelectedIndexSubMenu(indexSubMenuName);
     setSelectedIndexMenu(indexMenuName);
   };
