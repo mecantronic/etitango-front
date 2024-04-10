@@ -46,11 +46,11 @@ const ETIModalDeleteEvent = ({
         </Box>
 
         <Box sx={{ borderBottom: '1px solid #E0E0E0', width: '100%' }}></Box>
-        {!isMobile && 
+        {!isMobile && (
           <Box sx={{ mt: 2 }}>
             <Typography typography="body.regular.l">{subtitle}</Typography>
           </Box>
-        }
+        )}
 
         <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between', width: '65%' }}>
           <Box>
