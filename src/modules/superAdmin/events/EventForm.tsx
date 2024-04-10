@@ -125,10 +125,10 @@ export default function EventForm() {
         const selectedEmails = admins.map((admin: any) => admin.email);
         const validateRuote: RegExp = /^[a-zA-Z0-9]{20,}$/;
         const idV: boolean = validateRuote.test(id);
-        const idEvento = await createOrUpdateDoc('events', values, id === 'new' ? undefined : idV);
-        await assignEventAdmin(selectedEmails, idEvento);
+        const eventId = await createOrUpdateDoc('events', values, id === 'new' ? undefined : idV);
+        await assignEventAdmin(selectedEmails, eventId);
         setIsLoading(false);
-        setIdNewEvent(idEvento);
+        setIdNewEvent(eventId);
         navigate(`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}`);
       } else {
         setIsLoading(false);

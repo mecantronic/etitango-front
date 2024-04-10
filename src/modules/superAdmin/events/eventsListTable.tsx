@@ -34,6 +34,7 @@ import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import { useTranslation } from 'react-i18next';
 import { SCOPES } from 'helpers/constants/i18n';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import theme from 'theme';
 
 const useStyles = makeStyles({
   root: {
@@ -193,7 +194,10 @@ export function EventListTable(props: {
         color="secondary"
         count={pageCount}
         page={page + 1}
-        sx={{ mt: 2 }}
+        sx={{
+          mt: 2,
+          height: isMobile ? (trashIconMobile ? '31px' : '45px') : userIsSuperAdmin ? '0' : '35px'
+        }}
         onChange={(e, value) => apiRef.current.setPage(value - 1)}
         renderItem={(item) => (
           <PaginationItem
@@ -230,22 +234,20 @@ export function EventListTable(props: {
             <CustomPagination />
           </Box>
         </Grid>
-        {trashIconMobile && (
+        {trashIconMobile && userIsSuperAdmin && (
           <Grid item xs={12}>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              {userIsSuperAdmin && isMobile && (
-                <Button
-                  sx={{
-                    minWidth: { xs: '0px', md: '0px' },
-                    padding: { xs: '10px 0px 0px 0px', md: '10px 0px 0px 0px' }
-                  }}
-                  onClick={handleOpenModal}
-                >
-                  <DeleteIcon
-                    sx={{ color: 'status.error', height: '32px', width: '32px' }}
-                  ></DeleteIcon>
-                </Button>
-              )}
+              <Button
+                sx={{
+                  minWidth: { xs: '0px', md: '0px' },
+                  padding: { xs: '10px 0px 0px 0px', md: '10px 0px 0px 0px' }
+                }}
+                onClick={handleOpenModal}
+              >
+                <DeleteIcon
+                  sx={{ color: 'status.error', height: '32px', width: '32px' }}
+                ></DeleteIcon>
+              </Button>
 
               <Modal open={open} onClose={handleCloseModal}>
                 <ETIModalDeleteEvent
@@ -269,7 +271,7 @@ export function EventListTable(props: {
           display: 'flex',
           flexDirection: 'column',
           overflow: 'auto',
-          height: trashIconMobile ? '335px' : '290px',
+          height: isMobile ? (trashIconMobile ? '390px' : '355px') : '290px',
           boxShadow: { xs: 0, md: 3 },
           borderRadius: { xs: '', md: '12px' },
           backgroundColor: 'background.white',
@@ -289,7 +291,7 @@ export function EventListTable(props: {
         >
           <Typography typography="title.semiBold.h4">{t('eti')}</Typography>
 
-          {isMobile && (
+          {isMobile && userIsSuperAdmin && (
             <Box>
               <Button
                 sx={{ minWidth: { xs: '0px', md: '0px' }, padding: { xs: '0px', md: '0px' } }}
@@ -352,9 +354,9 @@ export function EventListTable(props: {
           }}
           rowsPerPageOptions={[5]}
           getRowId={(row) => row.id}
-          rowHeight={isMobile ? 25 : 24}
+          rowHeight={isMobile ? 32 : 24}
           headerHeight={28}
-          pageSize={5}
+          pageSize={isMobile ? 6 : 5}
           sx={{
             m: { xs: '', md: '20px' },
             borderColor: { xs: 'background.white', md: '' },
@@ -368,7 +370,7 @@ export function EventListTable(props: {
             '& .MuiDataGrid-row': {
               ...(!showCheckbox && {
                 '&.Mui-selected': {
-                  border: '2px solid #A82548',
+                  border: `2px solid ${theme.palette.principal.secondary}`,
                   backgroundColor: 'inherit',
                   width: { xs: '98.9%', sm: '99.4%', lg: '99.6%' }
                 }

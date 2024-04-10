@@ -406,6 +406,12 @@ const theme = {
       ...rawTheme.palette.background,
       default: '#ffffff',
       placeholder: grey[200]
+    },
+    greyScale: {
+      ...rawTheme.palette.greyScale
+    },
+    principal: {
+      ...rawTheme.palette.principal
     }
   }
 };
