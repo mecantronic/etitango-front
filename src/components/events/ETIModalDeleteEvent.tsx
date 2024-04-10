@@ -99,4 +99,6 @@ const ETIModalDeleteEvent = React.forwardRef(
   }
 );
 
+ETIModalDeleteEvent.displayName = 'ETIModalDeleteEvent';
+
 export default ETIModalDeleteEvent;
