@@ -10,12 +10,15 @@ import { Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { SCOPES } from 'helpers/constants/i18n';
 import { EventContext } from 'helpers/EventContext';
+import EditEvent from './EditEvent';
 
 const EventsList = () => {
   const [events, setEvents] = useState<EtiEvent[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [eventData, setEventData] = useState<EtiEvent | null>(null);
+  const [changeEvent2, setChangeEvent2] = useState(false)
+  const [changeEvent3, setChangeEvent3] = useState(false)
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const { t } = useTranslation(SCOPES.MODULES.EVENT_LIST, { useSuspense: false });
   const { idNewEvent } = useContext(EventContext);
@@ -72,6 +75,9 @@ const EventsList = () => {
               selectedRows={selectedRows}
               setSelectedRows={setSelectedRows}
             />
+            <Box sx={{mt: 5}}>
+              <EditEvent selectedEvent={eventData} setChangeEvent2={setChangeEvent2} changeEvent2={changeEvent2} setChangeEvent3={setChangeEvent3} ></EditEvent>
+            </Box>
           </>
         ) : (
           <Typography sx={{ textAlign: 'center' }} typography="title.semiBold.h3">
