@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { CircularProgress, Grid, Box, Typography, Modal, Chip } from '@mui/material';
 import WithAuthentication from '../../withAuthentication';
 import { Translation } from 'react-i18next';
@@ -20,6 +20,7 @@ import { ETIDatePicker } from 'components/form/DatePicker';
 import { EtiLocationPicker } from 'components/form/EtiLocationPicker';
 import { AddButton } from 'components/button/AddButton';
 import { useTranslation } from 'react-i18next';
+import { EventContext } from 'helpers/EventContext';
 
 export default function EventForm() {
   const { id } = useParams();
@@ -115,6 +116,8 @@ export default function EventForm() {
     }
   };
 
+  const { setIdNewEvent } = useContext(EventContext);
+
   const handleCreateEvent = async (values: any, setSubmitting: Function) => {
     try {
       setIsLoading(true);
@@ -122,9 +125,10 @@ export default function EventForm() {
         const selectedEmails = admins.map((admin: any) => admin.email);
         const validateRuote: RegExp = /^[a-zA-Z0-9]{20,}$/;
         const idV: boolean = validateRuote.test(id);
-        const idEvento = await createOrUpdateDoc('events', values, id === 'new' ? undefined : idV);
-        await assignEventAdmin(selectedEmails, idEvento);
+        const eventId = await createOrUpdateDoc('events', values, id === 'new' ? undefined : idV);
+        await assignEventAdmin(selectedEmails, eventId);
         setIsLoading(false);
+        setIdNewEvent(eventId);
         navigate(`${ROUTES.SUPERADMIN}${ROUTES.EVENTS}`);
       } else {
         setIsLoading(false);

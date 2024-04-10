@@ -39,7 +39,8 @@ const rawTheme = createTheme({
       aliceBlue: '#DBEEFF',
       peach: '#FDE4AA',
       perseanOrange: '#E68650',
-      uranianBlue: '#C0E5FF'
+      uranianBlue: '#C0E5FF',
+      folly: '#EE4254'
     },
     status: {
       success: '#91F18B',
@@ -240,6 +241,11 @@ const rawTheme = createTheme({
         fontWeight: 500,
         fontSize: '14px'
       },
+      menuDelete: {
+        fontFamily: 'Montserrat',
+        fontWeight: 600,
+        fontSize: '14px'
+      },
       mobilePicker: {
         fontFamily: 'Montserrat',
         fontWeight: 600,
@@ -400,6 +406,12 @@ const theme = {
       ...rawTheme.palette.background,
       default: '#ffffff',
       placeholder: grey[200]
+    },
+    greyScale: {
+      ...rawTheme.palette.greyScale
+    },
+    principal: {
+      ...rawTheme.palette.principal
     }
   }
 };
