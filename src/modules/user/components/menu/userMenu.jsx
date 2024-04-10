@@ -45,22 +45,19 @@ export const UserMenu = (props) => {
   };
 
   useEffect(() => {
-    if (idNewEvent) {
+    if (idNewEvent && openSubMenus[tBar('etis')] !== true) {
       toggleSubMenu(tBar('etis'));
-      handleClickSubMenu(tBar('generalInfo'), tBar('etis'));
     }
+    handleClickSubMenu(tBar('generalInfo'), tBar('etis'));
   }, [idNewEvent]);
 
   const toggleSubMenu = (name) => {
-    console.log('toglesubmenu', name);
     setSelectedIndexMenu(name);
     setSelectedIndexSubMenu('');
     setOpenSubMenus((prevState) => ({ ...prevState, [name]: !prevState[name] }));
   };
 
   const handleClickSubMenu = (indexSubMenuName, indexMenuName) => {
-    console.log('indexSubMenuName -> ', indexSubMenuName);
-    console.log('indexMenuName -> ', indexMenuName);
     setSelectedIndexSubMenu(indexSubMenuName);
     setSelectedIndexMenu(indexMenuName);
   };
