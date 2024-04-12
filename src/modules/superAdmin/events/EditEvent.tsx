@@ -81,7 +81,9 @@ export default function EditEvent({
                             height: step === circle ? '18px' : '10px',
                             borderRadius: '50%',
                             backgroundColor:
-                              step === circle ? 'details.perseanOrange' : 'greyScale.400',
+                              step === circle
+                                ? `${theme.palette.details.perseanOrange}`
+                                : `${theme.palette.greyScale[400]}`,
                             marginRight: '8px',
                             marginBottom: '16px'
                           }}
@@ -146,7 +148,9 @@ export default function EditEvent({
                         height: step === circle ? '18px' : '10px',
                         borderRadius: '50%',
                         backgroundColor:
-                          step === circle ? 'details.perseanOrange' : 'greyScale.400',
+                          step === circle
+                            ? `${theme.palette.details.perseanOrange}`
+                            : `${theme.palette.greyScale[400]}`,
                         marginRight: '8px',
                         marginBottom: '16px'
                       }}
@@ -206,7 +210,9 @@ export default function EditEvent({
                         height: step === circle ? '18px' : '10px',
                         borderRadius: '50%',
                         backgroundColor:
-                          step === circle ? 'details.perseanOrange' : 'greyScale.400',
+                          step === circle
+                            ? `${theme.palette.details.perseanOrange}`
+                            : `${theme.palette.greyScale[400]}`,
                         marginRight: '8px',
                         marginBottom: '16px'
                       }}
