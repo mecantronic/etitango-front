@@ -412,6 +412,9 @@ const theme = {
     },
     principal: {
       ...rawTheme.palette.principal
+    },
+    details: {
+      ...rawTheme.palette.details
     }
   }
 };

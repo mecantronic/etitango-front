@@ -3,13 +3,17 @@
       "name": "Nuevo ETI",
       "date": "dd-mm-yy",
       "hour": "hh:mm",
-      "organizers": "Organizadores"
+      "organizers": "Organizadores",
+      "noAdmins": "En este evento no se han añadido administradores."
     },
     "label": {
         "name": "Nombre para el evento",
         "dateStart": "Desde el",
         "dateEnd": "Hasta el",
         "dateSignupOpen": "Inicio de inscripciones",
+        "inscriptions": "Inscripciones",
+        "until": "Hasta",
+        "from": "Desde",
         "dateSignupEnd": "hasta el",
         "time": "a las",
         "timeSignupEnd": "hasta las",
@@ -23,7 +27,10 @@
     },
     "addButton": "Agregar",
     "createButton": "Crear",
+    "saveButton": "Guardar",
+    "savedButton": "Guardado",
     "milongas": "Dos Milongas",
     "assembly": "Asamblea Etiana",
-    "farewellLunch": "Comida de despedida"
+    "farewellLunch": "Comida de despedida",
+    "titleInfoGeneral": "Información general"
   }
