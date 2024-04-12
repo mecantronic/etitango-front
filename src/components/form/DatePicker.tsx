@@ -5,19 +5,21 @@ import { Typography } from '@mui/material';
 import { useGlobalState } from 'helpers/UserPanelContext';
 import { useTranslation } from 'react-i18next';
 import { SCOPES } from 'helpers/constants/i18n';
+import theme from 'theme';
 
 export const ETIDatePicker = ({
   fieldName,
   setFieldValue,
   textFieldProps,
-  borderColor
+  borderColor,
+  isDisabled
 }: {
   fieldName: string;
   // eslint-disable-next-line no-unused-vars
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   textFieldProps: any;
-
-  borderColor: boolean
+  isDisabled: boolean;
+  borderColor: boolean;
 }) => {
   const { isMobile } = useGlobalState();
   const [field] = useField(fieldName);
@@ -30,23 +32,35 @@ export const ETIDatePicker = ({
       flexDirection: 'row-reverse',
       padding: '2px',
       '& fieldset': {
-        borderColor: borderColor ? (field.value ? 'details.perseanOrange' : 'details.peach') : 'transparent',
+        borderColor: borderColor
+          ? field.value
+            ? 'details.perseanOrange'
+            : 'details.peach'
+          : 'transparent',
         borderRadius: '8px',
         borderWidth: '1.5px',
         pointerEvents: 'none'
       },
       '&:hover fieldset ': {
-        borderColor: borderColor ? (field.value ? 'details.perseanOrange' : 'details.peach') : 'transparent',
+        borderColor: borderColor
+          ? field.value
+            ? 'details.perseanOrange'
+            : 'details.peach'
+          : 'transparent',
         borderRadius: '8px',
         pointerEvents: 'none'
       },
       '&.Mui-focused fieldset': {
-        borderColor: borderColor ? (field.value ? 'details.perseanOrange' : 'details.peach') : 'transparent',
+        borderColor: borderColor
+          ? field.value
+            ? 'details.perseanOrange'
+            : 'details.peach'
+          : 'transparent',
         borderRadius: '8px',
         pointerEvents: 'none'
       },
       '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: borderColor ? (field.value ? 'details.perseanOrange' : 'details.peach') : 'transparent',
+        border: borderColor ? `1px solid ${theme.palette.details.perseanOrange}` : 'none'
       },
       '& .MuiIconButton-root': {
         color: 'principal.secondary'
@@ -61,7 +75,7 @@ export const ETIDatePicker = ({
     <div style={containerStyle}>
       <Field
         component={DatePicker}
-        disablePast
+        disabled={isDisabled}
         label={
           isMobile ? (
             <Typography typography={'label.mobilePicker'} sx={{ color: 'greyScale.800' }}>

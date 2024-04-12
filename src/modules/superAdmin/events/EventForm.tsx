@@ -192,7 +192,7 @@ export default function EventForm() {
                                 <TextFieldForm
                                   fieldName="name"
                                   placeHolder={t('placeholders.name')}
-                                  isDisabled={true}
+                                  isDisabled={false}
                                 />
                               </Grid>
 
@@ -225,6 +225,7 @@ export default function EventForm() {
                                       fieldName="dateStart"
                                       setFieldValue={setFieldValue}
                                       borderColor={true}
+                                      isDisabled={false}
                                     />
                                   </Grid>
                                   <Typography
@@ -246,6 +247,7 @@ export default function EventForm() {
                                       error={touched['timeStart'] && !!errors['timeStart']}
                                       helperText={touched['timeStart'] && errors['timeStart']}
                                       borderColor={true}
+                                      isDisabled={false}
                                     />
                                   </Grid>
                                 </Grid>
@@ -268,6 +270,7 @@ export default function EventForm() {
                                       fieldName="dateEnd"
                                       setFieldValue={setFieldValue}
                                       borderColor={true}
+                                      isDisabled={false}
                                     />
                                   </Grid>
                                   <Typography
@@ -288,6 +291,7 @@ export default function EventForm() {
                                       error={touched['timeEnd'] && !!errors['timeEnd']}
                                       helperText={touched['timeEnd'] && errors['timeEnd']}
                                       borderColor={true}
+                                      isDisabled={false}
                                     />
                                   </Grid>
                                 </Grid>
@@ -310,6 +314,7 @@ export default function EventForm() {
                                       fieldName="dateSignupOpen"
                                       setFieldValue={setFieldValue}
                                       borderColor={true}
+                                      isDisabled={false}
                                     />
                                   </Grid>
                                   <Typography
@@ -336,6 +341,7 @@ export default function EventForm() {
                                         touched['timeSignupOpen'] && errors['timeSignupOpen']
                                       }
                                       borderColor={true}
+                                      isDisabled={false}
                                     />
                                   </Grid>
                                 </Grid>
@@ -377,6 +383,7 @@ export default function EventForm() {
                                       fieldName="dateSignupEnd"
                                       setFieldValue={setFieldValue}
                                       borderColor={true}
+                                      isDisabled={false}
                                     />
                                   </Grid>
                                   <Typography
@@ -413,6 +420,7 @@ export default function EventForm() {
                                         touched['timeSignupEnd'] && errors['timeSignupEnd']
                                       }
                                       borderColor={true}
+                                      isDisabled={false}
                                     />
                                   </Grid>
                                 </Grid>

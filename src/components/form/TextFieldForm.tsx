@@ -29,7 +29,7 @@ export const TextFieldForm = ({
         ) : null
       }
       required
-      isDisabled={isDisabled}
+      disabled={isDisabled}
       fullWidth
       placeholder={placeHolder}
       name={fieldName}

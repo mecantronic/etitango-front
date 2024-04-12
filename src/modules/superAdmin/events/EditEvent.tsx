@@ -9,28 +9,32 @@ import { useTranslation } from 'react-i18next';
 import { SCOPES } from 'helpers/constants/i18n';
 import theme from 'theme';
 
-export default function EditEvent({ selectedEvent, setChangeEvent2 }: { selectedEvent: EtiEvent | null, setChangeEvent2: Function }) {
-
+export default function EditEvent({
+  selectedEvent,
+  setChangeEvent
+}: {
+  selectedEvent: EtiEvent | null;
+  setChangeEvent: Function;
+}) {
   const { isMobile } = useGlobalState();
   const { t } = useTranslation(SCOPES.MODULES.EVENT_LIST, { useSuspense: false });
 
-  useEffect(() => {
-  }, [selectedEvent])
+  useEffect(() => {}, [selectedEvent]);
 
   const scrollbarStyles = {
     overflowY: 'auto',
     '&::-webkit-scrollbar': {
-      width: '8px',
+      width: '8px'
     },
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: 'details.uranianBlue',
-      borderRadius: '12px',
+      borderRadius: '12px'
     },
     '&::-webkit-scrollbar-track': {
       backgroundColor: 'transparent',
       boxShadow: '1px 0px 2px 0px #6695B7',
-      borderRadius: '12px',
-    },
+      borderRadius: '12px'
+    }
   };
 
   const [step, setStep] = useState(1);
@@ -39,7 +43,7 @@ export default function EditEvent({ selectedEvent, setChangeEvent2 }: { selected
     if (isMobile) {
       setStep(step + 1);
     }
-  }
+  };
 
   const buttonText = step === 1 ? t('start') : step === 2 ? t('next') : t('next');
 
@@ -52,7 +56,7 @@ export default function EditEvent({ selectedEvent, setChangeEvent2 }: { selected
               <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
                 <Box sx={{ display: 'flex', ...scrollbarStyles, flexDirection: 'column' }}>
                   <Box sx={{ width: '100%' }}>
-                    <ETIEventDate selectedEvent={selectedEvent} changeEvent={setChangeEvent2} />
+                    <ETIEventDate selectedEvent={selectedEvent} changeEvent={setChangeEvent} />
                   </Box>
                   <Box
                     sx={{
@@ -66,7 +70,7 @@ export default function EditEvent({ selectedEvent, setChangeEvent2 }: { selected
                         display: 'flex',
                         justifyContent: 'center',
                         flexDirection: 'row',
-                        alignItems: 'center',
+                        alignItems: 'center'
                       }}
                     >
                       {[1, 2, 3].map((circle) => (
@@ -76,9 +80,10 @@ export default function EditEvent({ selectedEvent, setChangeEvent2 }: { selected
                             width: step === circle ? '18px' : '10px',
                             height: step === circle ? '18px' : '10px',
                             borderRadius: '50%',
-                            backgroundColor: step === circle ? '#E68650' : '#BDBDBD',
+                            backgroundColor:
+                              step === circle ? 'details.perseanOrange' : 'greyScale.400',
                             marginRight: '8px',
-                            marginBottom: '16px',
+                            marginBottom: '16px'
                           }}
                         />
                       ))}
@@ -93,12 +98,12 @@ export default function EditEvent({ selectedEvent, setChangeEvent2 }: { selected
                         onClick={() => handleNextStep()}
                         sx={{
                           width: '85%',
-                      	padding: '12px, 32px, 12px, 32px',
-                      	borderRadius: '25px',
-                      backgroundColor: 'principal.secondary',
-                      color: 'background.white',
-                      height: '44px',
-                      '&:hover': { backgroundColor: 'principal.secondary' },
+                          padding: '12px, 32px, 12px, 32px',
+                          borderRadius: '25px',
+                          backgroundColor: 'principal.secondary',
+                          color: 'background.white',
+                          height: '44px',
+                          '&:hover': { backgroundColor: 'principal.secondary' }
                         }}
                       >
                         {buttonText}
@@ -111,13 +116,18 @@ export default function EditEvent({ selectedEvent, setChangeEvent2 }: { selected
 
             {step === 2 && (
               <>
-                <Box sx={{ border: `1px solid ${theme.palette.greyScale[300]}`, marginLeft: '20px', marginRight: '20px' }}></Box>
+                <Box
+                  sx={{
+                    border: `1px solid ${theme.palette.greyScale[300]}`,
+                    marginLeft: '20px',
+                    marginRight: '20px'
+                  }}
+                ></Box>
 
                 <Box sx={{ display: 'flex', justifyContent: 'center', height: '250px' }}>
-                  <Typography sx={{ mt: 12 }} variant="h3" textAlign={'center'}>
+                  <Typography sx={{ mt: 12 }} typography={'title.bold.h3'} textAlign={'center'}>
                     Tablas
                   </Typography>
-                  
                 </Box>
                 <Box
                   sx={{
@@ -135,7 +145,8 @@ export default function EditEvent({ selectedEvent, setChangeEvent2 }: { selected
                         width: step === circle ? '18px' : '10px',
                         height: step === circle ? '18px' : '10px',
                         borderRadius: '50%',
-                        backgroundColor: step === circle ? '#E68650' : '#BDBDBD',
+                        backgroundColor:
+                          step === circle ? 'details.perseanOrange' : 'greyScale.400',
                         marginRight: '8px',
                         marginBottom: '16px'
                       }}
@@ -153,7 +164,7 @@ export default function EditEvent({ selectedEvent, setChangeEvent2 }: { selected
                       backgroundColor: 'principal.secondary',
                       color: 'background.white',
                       height: '44px',
-                      '&:hover': { backgroundColor: 'principal.secondary' },
+                      '&:hover': { backgroundColor: 'principal.secondary' }
                     }}
                   >
                     {buttonText}
@@ -164,64 +175,81 @@ export default function EditEvent({ selectedEvent, setChangeEvent2 }: { selected
 
             {step === 3 && (
               <>
-              <Box sx={{ border: `1px solid ${theme.palette.greyScale[300]}`, marginLeft: '20px', marginRight: '20px' }}></Box>
-          
-              <Box sx={{ display: 'flex', justifyContent: 'center', height: '250px' }}>
-                <Typography sx={{ mt: 12 }} variant="h3" textAlign={'center'}>
-                  Combos
-                </Typography>
-              </Box>
-          
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  mb: 2
-                }}
-              >
-                {[1, 2, 3].map((circle) => (
-                  <div
-                    key={circle}
-                    style={{
-                      width: step === circle ? '18px' : '10px',
-                      height: step === circle ? '18px' : '10px',
-                      borderRadius: '50%',
-                      backgroundColor: step === circle ? '#E68650' : '#BDBDBD',
-                      marginRight: '8px',
-                      marginBottom: '16px'
-                    }}
-                  />
-                ))}
-              </Box>
-          
-              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                <Button
-                  onClick={() => handleNextStep()}
+                <Box
                   sx={{
-                    width: '85%',
+                    border: `1px solid ${theme.palette.greyScale[300]}`,
+                    marginLeft: '20px',
+                    marginRight: '20px'
+                  }}
+                ></Box>
+
+                <Box sx={{ display: 'flex', justifyContent: 'center', height: '250px' }}>
+                  <Typography sx={{ mt: 12 }} typography={'title.bold.h3'} textAlign={'center'}>
+                    Combos
+                  </Typography>
+                </Box>
+
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    mb: 2
+                  }}
+                >
+                  {[1, 2, 3].map((circle) => (
+                    <div
+                      key={circle}
+                      style={{
+                        width: step === circle ? '18px' : '10px',
+                        height: step === circle ? '18px' : '10px',
+                        borderRadius: '50%',
+                        backgroundColor:
+                          step === circle ? 'details.perseanOrange' : 'greyScale.400',
+                        marginRight: '8px',
+                        marginBottom: '16px'
+                      }}
+                    />
+                  ))}
+                </Box>
+
+                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                  <Button
+                    onClick={() => handleNextStep()}
+                    sx={{
+                      width: '85%',
                       padding: '12px, 32px, 12px, 32px',
                       borderRadius: '25px',
                       backgroundColor: 'principal.secondary',
                       color: 'background.white',
                       height: '44px',
-                      '&:hover': { backgroundColor: 'principal.secondary' },
-                  }}
-                >
-                  {buttonText}
-                </Button>
-              </Box>
-            </>
+                      '&:hover': { backgroundColor: 'principal.secondary' }
+                    }}
+                  >
+                    {buttonText}
+                  </Button>
+                </Box>
+              </>
             )}
           </div>
         </>
       ) : (
         <>
-          <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto', boxShadow: 3, borderRadius: '12px', backgroundColor: 'background.white', marginX: { xs: '20px', lg: 0 } }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              overflow: 'auto',
+              boxShadow: 3,
+              borderRadius: '12px',
+              backgroundColor: 'background.white',
+              marginX: { xs: '20px', lg: 0 }
+            }}
+          >
             <Box sx={{ display: 'flex', ...scrollbarStyles, flexDirection: 'column' }}>
               <Box sx={{ width: '100%' }}>
-                <ETIEventDate selectedEvent={selectedEvent} changeEvent={setChangeEvent2} />
+                <ETIEventDate selectedEvent={selectedEvent} changeEvent={setChangeEvent} />
               </Box>
             </Box>
           </Box>
