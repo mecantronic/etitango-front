@@ -11,10 +11,11 @@ interface ETITimePickerProps {
   onChange: Function;
   error?: boolean | undefined;
   helperText?: any;
+  borderColor : boolean; 
 }
 
 export const ETITimePicker = (props: ETITimePickerProps) => {
-  const { value, onChange, error, helperText } = props;
+  const { value, onChange, error, helperText, borderColor } = props;
   const { t } = useTranslation(SCOPES.MODULES.ETI, { useSuspense: false });
   const { isMobile } = useGlobalState();
   const handleInputChange = (event: any) => {
@@ -83,7 +84,7 @@ export const ETITimePicker = (props: ETITimePickerProps) => {
           width: { sm: '100%', md: '104px' },
           '& fieldset': {
             borderRadius: '8px',
-            borderColor: value ? 'details.perseanOrange' : 'details.peach',
+            borderColor: borderColor ? (value ? 'details.perseanOrange' : 'details.peach') : 'transparent',
             borderWidth: 1
           },
           '&:hover fieldset': {

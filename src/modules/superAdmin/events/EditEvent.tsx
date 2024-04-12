@@ -222,19 +222,20 @@ export default function EditEvent({ selectedEvent, setChangeEvent2, changeEvent2
       {isMobile ? (
         <>
           {step === 1 && (
-            <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto', boxShadow: 3, borderRadius: '12px', backgroundColor: '#FFFFFF' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
               <Box sx={{ display: 'flex', ...scrollbarStyles, flexDirection: 'column' }}>
                 <Box sx={{ width: '100%' }}>
                   <ETIEventDate selectedEvent={selectedEvent} changeEvent={setChangeEvent2} />
                 </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', margin: '20px' }}>
+                <Box sx={{ width: '100%',display: 'flex', justifyContent: 'center', mb: 2 }}>
                   <Button
                     onClick={() => handleNextStep()}
                     sx={{
-                      width: '115px',
+                      width: '85%',
                       padding: '12px, 32px, 12px, 32px',
                       borderRadius: '25px',
                       backgroundColor: '#A82548',
+                      color: 'white',
                       height: '44px',
                       '&:hover': { backgroundColor: '#A82548' },
                     }}
@@ -249,167 +250,52 @@ export default function EditEvent({ selectedEvent, setChangeEvent2, changeEvent2
           {step === 2 && (
             <>
               <Box sx={{ border: '1px solid #E0E0E0', marginLeft: '20px', marginRight: '20px' }}></Box>
-              <Grid container>
-                <Formik
-                  enableReinitialize
-                  initialValues={{
-                    firstPay: selectedEvent?.firstPay || undefined,
-                    firstDatePay: selectedEvent?.firstDatePay || null,
-                    firstTimePay: selectedEvent?.firstTimePay || undefined,
-                    secondPay: selectedEvent?.secondPay || undefined,
-                    secondDatePay: selectedEvent?.secondDatePay || null,
-                    secondTimePay: selectedEvent?.secondTimePay || undefined,
-                    refundDeadline: selectedEvent?.refundDeadline || null,
-                    timeRefundDeadline: selectedEvent?.timeRefundDeadline || undefined,
-                    limitParticipants: selectedEvent?.limitParticipants || undefined,
-                    host: selectedEvent?.host || null,
-                    bankData: selectedEvent?.bankData || null,
-                    mercadoPagoLink: selectedEvent?.mercadoPagoLink || null
-                  }}
-                  validationSchema={EventFormSchema}
-                  onSubmit={async (values, { setSubmitting }) => {
 
-                    await handleCreateEvent(values, setSubmitting)
-                  }}
-                >
-                  {({ setFieldValue, values, errors, isSubmitting, touched }) => (
-                    <Form>
-                      <Box sx={{ margin: '0px 20px 0px 20px', backgroundColor: '#FAFAFA', borderRadius: '0px 0px 12px 12px', p: 2 }}>
-                        <Grid container spacing={2}>
-                          {/* <Grid item md={12} sm={12} xs={12}>
-                            <ETIAgenda idEvent={idEvent} eventData={selectedEvent} updateDataAgenda={setUpdateAgenda} />
-                          </Grid>
-
-                          <Grid item md={12} sm={12} xs={12}>
-                            <ETIAlojamiento idEvent={idEvent} event={selectedEvent} updateAlojamientoData={updateAlojamientoData} isEditingRows={setIsEditingAlojamiento} />
-                          </Grid>
-
-                          <Grid item md={12} sm={12} xs={12}>
-                            <ETIDataBanks idEvent={idEvent} event={selectedEvent} dataBanks={updateDataBanks} isEditingRows={setIsEditingDataBanks} />
-                          </Grid>
-
-                          <Grid item md={12} sm={12} xs={12}>
-                            <ETIMercadoPago idEvent={idEvent} event={selectedEvent} dataMP={updateDataMP} isEditingRows={setIsEditingDataMP} />
-                          </Grid> */}
-
-                        </Grid>
-                      </Box>
-                    </Form>
-                  )}
-                </Formik>
-              </Grid>
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end', margin: '20px' }}>
-                <Button
-                  onClick={() => handleNextStep()}
-                  sx={{
-                    width: '115px',
-                    padding: '12px, 32px, 12px, 32px',
-                    borderRadius: '25px',
-                    backgroundColor: '#A82548',
-                    height: '44px',
-                    '&:hover': { backgroundColor: '#A82548' },
-                  }}
-                >
-                  {buttonText}
-                </Button>
+             <Box sx={{ display: 'flex', justifyContent:'center', height: '250px'}}>
+              <Typography sx={{ mt: 12}}variant='h3' textAlign={'center'}>Tablas</Typography>
+             </Box>
+             
+              <Box sx={{ width: '100%',display: 'flex', justifyContent: 'center', mb: 2 }}>
+                  <Button
+                    onClick={() => handleNextStep()}
+                    sx={{
+                      width: '85%',
+                      padding: '12px, 32px, 12px, 32px',
+                      borderRadius: '25px',
+                      backgroundColor: '#A82548',
+                      color: 'white',
+                      height: '44px',
+                      '&:hover': { backgroundColor: '#A82548' },
+                    }}
+                  >
+                    {buttonText}
+                  </Button>
               </Box>
             </>
           )}
 
           {step === 3 && (
-            <Grid item md={12} sm={12} xs={12} sx={{ margin: '0px 20px 0px 20px', p: 2 }}>
-              {/* <Formik
-                enableReinitialize
-                initialValues={{
-                  firstPay: selectedEvent?.firstPay || undefined,
-                  firstDatePay: selectedEvent?.firstDatePay || null,
-                  firstTimePay: selectedEvent?.firstTimePay || undefined,
-                  secondPay: selectedEvent?.secondPay || undefined,
-                  secondDatePay: selectedEvent?.secondDatePay || null,
-                  secondTimePay: selectedEvent?.secondTimePay || undefined,
-                  refundDeadline: selectedEvent?.refundDeadline || null,
-                  timeRefundDeadline: selectedEvent?.timeRefundDeadline || undefined,
-                  limitParticipants: selectedEvent?.limitParticipants || undefined,
-                  alojamiento: selectedEvent?.alojamiento || null,
-                  datosBancarios: selectedEvent?.datosBancarios || null,
-                  linkMercadoPago: selectedEvent?.linkMercadoPago || null
-                }}
-                validationSchema={EventFormSchema}
-                onSubmit={async (values, { setSubmitting }) => {
+           <>
+           <Box sx={{ border: '1px solid #E0E0E0', marginLeft: '20px', marginRight: '20px' }}></Box>
 
-                  await handleCreateEvent(values, setSubmitting)
-                }}
-              >
-                {({ setFieldValue, values, errors, isSubmitting, touched }) => (
-                 
-                )}
-              </Formik> */}
-                  <Box sx={{ display: 'flex', justifyContent: 'flex-end', margin: '20px' }}>
-                    <Button
-                      onClick={() => handleNextStep()}
-                      sx={{
-                        width: '115px',
-                        padding: '12px, 32px, 12px, 32px',
-                        borderRadius: '25px',
-                        backgroundColor: '#A82548',
-                        height: '44px',
-                        '&:hover': { backgroundColor: '#A82548' },
-                      }}
-                    >
-                      {buttonText}
-                    </Button>
-                  </Box>
-            </Grid>
+           <Box sx={{ display: 'flex', justifyContent:'center', height: '250px'}}>
+            <Typography sx={{ mt: 12}}variant='h3' textAlign={'center'}>Combos</Typography>
+           </Box>
+              </>
           )}
 
-          {step === 4 && (
-            <Grid item md={12} sm={12} xs={12} sx={{ margin: '0px 20px 0px 20px', p: 2 }}>
-              <Formik
-                enableReinitialize
-                initialValues={{
-                  firstPay: selectedEvent?.firstPay || undefined,
-                  firstDatePay: selectedEvent?.firstDatePay || null,
-                  firstTimePay: selectedEvent?.firstTimePay || undefined,
-                  secondPay: selectedEvent?.secondPay || undefined,
-                  secondDatePay: selectedEvent?.secondDatePay || null,
-                  secondTimePay: selectedEvent?.secondTimePay || undefined,
-                  refundDeadline: selectedEvent?.refundDeadline || null,
-                  timeRefundDeadline: selectedEvent?.timeRefundDeadline || undefined,
-                  limitParticipants: selectedEvent?.limitParticipants || undefined,
-                  host: selectedEvent?.host || null,
-                  bankData: selectedEvent?.bankData || null,
-                  mercadoPagoLink: selectedEvent?.mercadoPagoLink || null
-                }}
-                validationSchema={EventFormSchema}
-                onSubmit={async (values, { setSubmitting }) => {
 
-                  await handleCreateEvent(values, setSubmitting)
-                }}
-              >
-                {({ setFieldValue, values, errors, isSubmitting, touched }) => (
-                  <Form>
-                    {/* <ETIPortada selectedEvent={selectedEvent} EventImage={setEventImage} /> */}
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', margin: '20px' }}>
-                      <Button type='submit' disabled={isSubmitting} sx={{ width: '115px', padding: '12px, 32px, 12px, 32px', borderRadius: '25px', backgroundColor: '#A82548', height: '44px', '&:hover': { backgroundColor: '#A82548' } }}>
-                        {isLoading ? <CircularProgress sx={{ color: '#ffffff' }} size={30} /> : <><Typography sx={{ color: '#FAFAFA', fontWeight: 500, fontSize: '14px', lineHeight: '20px' }}>{showSuccessImage ? 'Guardado' : 'Guardar'}</Typography>{showSuccessImage && <img src={'/img/icon/Vector.svg'} height={15} width={15} style={{ marginLeft: '10px' }} />}</>}
-                      </Button>
-                    </Box>
-                  </Form>
-                )}
-              </Formik>
-
-            </Grid>
-          )}
 
         </>
       ) : (
 
         <>
-          <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto', boxShadow: 3, borderRadius: '12px', backgroundColor: '#FFFFFF' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto', boxShadow: 3, borderRadius: '12px', backgroundColor: '#FFFFFF', marginX: { xs: '20px', lg: 0 } }}>
             <Box sx={{ display: 'flex', ...scrollbarStyles, flexDirection: 'column' }}>
               <Box sx={{ width: '100%' }}>
                 <ETIEventDate selectedEvent={selectedEvent} changeEvent={setChangeEvent2} />
               </Box>
+              
               {/* <Box sx={{ border: '1px solid #E0E0E0', marginLeft: '20px', marginRight: '20px' }}></Box>
               <Grid container >
                 <Formik

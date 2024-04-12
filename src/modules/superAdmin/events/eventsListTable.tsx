@@ -277,7 +277,8 @@ export function EventListTable(props: {
           boxShadow: { xs: 0, md: 3 },
           borderRadius: { xs: '', md: '12px' },
           backgroundColor: 'background.white',
-          marginX: { xs: '20px', lg: 0 }
+          marginX: { xs: '20px', lg: 0 },
+          marginY: '20px' 
         }}
       >
         <Box

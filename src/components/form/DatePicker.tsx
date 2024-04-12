@@ -9,12 +9,15 @@ import { SCOPES } from 'helpers/constants/i18n';
 export const ETIDatePicker = ({
   fieldName,
   setFieldValue,
-  textFieldProps
+  textFieldProps,
+  borderColor
 }: {
   fieldName: string;
   // eslint-disable-next-line no-unused-vars
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   textFieldProps: any;
+
+  borderColor: boolean
 }) => {
   const { isMobile } = useGlobalState();
   const [field] = useField(fieldName);
@@ -27,23 +30,23 @@ export const ETIDatePicker = ({
       flexDirection: 'row-reverse',
       padding: '2px',
       '& fieldset': {
-        borderColor: field.value ? 'details.perseanOrange' : 'details.peach',
+        borderColor: borderColor ? (field.value ? 'details.perseanOrange' : 'details.peach') : 'transparent',
         borderRadius: '8px',
         borderWidth: '1.5px',
         pointerEvents: 'none'
       },
       '&:hover fieldset ': {
-        borderColor: field.value ? 'details.perseanOrange' : 'details.peach',
+        borderColor: borderColor ? (field.value ? 'details.perseanOrange' : 'details.peach') : 'transparent',
         borderRadius: '8px',
         pointerEvents: 'none'
       },
       '&.Mui-focused fieldset': {
-        borderColor: field.value ? 'details.perseanOrange' : 'details.peach',
+        borderColor: borderColor ? (field.value ? 'details.perseanOrange' : 'details.peach') : 'transparent',
         borderRadius: '8px',
         pointerEvents: 'none'
       },
       '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: field.value ? 'details.perseanOrange' : 'details.peach'
+        borderColor: borderColor ? (field.value ? 'details.perseanOrange' : 'details.peach') : 'transparent',
       },
       '& .MuiIconButton-root': {
         color: 'principal.secondary'

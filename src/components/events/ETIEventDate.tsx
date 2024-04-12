@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Box, Button, Chip, Grid, Modal, Typography } from "@mui/material";
+import { Box, Button, Chip, Grid, Modal, Typography, useMediaQuery, Theme, CircularProgress } from "@mui/material";
 import { Field, Form, Formik } from 'formik';
 import { createOrUpdateDoc } from "helpers/firestore";
 import { useContext, useEffect, useState } from "react";
@@ -16,6 +16,12 @@ import { EtiLocationPicker } from "components/form/EtiLocationPicker";
 import { ETITimePicker } from "components/form/EtiTimePicker";
 import { ETIDatePicker } from "components/form/DatePicker";
 import { assignEventAdmin, unassignEventAdmins } from "helpers/firestore/users";
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import { TextFieldForm } from "components/form/TextFieldForm";
+import { useGlobalState } from "helpers/UserPanelContext";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { AddButton } from "components/button/AddButton";
+import { styles } from "modules/superAdmin/events/EventForm.styles";
 
 interface Admin {
   name: string;
@@ -24,9 +30,13 @@ interface Admin {
 export default function ETIEventDate({ selectedEvent, changeEvent }: { selectedEvent: EtiEvent | null, changeEvent: Function }) {
   // const [showAdmins, setShowAdmins] = useState(false)
   const idEvent = selectedEvent?.id
+  const {isMobile} = useGlobalState()
+  
   const [event, setEvent] = useState<EtiEvent>();
+  const [showSuccessImage, setShowSuccessImage] = useState(false);
   const { user } = useContext(UserContext)
   const userIsSuperAdmin = isSuperAdmin(user)
+  const isMedium = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const [enable, setEnable] = useState(false)
   const alertText: string = 'Este campo no puede estar vacío';
   const EventFormSchema = object({
@@ -51,7 +61,7 @@ export default function ETIEventDate({ selectedEvent, changeEvent }: { selectedE
   });
   const [open, setOpen] = useState(false);
   const [users, setUsers] = useState<UserFullData[]>([]);
-  const [IsLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [admins, setAdmins] = useState<Admin[]>([]);
   const [adminsToDelete, setAdminsToDelete] = useState<string[]>([]);
   const handleOpen = () => setOpen(true);
@@ -238,16 +248,16 @@ export default function ETIEventDate({ selectedEvent, changeEvent }: { selectedE
           await handleEditDataEvent(values);
         }}
       >
-        {({ setFieldValue, touched, errors, values }) => (
+        {({ setFieldValue, touched, errors, values, isSubmitting }) => (
           <Form>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px 0px 24px 0px', margin: '0px 20px 0px 20px' }}>
-              <Typography sx={{ fontWeight: 600, fontSize: '24px', }}>Información general</Typography>
+            <Box sx={{ display: {xs: 'none', md:'flex'}, justifyContent: 'space-between', alignItems: 'center',  padding: '24px 0px 24px 0px', margin: '0px 20px 0px 20px' }}>
+              <Typography sx={{fontWeight: 600, fontSize: '24px', }}>Información general</Typography>
               <Box sx={{ display: 'flex', mr: 1, alignItems: 'center' }}>
                 {userIsSuperAdmin ? <>
-                  {!enable && (
+                  {!enable && !isMobile && (
                     <Typography sx={{ fontWeight: 600, fontSize: '24px', color: '#0075D9', mr: 1 }}>{selectedEvent?.name}</Typography>
                   )}
-                  {enable && (
+                  {enable && !isMobile && (
                       <Field
                         name="name"
                         placeholder={selectedEvent?.name}
@@ -258,7 +268,7 @@ export default function ETIEventDate({ selectedEvent, changeEvent }: { selectedE
                       />
                   )}
                   <Button onClick={() => handleEditDataEvent(values)}>
-                    <img src={enable ? '/img/icon/btnConfirm.svg' : '/img/icon/Button_modify.svg'} height={25} width={25} />
+                   {!enable && !isMobile ? <BorderColorIcon sx={{ color: '#E68650'}}></BorderColorIcon> : <CheckCircleIcon sx={{ width: '38px', height: '38px', color: '#91F18B'}}/>}
                   </Button>
                 </> : <Typography sx={{ fontWeight: 600, fontSize: '24px', color: '#0075D9', mr: 1 }}>{selectedEvent?.name}</Typography>}
               </Box>
@@ -266,6 +276,16 @@ export default function ETIEventDate({ selectedEvent, changeEvent }: { selectedE
             <Box sx={{ margin: '0px 20px 0px 20px', backgroundColor: '#FAFAFA', borderRadius: '12px 12px 0px 0px', p: 2 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
+                  <Box
+                  sx={{display: {xs: 'flex', md: 'none'}}}>
+                     <TextFieldForm
+                        fieldName='name'
+                        placeHolder={'selectedEvent?.name'} 
+                        isDisabled={!enable} 
+                      />
+                  </Box>
+
+
                   <EtiLocationPicker
                     values={values}
                     errors={errors}
@@ -282,61 +302,68 @@ export default function ETIEventDate({ selectedEvent, changeEvent }: { selectedE
                   />
                 </Grid>
 
+                {!isMobile ? 
                 <Grid item md={12} sm={12} xs={12}>
                   <Grid container spacing={2}>
-                    <Grid item md={4} sm={4} xs={4} >
-                      <Typography style={{ fontFamily: 'inter', color: '#0075D9' }}>
+                    <Grid item md={6} sm={4} xs={4} lg={4} >
+                      <Typography style={{ fontFamily: 'roboto', color: '#0075D9' }}>
                         Desde
                       </Typography>
-                      <Box sx={{  display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', border: '1px solid #E68650', borderRadius: 2 }}>
-                        <Box>
+                      <Grid sx={{  display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', border: {md: 'none', lg: '1px solid #E68650'}, alignItems: 'center',  borderRadius: 2 }}>
+                        <Box sx={{ pr: {md: '5px', lg: 0}}}>
                           <ETIDatePicker
                             textFieldProps={{ fullWidth: true }}
                             fieldName="dateStart"
                             setFieldValue={setFieldValue}
-                           // borderColor={false}
-                           // specialCase={true}
+                            borderColor={isMedium ? true : false}
+                         
                           //  isDisabled={!enable}
                           />
                         </Box>
-                        <Box>
-                          <Typography style={{ fontFamily: 'inter', color: '#0075D9', fontSize: '16px', width: 'max-content' }}>a las</Typography>
+
+                        <Box sx={{ display: {md:'flex', lg: 'inherit'}, justifyContent: {md: 'center', lg: 'inherit'}, width: {md:'30%', lg: 'inherit'}}}>
+                          <Typography style={{ fontFamily: 'roboto', color: '#0075D9', fontSize: '16px', width: 'max-content' }}>a las</Typography>
                         </Box>
                         
-                        <Box sx={{mb: 1}}>
-                          <ETITimePicker 
+                     <Box >
+                      <ETITimePicker 
                             value={values['timeStart']}
                             onChange={(value: any) => setFieldValue('timeStart', value)}
+                            borderColor={isMedium ? true : false}
                            // isDisabled={!enable}
                             // showBorders={false}
                           />
-                        </Box>
-                      </Box>
+                       
+                     </Box>
+                          
+                      </Grid>
                     </Grid>
+                     
 
-                    <Grid item md={4} sm={4} xs={4} >
-                      <Typography style={{ fontFamily: 'inter', color: '#0075D9' }}>
+                    <Grid item md={6} sm={4} xs={4} lg={4}>
+                      <Typography style={{ fontFamily: 'roboto', color: '#0075D9' }}>
                         Hasta
                       </Typography>
 
-                      <Box sx={{  display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', border: '1px solid #E68650', borderRadius: 2 }}>
+                      <Box sx={{  display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly',border: {md: 'none', lg: '1px solid #E68650'}, alignItems: 'center', borderRadius: 2 }}>
                         <Box>
                           <ETIDatePicker
                             textFieldProps={{ fullWidth: true }}
                             fieldName="dateEnd"
                             setFieldValue={setFieldValue}
-                           // borderColor={false}
-                           // specialCase={true}
+                            borderColor={isMedium ? true : false}
+                            
                            // isDisabled={!enable}
                           />
                         </Box>
-                        <Box>
-                          <Typography style={{ fontFamily: 'inter', color: '#0075D9', fontSize: '16px', width: 'max-content' }}>a las</Typography>
+                        <Box sx={{ display: {md:'flex', lg: 'inherit'}, justifyContent: {md: 'center', lg: 'inherit'}, width: {md:'30%', lg: 'inherit'}}}>
+                          <Typography style={{ fontFamily: 'roboto', color: '#0075D9', fontSize: '16px', width: 'max-content' }}>a las</Typography>
                         </Box>
-                        <Box sx={{mb: 1}}>
+                        <Box >
                           <ETITimePicker 
                             value={values['timeEnd']}
                             onChange={(value: any) => setFieldValue('timeEnd', value)}
+                            borderColor={isMedium ? true : false}
                            // isDisabled={!enable}
                            // showBorders={false}
                           />
@@ -344,29 +371,30 @@ export default function ETIEventDate({ selectedEvent, changeEvent }: { selectedE
                       </Box>
                     </Grid>
 
-                    <Grid item md={4} sm={4} xs={4} >
-                      <Typography style={{ fontFamily: 'inter', color: '#0075D9' }}>
+                    <Grid item md={6} sm={4} xs={4} lg={4} >
+                      <Typography style={{ fontFamily: 'roboto', color: '#0075D9' }}>
                         Inscripciones
                       </Typography>
 
-                      <Box sx={{  display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', border: '1px solid #E68650', borderRadius: 2 }}>
+                      <Box sx={{  display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', border: {md: 'none', lg: '1px solid #E68650'}, alignItems: 'center',  borderRadius: 2 }}>
                         <Box>
                           <ETIDatePicker
                             textFieldProps={{ fullWidth: true }}
                             fieldName="dateSignupOpen"
                             setFieldValue={setFieldValue}
-                            // borderColor={false}
-                            // specialCase={true}
+                            borderColor={isMedium ? true : false}
+                            
                             // isDisabled={!enable}
                           />
                         </Box>
-                        <Box>
+                        <Box sx={{ display: {md:'flex', lg: 'inherit'}, justifyContent: {md: 'center', lg: 'inherit'}, width: {md:'30%', lg: 'inherit'}}}>
                           <Typography style={{ fontFamily: 'roboto', color: '#0075D9', fontSize: '16px', width: 'max-content' }}>a las</Typography>
                         </Box>
-                        <Box sx={{mb: 1}}>
+                        <Box>
                           <ETITimePicker 
                             value={values['timeSignupOpen']}
                             onChange={(value: any) => setFieldValue('timeSignupOpen', value)}
+                            borderColor={isMedium ? true : false}
                             // isDisabled={!enable}
                             // showBorders={false}
                           />
@@ -375,11 +403,100 @@ export default function ETIEventDate({ selectedEvent, changeEvent }: { selectedE
                     </Grid>
                   </Grid>
                 </Grid>
+                : <>
+                
+                <Box sx={{borderBottom: '1px solid #BDBDBD', width: '100%', ml: 2, mt: 2}}></Box> 
+                <Grid item md={12} sm={12} xs={12}>
+                   <Grid container spacing={2}>
+                   <Grid item md={12} sm={12} xs={12}>
+                               
+                                <Grid container spacing={3} alignItems={'flex-start'}>
+                                  <Grid item xs={6} sm={6} md={4} lg={2.5}>
+                                    <ETIDatePicker
+                                      textFieldProps={{ fullWidth: true }}
+                                      fieldName="dateStart"
+                                      setFieldValue={setFieldValue}
+                                      borderColor={true}
+                                    />
+                                  </Grid>
+                                
+                                  <Grid item xs={6} sm={6} md={3}>
+                                    <ETITimePicker
+                                      value={values['timeStart']}
+                                      onChange={(value: any) => setFieldValue('timeStart', value)}
+                                      error={touched['timeStart'] && !!errors['timeStart']}
+                                      helperText={touched['timeStart'] && errors['timeStart']}
+                                      borderColor={true}
+                                    />
+                                  </Grid>
+                                </Grid>
+                              </Grid>
+
+                              <Grid item md={12} sm={12} xs={12}>
+                              
+                                <Grid container spacing={3}>
+                                  <Grid item xs={6} sm={6} md={4} lg={2.5}>
+                                    <ETIDatePicker
+                                      textFieldProps={{ fullWidth: true }}
+                                      fieldName="dateEnd"
+                                      setFieldValue={setFieldValue}
+                                      borderColor={true}
+                                    />
+                                  </Grid>
+                                 
+                                  <Grid item xs={6} sm={6} md={3}>
+                                    <ETITimePicker
+                                      value={values['timeEnd']}
+                                      onChange={(value: any) => setFieldValue('timeEnd', value)}
+                                      error={touched['timeEnd'] && !!errors['timeEnd']}
+                                      helperText={touched['timeEnd'] && errors['timeEnd']}
+                                      borderColor={true}
+                                    />
+                                  </Grid>
+                                </Grid>
+                              </Grid>
+
+                              <Grid item lg={4.8} md={12} sm={12} xs={12}>
+                                
+                                <Grid container spacing={3} alignItems={'flex-start'}>
+                                  <Grid item xs={6} sm={6} md={4} lg={6}>
+                                    <ETIDatePicker
+                                      textFieldProps={{ fullWidth: true }}
+                                      fieldName="dateSignupOpen"
+                                      setFieldValue={setFieldValue}
+                                      borderColor={true}
+                                    />
+                                  </Grid>
+                               
+                                  <Grid item xs={6} sm={6} md={3} lg={2}>
+                                    <ETITimePicker
+                                      value={values['timeSignupOpen']}
+                                      onChange={(value: any) =>
+                                        setFieldValue('timeSignupOpen', value)
+                                      }
+                                      error={
+                                        touched['timeSignupOpen'] && !!errors['timeSignupOpen']
+                                      }
+                                      helperText={
+                                        touched['timeSignupOpen'] && errors['timeSignupOpen']
+                                      }
+                                      borderColor={true}
+                                    />
+                                  </Grid>
+                                </Grid>
+                              </Grid>
+                              </Grid>
+                        
+                        </Grid>  
+
+                        <Box sx={{borderBottom: '1px solid #BDBDBD', width: '100%', ml: 2, mt: 2}}></Box>         
+                        </>
+                }
 
 
                 <Grid item md={12} sm={12} xs={12}>
                   <Grid container gap={2} sx={{ border: '1.5px solid #E68650', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} >
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', minHeight: { xs: '75px', md: '48px' } }}>
                     {admins.length === 0 ? (
                         <Typography variant="body2" color="text.disabled" sx={{ fontWeight: 500, p: 2 }}>
                           En este evento no se han añadido administradores.
@@ -390,22 +507,44 @@ export default function ETIEventDate({ selectedEvent, changeEvent }: { selectedE
                         ))
                       )}
                     </Box>
-                    {enable &&
-                      <Button sx={{ padding: '12px, 16px, 12px, 16px', alignItems: 'flex-end' }} onClick={handleOpen}>
-                        <Typography sx={{ mr: 1, color: '#A82548', fontFamily: 'Roboto', fontWeight: 500 }}>
-                          Agregar
-                        </Typography>
-                        <img src='/img/icon/user-cirlce-add.svg' height={25} width={25} />
-                      </Button>
+                    {enable && !isMobile &&
+                      
+                        <AddButton onClick={handleOpen}></AddButton>
+                      
                     }
                   </Grid>
                   <Modal open={open} onClose={() => handleClose([])}>
-                    <Box sx={{ ...styleModal, display: 'flex', flexDirection: 'column' }}>
+                    <Box sx={{ ...styles.modalStyle }}>
                       <RolesNewEvent handleClose={handleClose} selectedRows={admins}/>
                     </Box>
                   </Modal>
+                  {enable && <Grid
+                                    item
+                                    xs={12}
+                                    sx={{
+                                      display: { xs: 'flex', md: 'none' },
+                                      justifyContent: 'flex-end',
+                                      mt: 2
+                                    }}
+                                  >
+                                    <AddButton onClick={handleOpen}></AddButton>
+                                  </Grid>}
                 </Grid>
               </Grid>
+
+              
+
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', margin: '20px' }}>
+                  {isMobile ?  <Button onClick={() => handleEditDataEvent(values)}>
+                        {!enable  ? <BorderColorIcon sx={{ color: '#E68650'}}></BorderColorIcon> : <CheckCircleIcon sx={{ width: '38px', height: '38px', color: '#91F18B'}}/>}
+                        </Button>
+                      :
+                        <Button type='submit' disabled={isSubmitting} sx={{ width: '115px', padding: '12px, 32px, 12px, 32px', borderRadius: '25px', backgroundColor: '#A82548', height: '44px', '&:hover': { backgroundColor: '#A82548' } }}>
+                          {isLoading ? <CircularProgress sx={{ color: '#ffffff' }} size={30} /> : <><Typography sx={{ color: '#FAFAFA', fontWeight: 500, fontSize: '14px', lineHeight: '20px' }}>{showSuccessImage ? 'Guardado' : 'Guardar'}</Typography>{showSuccessImage && <img src={'/img/icon/Vector.svg'} height={15} width={15} style={{ marginLeft: '10px' }} />}</>}
+                        </Button>}
+                        
+              </Box>
+              <Box sx={{display: {xs: 'flex', md: 'none'}, borderBottom: '1px solid #BDBDBD', width: '100%', mt: 2}}></Box> 
             </Box>
           </Form>
         )}
