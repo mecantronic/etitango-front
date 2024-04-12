@@ -47,41 +47,103 @@ export default function EditEvent({ selectedEvent, setChangeEvent2 }: { selected
     <>
       {isMobile ? (
         <>
-          {step === 1 && (
-            <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
-              <Box sx={{ display: 'flex', ...scrollbarStyles, flexDirection: 'column' }}>
-                <Box sx={{ width: '100%' }}>
-                  <ETIEventDate selectedEvent={selectedEvent} changeEvent={setChangeEvent2} />
-                </Box>
-                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 2 }}>
-                  <Button
-                    onClick={() => handleNextStep()}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            {step === 1 && (
+              <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
+                <Box sx={{ display: 'flex', ...scrollbarStyles, flexDirection: 'column' }}>
+                  <Box sx={{ width: '100%' }}>
+                    <ETIEventDate selectedEvent={selectedEvent} changeEvent={setChangeEvent2} />
+                  </Box>
+                  <Box
                     sx={{
-                      width: '85%',
-                      padding: '12px, 32px, 12px, 32px',
-                      borderRadius: '25px',
+                      width: '100%',
+                      flexDirection: 'column',
+                      mb: 2
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}
+                    >
+                      {[1, 2, 3].map((circle) => (
+                        <div
+                          key={circle}
+                          style={{
+                            width: step === circle ? '18px' : '10px',
+                            height: step === circle ? '18px' : '10px',
+                            borderRadius: '50%',
+                            backgroundColor: step === circle ? '#E68650' : '#BDBDBD',
+                            marginRight: '8px',
+                            marginBottom: '16px',
+                          }}
+                        />
+                      ))}
+                    </Box>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      <Button
+                        onClick={() => handleNextStep()}
+                        sx={{
+                          width: '85%',
+                      	padding: '12px, 32px, 12px, 32px',
+                      	borderRadius: '25px',
                       backgroundColor: 'principal.secondary',
                       color: 'background.white',
                       height: '44px',
                       '&:hover': { backgroundColor: 'principal.secondary' },
-                    }}
-                  >
-                    {buttonText}
-                  </Button>
+                        }}
+                      >
+                        {buttonText}
+                      </Button>
+                    </Box>
+                  </Box>
                 </Box>
               </Box>
-            </Box>
-          )}
+            )}
 
-          {step === 2 && (
-            <>
-              <Box sx={{ border: `1px solid ${theme.palette.greyScale[300]}`, marginLeft: '20px', marginRight: '20px' }}></Box>
+            {step === 2 && (
+              <>
+                <Box sx={{ border: `1px solid ${theme.palette.greyScale[300]}`, marginLeft: '20px', marginRight: '20px' }}></Box>
 
-             <Box sx={{ display: 'flex', justifyContent:'center', height: '250px'}}>
-              <Typography sx={{ mt: 12}} variant='h3' textAlign={'center'}>{t('tables')}</Typography>
-             </Box>
-             
-              <Box sx={{ width: '100%',display: 'flex', justifyContent: 'center', mb: 2 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', height: '250px' }}>
+                  <Typography sx={{ mt: 12 }} variant="h3" textAlign={'center'}>
+                    Tablas
+                  </Typography>
+                  
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    mb: 2
+                  }}
+                >
+                  {[1, 2, 3].map((circle) => (
+                    <div
+                      key={circle}
+                      style={{
+                        width: step === circle ? '18px' : '10px',
+                        height: step === circle ? '18px' : '10px',
+                        borderRadius: '50%',
+                        backgroundColor: step === circle ? '#E68650' : '#BDBDBD',
+                        marginRight: '8px',
+                        marginBottom: '16px'
+                      }}
+                    />
+                  ))}
+                </Box>
+
+                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                   <Button
                     onClick={() => handleNextStep()}
                     sx={{
@@ -96,18 +158,63 @@ export default function EditEvent({ selectedEvent, setChangeEvent2 }: { selected
                   >
                     {buttonText}
                   </Button>
+                </Box>
+              </>
+            )}
+
+            {step === 3 && (
+              <>
+              <Box sx={{ border: `1px solid ${theme.palette.greyScale[300]}`, marginLeft: '20px', marginRight: '20px' }}></Box>
+          
+              <Box sx={{ display: 'flex', justifyContent: 'center', height: '250px' }}>
+                <Typography sx={{ mt: 12 }} variant="h3" textAlign={'center'}>
+                  Combos
+                </Typography>
+              </Box>
+          
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  mb: 2
+                }}
+              >
+                {[1, 2, 3].map((circle) => (
+                  <div
+                    key={circle}
+                    style={{
+                      width: step === circle ? '18px' : '10px',
+                      height: step === circle ? '18px' : '10px',
+                      borderRadius: '50%',
+                      backgroundColor: step === circle ? '#E68650' : '#BDBDBD',
+                      marginRight: '8px',
+                      marginBottom: '16px'
+                    }}
+                  />
+                ))}
+              </Box>
+          
+              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                <Button
+                  onClick={() => handleNextStep()}
+                  sx={{
+                    width: '85%',
+                      padding: '12px, 32px, 12px, 32px',
+                      borderRadius: '25px',
+                      backgroundColor: 'principal.secondary',
+                      color: 'background.white',
+                      height: '44px',
+                      '&:hover': { backgroundColor: 'principal.secondary' },
+                  }}
+                >
+                  {buttonText}
+                </Button>
               </Box>
             </>
-          )}
-          {step === 3 && (
-           <>
-           <Box sx={{ border: `1px solid ${theme.palette.greyScale[300]}`, marginLeft: '20px', marginRight: '20px' }}></Box>
-
-           <Box sx={{ display: 'flex', justifyContent:'center', height: '250px'}}>
-           <Typography sx={{ mt: 12}} variant='h3' textAlign={'center'}>{t('combos')}</Typography>
-           </Box>
-              </>
-          )}
+            )}
+          </div>
         </>
       ) : (
         <>
