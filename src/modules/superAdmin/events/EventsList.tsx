@@ -17,8 +17,8 @@ const EventsList = () => {
   const [isLoading, setIsLoading] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [eventData, setEventData] = useState<EtiEvent | null>(null);
+  // eslint-disable-next-line no-unused-vars
   const [changeEvent2, setChangeEvent2] = useState(false)
-  const [changeEvent3, setChangeEvent3] = useState(false)
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const { t } = useTranslation(SCOPES.MODULES.EVENT_LIST, { useSuspense: false });
   const { idNewEvent } = useContext(EventContext);
@@ -76,7 +76,7 @@ const EventsList = () => {
               setSelectedRows={setSelectedRows}
             />
             <Box sx={{mt: 5}}>
-              <EditEvent selectedEvent={eventData} setChangeEvent2={setChangeEvent2} changeEvent2={changeEvent2} setChangeEvent3={setChangeEvent3} ></EditEvent>
+              <EditEvent selectedEvent={eventData} setChangeEvent2={setChangeEvent2}></EditEvent>
             </Box>
           </>
         ) : (

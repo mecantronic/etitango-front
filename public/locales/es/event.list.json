@@ -7,5 +7,9 @@
   "delete": "Eliminar",
   "notEvents": "No hay eventos disponibles",
   "remove": "Borrar",
-  "cancel": "Cancelar"
+  "cancel": "Cancelar",
+  "start": "Comenzar",
+  "next": "Siguiente",
+  "tables": "Tablas",
+  "combos": "Combos"
 }
