@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {
   Box,
   Button,
@@ -120,7 +119,7 @@ export default function ETIEventDate({
   }, []);
 
   useEffect(() => {
-    if (selectedEvent && selectedEvent.admins && users.length > 0) {
+    if (selectedEvent?.admins && users.length > 0) {
       const adminsArray: { id: string; name: string; email: string }[] = [];
       selectedEvent.admins.forEach((element: string) => {
         users.forEach((user: any) => {
@@ -419,8 +418,6 @@ export default function ETIEventDate({
                               setFieldValue={setFieldValue}
                               borderColor={isMedium ? true : false}
                               isDisabled={!enable}
-
-                              // isDisabled={!enable}
                             />
                           </Box>
                           <Box

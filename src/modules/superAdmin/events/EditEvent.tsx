@@ -1,13 +1,12 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable prettier/prettier */
 import { useEffect, useState } from 'react';
-import { Button, Box, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { EtiEvent } from '../../../shared/etiEvent';
 import { useGlobalState } from 'helpers/UserPanelContext';
 import ETIEventDate from 'components/events/ETIEventDate';
 import { useTranslation } from 'react-i18next';
 import { SCOPES } from 'helpers/constants/i18n';
 import theme from 'theme';
+import EtiButton from 'components/button/EtiButton';
 
 export default function EditEvent({
   selectedEvent,
@@ -18,6 +17,7 @@ export default function EditEvent({
 }) {
   const { isMobile } = useGlobalState();
   const { t } = useTranslation(SCOPES.MODULES.EVENT_LIST, { useSuspense: false });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {}, [selectedEvent]);
 
@@ -44,8 +44,6 @@ export default function EditEvent({
       setStep(step + 1);
     }
   };
-
-  const buttonText = step === 1 ? t('start') : step === 2 ? t('next') : t('next');
 
   return (
     <>
@@ -92,24 +90,16 @@ export default function EditEvent({
                     </Box>
                     <Box
                       sx={{
-                        display: 'flex',
-                        justifyContent: 'center'
+                        margin: 'auto',
+                        width: '100%',
                       }}
                     >
-                      <Button
-                        onClick={() => handleNextStep()}
-                        sx={{
-                          width: '85%',
-                          padding: '12px, 32px, 12px, 32px',
-                          borderRadius: '25px',
-                          backgroundColor: 'principal.secondary',
-                          color: 'background.white',
-                          height: '44px',
-                          '&:hover': { backgroundColor: 'principal.secondary' }
-                        }}
-                      >
-                        {buttonText}
-                      </Button>
+                      <EtiButton
+                            isLoading={isLoading}
+                            title={t('next')}
+                            styleKey="largePrimaryButton"
+                            onClick={handleNextStep}
+                          />
                     </Box>
                   </Box>
                 </Box>
@@ -128,7 +118,7 @@ export default function EditEvent({
 
                 <Box sx={{ display: 'flex', justifyContent: 'center', height: '250px' }}>
                   <Typography sx={{ mt: 12 }} typography={'title.bold.h3'} textAlign={'center'}>
-                    Tablas
+                    {t('tables')}
                   </Typography>
                 </Box>
                 <Box
@@ -158,21 +148,13 @@ export default function EditEvent({
                   ))}
                 </Box>
 
-                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                  <Button
-                    onClick={() => handleNextStep()}
-                    sx={{
-                      width: '85%',
-                      padding: '12px, 32px, 12px, 32px',
-                      borderRadius: '25px',
-                      backgroundColor: 'principal.secondary',
-                      color: 'background.white',
-                      height: '44px',
-                      '&:hover': { backgroundColor: 'principal.secondary' }
-                    }}
-                  >
-                    {buttonText}
-                  </Button>
+                <Box sx={{ width: '100%', margin: 'auto' }}>
+                  <EtiButton
+                            isLoading={isLoading}
+                            title={t('next')}
+                            styleKey="largePrimaryButton"
+                            onClick={handleNextStep}
+                          />
                 </Box>
               </>
             )}
@@ -189,7 +171,7 @@ export default function EditEvent({
 
                 <Box sx={{ display: 'flex', justifyContent: 'center', height: '250px' }}>
                   <Typography sx={{ mt: 12 }} typography={'title.bold.h3'} textAlign={'center'}>
-                    Combos
+                    {t('combos')}
                   </Typography>
                 </Box>
 
@@ -220,21 +202,13 @@ export default function EditEvent({
                   ))}
                 </Box>
 
-                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                  <Button
-                    onClick={() => handleNextStep()}
-                    sx={{
-                      width: '85%',
-                      padding: '12px, 32px, 12px, 32px',
-                      borderRadius: '25px',
-                      backgroundColor: 'principal.secondary',
-                      color: 'background.white',
-                      height: '44px',
-                      '&:hover': { backgroundColor: 'principal.secondary' }
-                    }}
-                  >
-                    {buttonText}
-                  </Button>
+                <Box sx={{ width: '100%', margin: 'auto' }}>
+                  <EtiButton
+                            isLoading={isLoading}
+                            title={t('next')}
+                            styleKey="largePrimaryButton"
+                            onClick={handleNextStep}
+                          />
                 </Box>
               </>
             )}
