@@ -37,6 +37,12 @@ export default function EditEvent({
     }
   };
 
+  const steps = [
+    { id: 1, description: 'Paso 1' },
+    { id: 2, description: 'Paso 2' },
+    { id: 3, description: 'Paso 3' }
+  ];
+
   const [step, setStep] = useState(1);
 
   const handleNextStep = () => {
@@ -71,15 +77,15 @@ export default function EditEvent({
                         alignItems: 'center'
                       }}
                     >
-                      {[1, 2, 3].map((circle) => (
+                      {steps.map((stepItem) => (
                         <div
-                          key={circle}
+                          key={stepItem.id}
                           style={{
-                            width: step === circle ? '18px' : '10px',
-                            height: step === circle ? '18px' : '10px',
+                            width: step === stepItem.id ? '18px' : '10px',
+                            height: step === stepItem.id ? '18px' : '10px',
                             borderRadius: '50%',
                             backgroundColor:
-                              step === circle
+                              step === stepItem.id
                                 ? `${theme.palette.details.perseanOrange}`
                                 : `${theme.palette.greyScale[400]}`,
                             marginRight: '8px',
@@ -91,15 +97,15 @@ export default function EditEvent({
                     <Box
                       sx={{
                         margin: 'auto',
-                        width: '100%',
+                        width: '100%'
                       }}
                     >
                       <EtiButton
-                            isLoading={isLoading}
-                            title={t('next')}
-                            styleKey="largePrimaryButton"
-                            onClick={handleNextStep}
-                          />
+                        isLoading={isLoading}
+                        title={t('next')}
+                        styleKey="largePrimaryButton"
+                        onClick={handleNextStep}
+                      />
                     </Box>
                   </Box>
                 </Box>
@@ -130,15 +136,15 @@ export default function EditEvent({
                     mb: 2
                   }}
                 >
-                  {[1, 2, 3].map((circle) => (
+                  {steps.map((stepItem) => (
                     <div
-                      key={circle}
+                      key={stepItem.id}
                       style={{
-                        width: step === circle ? '18px' : '10px',
-                        height: step === circle ? '18px' : '10px',
+                        width: step === stepItem.id ? '18px' : '10px',
+                        height: step === stepItem.id ? '18px' : '10px',
                         borderRadius: '50%',
                         backgroundColor:
-                          step === circle
+                          step === stepItem.id
                             ? `${theme.palette.details.perseanOrange}`
                             : `${theme.palette.greyScale[400]}`,
                         marginRight: '8px',
@@ -150,11 +156,11 @@ export default function EditEvent({
 
                 <Box sx={{ width: '100%', margin: 'auto' }}>
                   <EtiButton
-                            isLoading={isLoading}
-                            title={t('next')}
-                            styleKey="largePrimaryButton"
-                            onClick={handleNextStep}
-                          />
+                    isLoading={isLoading}
+                    title={t('next')}
+                    styleKey="largePrimaryButton"
+                    onClick={handleNextStep}
+                  />
                 </Box>
               </>
             )}
@@ -184,15 +190,15 @@ export default function EditEvent({
                     mb: 2
                   }}
                 >
-                  {[1, 2, 3].map((circle) => (
+                  {steps.map((stepItem) => (
                     <div
-                      key={circle}
+                      key={stepItem.id}
                       style={{
-                        width: step === circle ? '18px' : '10px',
-                        height: step === circle ? '18px' : '10px',
+                        width: step === stepItem.id ? '18px' : '10px',
+                        height: step === stepItem.id ? '18px' : '10px',
                         borderRadius: '50%',
                         backgroundColor:
-                          step === circle
+                          step === stepItem.id
                             ? `${theme.palette.details.perseanOrange}`
                             : `${theme.palette.greyScale[400]}`,
                         marginRight: '8px',
@@ -204,11 +210,11 @@ export default function EditEvent({
 
                 <Box sx={{ width: '100%', margin: 'auto' }}>
                   <EtiButton
-                            isLoading={isLoading}
-                            title={t('next')}
-                            styleKey="largePrimaryButton"
-                            onClick={handleNextStep}
-                          />
+                    isLoading={isLoading}
+                    title={t('next')}
+                    styleKey="largePrimaryButton"
+                    onClick={handleNextStep}
+                  />
                 </Box>
               </>
             )}
