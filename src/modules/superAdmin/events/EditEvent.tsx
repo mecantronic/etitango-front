@@ -44,7 +44,7 @@ export default function EditEvent({
   };
 
   const steps = [
-    { id: 1, description: t('steps.first')},
+    { id: 1, description: t('steps.first') },
     { id: 2, description: t('steps.second') },
     { id: 3, description: t('steps.third') }
   ];
@@ -56,21 +56,21 @@ export default function EditEvent({
       if (enable) {
         alert(t('finishEditing'));
       } else {
-      setStep(step + 1);
-      if (step >= 1) {
-        showEventsTable(false);
-      } 
-    }
+        setStep(step + 1);
+        if (step >= 1) {
+          showEventsTable(false);
+        }
+      }
     }
   };
 
   const handleGoBack = () => {
     if (step > 1) {
       setStep(step - 1);
-      if (step === 2){
+      if (step === 2) {
         showEventsTable(true);
       }
-    } 
+    }
   };
 
   return (
@@ -82,7 +82,12 @@ export default function EditEvent({
               <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
                 <Box sx={{ display: 'flex', ...scrollbarStyles, flexDirection: 'column' }}>
                   <Box sx={{ width: '100%' }}>
-                    <ETIEventDate selectedEvent={selectedEvent} changeEvent={setChangeEvent} enable={enable} setEnable={setEnable}/>
+                    <ETIEventDate
+                      selectedEvent={selectedEvent}
+                      changeEvent={setChangeEvent}
+                      enable={enable}
+                      setEnable={setEnable}
+                    />
                   </Box>
                   <Box
                     sx={{
@@ -257,7 +262,12 @@ export default function EditEvent({
           >
             <Box sx={{ display: 'flex', ...scrollbarStyles, flexDirection: 'column' }}>
               <Box sx={{ width: '100%' }}>
-                <ETIEventDate selectedEvent={selectedEvent} changeEvent={setChangeEvent} enable={enable} setEnable={setEnable}/>
+                <ETIEventDate
+                  selectedEvent={selectedEvent}
+                  changeEvent={setChangeEvent}
+                  enable={enable}
+                  setEnable={setEnable}
+                />
               </Box>
             </Box>
           </Box>

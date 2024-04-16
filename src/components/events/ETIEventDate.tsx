@@ -47,7 +47,6 @@ export default function ETIEventDate({
   changeEvent: Function;
   enable: boolean;
   setEnable: Function;
-  
 }) {
   const idEvent = selectedEvent?.id;
   const { isMobile } = useGlobalState();
@@ -166,7 +165,7 @@ export default function ETIEventDate({
   //         setEnable(false);
   //         changeEvent(false);
   //       }
-      
+
   //   } catch (error) {
   //     alert(error);
   //   }
@@ -193,7 +192,7 @@ export default function ETIEventDate({
 
   const handleOpenEdit = () => {
     setEnable((prevState: boolean) => !prevState);
-    changeEvent(!enable)
+    changeEvent(!enable);
   };
 
   return (
@@ -638,52 +637,55 @@ export default function ETIEventDate({
                 </Grid>
               </Grid>
 
-              {userIsSuperAdmin &&    
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end', margin: '20px' }}>
-                {isMobile ? (
-                  <Button onClick={() => {
-                  handleOpenEdit()
-                  handleEditDataEvent(values)
-                  }}>
-                    {!enable ? (
-                      <BorderColorIcon sx={{ color: 'details.perseanOrange' }}></BorderColorIcon>
-                    ) : (
-                      <CheckCircleIcon
-                        sx={{ width: '38px', height: '38px', color: 'status.success' }}
-                      />
-                    )}
-                  </Button>
-                ) :  (
-                  <Button
-                    onClick={() => handleEditDataEvent(values)}
-                    type="submit"
-                    sx={{
-                      width: '115px',
-                      padding: '12px, 32px, 12px, 32px',
-                      borderRadius: '25px',
-                      backgroundColor: 'principal.secondary',
-                      height: '44px',
-                      '&:hover': { backgroundColor: 'principal.secondary' }
-                    }}
-                  >
-                    {isLoading ? (
-                      <CircularProgress sx={{ color: 'background.white' }} size={30} />
-                    ) : (
-                      <>
-                        <Typography
-                          typography={'label.button'}
-                          sx={{
-                            color: 'greyScale.50'
-                          }}
-                        >
-                          {t('saveButton')}
-                        </Typography>
-                      </>
-                    )}
-                  </Button>
-                )}
-              </Box>}
-              
+              {userIsSuperAdmin && (
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', margin: '20px' }}>
+                  {isMobile ? (
+                    <Button
+                      onClick={() => {
+                        handleOpenEdit();
+                        handleEditDataEvent(values);
+                      }}
+                    >
+                      {!enable ? (
+                        <BorderColorIcon sx={{ color: 'details.perseanOrange' }}></BorderColorIcon>
+                      ) : (
+                        <CheckCircleIcon
+                          sx={{ width: '38px', height: '38px', color: 'status.success' }}
+                        />
+                      )}
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => handleEditDataEvent(values)}
+                      type="submit"
+                      sx={{
+                        width: '115px',
+                        padding: '12px, 32px, 12px, 32px',
+                        borderRadius: '25px',
+                        backgroundColor: 'principal.secondary',
+                        height: '44px',
+                        '&:hover': { backgroundColor: 'principal.secondary' }
+                      }}
+                    >
+                      {isLoading ? (
+                        <CircularProgress sx={{ color: 'background.white' }} size={30} />
+                      ) : (
+                        <>
+                          <Typography
+                            typography={'label.button'}
+                            sx={{
+                              color: 'greyScale.50'
+                            }}
+                          >
+                            {t('saveButton')}
+                          </Typography>
+                        </>
+                      )}
+                    </Button>
+                  )}
+                </Box>
+              )}
+
               <Box
                 sx={{
                   display: { xs: 'flex', md: 'none' },
@@ -693,7 +695,6 @@ export default function ETIEventDate({
                 }}
               ></Box>
             </Box>
-              
           </Form>
         )}
       </Formik>
