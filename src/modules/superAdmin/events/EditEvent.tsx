@@ -20,7 +20,9 @@ export default function EditEvent({
   showEventsTable: Function;
 }) {
   const { isMobile } = useGlobalState();
+  const [enable, setEnable] = useState(false);
   const { t } = useTranslation(SCOPES.MODULES.EVENT_LIST, { useSuspense: false });
+  // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {}, [selectedEvent]);
@@ -42,23 +44,23 @@ export default function EditEvent({
   };
 
   const steps = [
-    { id: 1, description: 'Paso 1' },
-    { id: 2, description: 'Paso 2' },
-    { id: 3, description: 'Paso 3' }
+    { id: 1, description: t('steps.first')},
+    { id: 2, description: t('steps.second') },
+    { id: 3, description: t('steps.third') }
   ];
 
   const [step, setStep] = useState<FormStep['generalInfo']>(1);
-  console.log('este es el step desde EditEvent: ' + step);
-  
 
   const handleNextStep = () => {
     if (isMobile) {
+      if (enable) {
+        alert(t('finishEditing'));
+      } else {
       setStep(step + 1);
       if (step >= 1) {
-        console.log('este es el if');
         showEventsTable(false);
       } 
-      
+    }
     }
   };
 
@@ -80,7 +82,7 @@ export default function EditEvent({
               <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
                 <Box sx={{ display: 'flex', ...scrollbarStyles, flexDirection: 'column' }}>
                   <Box sx={{ width: '100%' }}>
-                    <ETIEventDate selectedEvent={selectedEvent} changeEvent={setChangeEvent} />
+                    <ETIEventDate selectedEvent={selectedEvent} changeEvent={setChangeEvent} enable={enable} setEnable={setEnable}/>
                   </Box>
                   <Box
                     sx={{
@@ -255,7 +257,7 @@ export default function EditEvent({
           >
             <Box sx={{ display: 'flex', ...scrollbarStyles, flexDirection: 'column' }}>
               <Box sx={{ width: '100%' }}>
-                <ETIEventDate selectedEvent={selectedEvent} changeEvent={setChangeEvent} />
+                <ETIEventDate selectedEvent={selectedEvent} changeEvent={setChangeEvent} enable={enable} setEnable={setEnable}/>
               </Box>
             </Box>
           </Box>

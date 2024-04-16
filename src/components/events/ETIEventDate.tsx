@@ -39,10 +39,15 @@ interface Admin {
 }
 export default function ETIEventDate({
   selectedEvent,
-  changeEvent
+  changeEvent,
+  enable,
+  setEnable
 }: {
   selectedEvent: EtiEvent | null;
   changeEvent: Function;
+  enable: boolean;
+  setEnable: Function;
+  
 }) {
   const idEvent = selectedEvent?.id;
   const { isMobile } = useGlobalState();
@@ -52,7 +57,7 @@ export default function ETIEventDate({
   const { user } = useContext(UserContext);
   const userIsSuperAdmin = isSuperAdmin(user);
   const isMedium = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
-  const [enable, setEnable] = useState(false);
+  // const [enable, setEnable] = useState(false);
   const EventFormSchema = object({
     dateEnd: date().required(t('alertText')),
     dateSignupOpen: date().required(t('alertText')),
@@ -145,12 +150,31 @@ export default function ETIEventDate({
     }
   };
 
+  // const handleEditMobile = async (values: any) => {
+  //   try {
+  //     if (enable === false) {
+  //       setEnable(true);
+  //       changeEvent(true);
+  //     }
+  //       if (idEvent) {
+  //         const selectedEmails = admins.map((admin: any) => admin.email);
+  //         await createOrUpdateDoc('events', values, idEvent === 'new' ? undefined : idEvent);
+  //         const emailsToDelete = adminsToDelete.filter((email) => !selectedEmails.includes(email));
+  //         await unassignEventAdmins(emailsToDelete, idEvent);
+
+  //         await assignEventAdmin(selectedEmails, idEvent);
+  //         setEnable(false);
+  //         changeEvent(false);
+  //       }
+      
+  //   } catch (error) {
+  //     alert(error);
+  //   }
+  // };
+
   const handleEditDataEvent = async (values: any) => {
     try {
-      if (enable === false) {
-        setEnable(true);
-        changeEvent(true);
-      } else {
+      if (enable === true) {
         if (idEvent) {
           const selectedEmails = admins.map((admin: any) => admin.email);
           await createOrUpdateDoc('events', values, idEvent === 'new' ? undefined : idEvent);
@@ -165,6 +189,11 @@ export default function ETIEventDate({
     } catch (error) {
       alert(error);
     }
+  };
+
+  const handleOpenEdit = () => {
+    setEnable((prevState: boolean) => !prevState);
+    changeEvent(!enable)
   };
 
   return (
@@ -189,7 +218,7 @@ export default function ETIEventDate({
           await handleEditDataEvent(values);
         }}
       >
-        {({ setFieldValue, touched, errors, values, isSubmitting }) => (
+        {({ setFieldValue, touched, errors, values }) => (
           <Form>
             <Box
               sx={{
@@ -222,7 +251,7 @@ export default function ETIEventDate({
                         isDisabled={false}
                       />
                     )}
-                    <Button onClick={() => handleEditDataEvent(values)}>
+                    <Button onClick={() => handleOpenEdit()}>
                       {!enable && !isMobile ? (
                         <BorderColorIcon sx={{ color: 'details.perseanOrange' }}></BorderColorIcon>
                       ) : (
@@ -609,9 +638,13 @@ export default function ETIEventDate({
                 </Grid>
               </Grid>
 
+              {userIsSuperAdmin &&    
               <Box sx={{ display: 'flex', justifyContent: 'flex-end', margin: '20px' }}>
                 {isMobile ? (
-                  <Button onClick={() => handleEditDataEvent(values)}>
+                  <Button onClick={() => {
+                  handleOpenEdit()
+                  handleEditDataEvent(values)
+                  }}>
                     {!enable ? (
                       <BorderColorIcon sx={{ color: 'details.perseanOrange' }}></BorderColorIcon>
                     ) : (
@@ -620,11 +653,10 @@ export default function ETIEventDate({
                       />
                     )}
                   </Button>
-                ) : (
+                ) :  (
                   <Button
                     onClick={() => handleEditDataEvent(values)}
                     type="submit"
-                    disabled={isSubmitting}
                     sx={{
                       width: '115px',
                       padding: '12px, 32px, 12px, 32px',
@@ -650,7 +682,8 @@ export default function ETIEventDate({
                     )}
                   </Button>
                 )}
-              </Box>
+              </Box>}
+              
               <Box
                 sx={{
                   display: { xs: 'flex', md: 'none' },
@@ -660,6 +693,7 @@ export default function ETIEventDate({
                 }}
               ></Box>
             </Box>
+              
           </Form>
         )}
       </Formik>

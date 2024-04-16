@@ -12,5 +12,11 @@
   "next": "Siguiente",
   "tables": "Tablas",
   "combos": "Combos",
-  "notPermission": "No tiene permisos para acceder a la información de este evento"
+  "notPermission": "No tiene permisos para acceder a la información de este evento",
+  "finishEditing": "Primero termina de editar el evento antes de pasar de página",
+  "steps": {
+      "first": "Paso 1",
+      "second": "Paso 2",
+      "third": "Paso 3"
+  }
 }
