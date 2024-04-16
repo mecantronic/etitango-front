@@ -41,6 +41,9 @@ const EventsList = () => {
     fetchData().catch((error) => alert(error));
     setIsLoading(false);
   }, []);
+  useEffect(() => {    
+    console.log('este es el valor booleano', showEventListTable);
+  }, [showEventListTable]);
 
   const handleDeleteEvent = async (id: string) => {
     try {
@@ -54,6 +57,9 @@ const EventsList = () => {
       setIsLoading(false);
     }
   };
+
+  
+  
 
   return (
     <>

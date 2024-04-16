@@ -8,6 +8,7 @@ import { SCOPES } from 'helpers/constants/i18n';
 import theme from 'theme';
 import EtiButton from 'components/button/EtiButton';
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
+import { FormStep } from './FormSteps';
 
 export default function EditEvent({
   selectedEvent,
@@ -46,21 +47,28 @@ export default function EditEvent({
     { id: 3, description: 'Paso 3' }
   ];
 
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState<FormStep['generalInfo']>(1);
+  console.log('este es el step desde EditEvent: ' + step);
+  
 
   const handleNextStep = () => {
     if (isMobile) {
       setStep(step + 1);
       if (step >= 1) {
+        console.log('este es el if');
         showEventsTable(false);
-      }
+      } 
+      
     }
   };
 
   const handleGoBack = () => {
     if (step > 1) {
       setStep(step - 1);
-    }
+      if (step === 2){
+        showEventsTable(true);
+      }
+    } 
   };
 
   return (
@@ -148,8 +156,6 @@ export default function EditEvent({
                     mb: 2
                   }}
                 >
-                  {/* Botón "go back" con icono */}
-
                   {steps.map((stepItem) => (
                     <div
                       key={stepItem.id}
