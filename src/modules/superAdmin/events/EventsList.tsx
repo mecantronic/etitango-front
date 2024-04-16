@@ -11,6 +11,8 @@ import { useTranslation } from 'react-i18next';
 import { SCOPES } from 'helpers/constants/i18n';
 import { EventContext } from 'helpers/EventContext';
 import EditEvent from './EditEvent';
+import { UserContext } from 'helpers/UserContext';
+import { isAdminOfEvent, isSuperAdmin } from 'helpers/firestore/users';
 
 const EventsList = () => {
   const [events, setEvents] = useState<EtiEvent[]>([]);
@@ -23,6 +25,10 @@ const EventsList = () => {
   const [showEventListTable, setShowEventListTable] = useState(true);
   const { t } = useTranslation(SCOPES.MODULES.EVENT_LIST, { useSuspense: false });
   const { idNewEvent } = useContext(EventContext);
+  const { user } = useContext(UserContext);
+  const superAdmin = isSuperAdmin(user);
+  const isAdminOfEventSelected = isAdminOfEvent(user, eventData?.id);
+
   useEffect(() => {
     const fetchData = async () => {
       const event = await firestoreEventHelper.getEvents();
@@ -41,9 +47,6 @@ const EventsList = () => {
     fetchData().catch((error) => alert(error));
     setIsLoading(false);
   }, []);
-  useEffect(() => {    
-    console.log('este es el valor booleano', showEventListTable);
-  }, [showEventListTable]);
 
   const handleDeleteEvent = async (id: string) => {
     try {
@@ -58,9 +61,6 @@ const EventsList = () => {
     }
   };
 
-  
-  
-
   return (
     <>
       <WithAuthentication roles={[UserRoles.SUPER_ADMIN]} />
@@ -69,7 +69,7 @@ const EventsList = () => {
           margin: 'auto',
           display: 'flex',
           flexDirection: 'column',
-          width: { xs: '100%', lg: 960 },
+          width: { xs: '100%', lg: 960 }
         }}
       >
         {events.length > 0 ? (
@@ -85,11 +85,17 @@ const EventsList = () => {
               />
             )}
             <Box sx={{ mt: 5 }}>
-              <EditEvent
-                selectedEvent={eventData}
-                setChangeEvent={setChangeEvent}
-                showEventsTable={setShowEventListTable}
-              ></EditEvent>
+              {isAdminOfEventSelected || superAdmin ? (
+                <EditEvent
+                  selectedEvent={eventData}
+                  setChangeEvent={setChangeEvent}
+                  showEventsTable={setShowEventListTable}
+                ></EditEvent>
+              ) : (
+                <Typography typography={'title.semiBold.h5'} sx={{ textAlign: 'center' }}>
+                  {t('notPermission')}
+                </Typography>
+              )}
             </Box>
           </>
         ) : (

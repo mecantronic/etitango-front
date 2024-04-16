@@ -11,5 +11,6 @@
   "start": "Comenzar",
   "next": "Siguiente",
   "tables": "Tablas",
-  "combos": "Combos"
+  "combos": "Combos",
+  "notPermission": "No tiene permisos para acceder a la información de este evento"
 }
