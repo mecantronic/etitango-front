@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, IconButton } from '@mui/material';
 import { EtiEvent } from '../../../shared/etiEvent';
 import { useGlobalState } from 'helpers/UserPanelContext';
 import ETIEventDate from 'components/events/ETIEventDate';
@@ -7,13 +7,16 @@ import { useTranslation } from 'react-i18next';
 import { SCOPES } from 'helpers/constants/i18n';
 import theme from 'theme';
 import EtiButton from 'components/button/EtiButton';
+import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
 
 export default function EditEvent({
   selectedEvent,
-  setChangeEvent
+  setChangeEvent,
+  showEventsTable
 }: {
   selectedEvent: EtiEvent | null;
   setChangeEvent: Function;
+  showEventsTable: Function;
 }) {
   const { isMobile } = useGlobalState();
   const { t } = useTranslation(SCOPES.MODULES.EVENT_LIST, { useSuspense: false });
@@ -48,6 +51,15 @@ export default function EditEvent({
   const handleNextStep = () => {
     if (isMobile) {
       setStep(step + 1);
+      if (step >= 1) {
+        showEventsTable(false);
+      }
+    }
+  };
+
+  const handleGoBack = () => {
+    if (step > 1) {
+      setStep(step - 1);
     }
   };
 
@@ -136,6 +148,8 @@ export default function EditEvent({
                     mb: 2
                   }}
                 >
+                  {/* Botón "go back" con icono */}
+
                   {steps.map((stepItem) => (
                     <div
                       key={stepItem.id}
@@ -240,6 +254,13 @@ export default function EditEvent({
             </Box>
           </Box>
         </>
+      )}
+      {step !== 1 && (
+        <Box sx={{ position: 'absolute', top: '20px', left: '20px' }}>
+          <IconButton onClick={handleGoBack}>
+            <ArrowBackIosOutlinedIcon />
+          </IconButton>
+        </Box>
       )}
     </>
   );

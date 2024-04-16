@@ -20,6 +20,7 @@ const EventsList = () => {
   // eslint-disable-next-line no-unused-vars
   const [changeEvent, setChangeEvent] = useState(false);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
+  const [showEventListTable, setShowEventListTable] = useState(true);
   const { t } = useTranslation(SCOPES.MODULES.EVENT_LIST, { useSuspense: false });
   const { idNewEvent } = useContext(EventContext);
   useEffect(() => {
@@ -62,21 +63,27 @@ const EventsList = () => {
           margin: 'auto',
           display: 'flex',
           flexDirection: 'column',
-          width: { xs: '100%', lg: 960 }
+          width: { xs: '100%', lg: 960 },
         }}
       >
         {events.length > 0 ? (
           <>
-            <EventListTable
-              events={events}
-              isLoading={isLoading}
-              onDeleteEvent={handleDeleteEvent}
-              onSelectEvent={setEventData}
-              selectedRows={selectedRows}
-              setSelectedRows={setSelectedRows}
-            />
+            {showEventListTable && (
+              <EventListTable
+                events={events}
+                isLoading={isLoading}
+                onDeleteEvent={handleDeleteEvent}
+                onSelectEvent={setEventData}
+                selectedRows={selectedRows}
+                setSelectedRows={setSelectedRows}
+              />
+            )}
             <Box sx={{ mt: 5 }}>
-              <EditEvent selectedEvent={eventData} setChangeEvent={setChangeEvent}></EditEvent>
+              <EditEvent
+                selectedEvent={eventData}
+                setChangeEvent={setChangeEvent}
+                showEventsTable={setShowEventListTable}
+              ></EditEvent>
             </Box>
           </>
         ) : (
