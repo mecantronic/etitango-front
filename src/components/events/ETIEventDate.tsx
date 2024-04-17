@@ -119,7 +119,7 @@ export default function ETIEventDate({
         userss();
       }
     };
-  }, []);
+  }, [selectedEvent]);
 
   useEffect(() => {
     if (selectedEvent?.admins && users.length > 0) {
@@ -137,7 +137,7 @@ export default function ETIEventDate({
       });
       setAdmins(adminsArray);
     }
-  }, [selectedEvent]);
+  }, [selectedEvent, users]);
 
   const handleDelete = (email: string) => {
     try {
@@ -156,7 +156,6 @@ export default function ETIEventDate({
           await createOrUpdateDoc('events', values, idEvent === 'new' ? undefined : idEvent);
           const emailsToDelete = adminsToDelete.filter((email) => !selectedEmails.includes(email));
           await unassignEventAdmins(emailsToDelete, idEvent);
-
           await assignEventAdmin(selectedEmails, idEvent);
           setEnable(false);
           changeEvent(false);
