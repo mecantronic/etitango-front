@@ -56,7 +56,6 @@ export default function ETIEventDate({
   const { user } = useContext(UserContext);
   const userIsSuperAdmin = isSuperAdmin(user);
   const isMedium = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
-  // const [enable, setEnable] = useState(false);
   const EventFormSchema = object({
     dateEnd: date().required(t('alertText')),
     dateSignupOpen: date().required(t('alertText')),
@@ -148,28 +147,6 @@ export default function ETIEventDate({
       alert('Error deleting administrator' + error);
     }
   };
-
-  // const handleEditMobile = async (values: any) => {
-  //   try {
-  //     if (enable === false) {
-  //       setEnable(true);
-  //       changeEvent(true);
-  //     }
-  //       if (idEvent) {
-  //         const selectedEmails = admins.map((admin: any) => admin.email);
-  //         await createOrUpdateDoc('events', values, idEvent === 'new' ? undefined : idEvent);
-  //         const emailsToDelete = adminsToDelete.filter((email) => !selectedEmails.includes(email));
-  //         await unassignEventAdmins(emailsToDelete, idEvent);
-
-  //         await assignEventAdmin(selectedEmails, idEvent);
-  //         setEnable(false);
-  //         changeEvent(false);
-  //       }
-
-  //   } catch (error) {
-  //     alert(error);
-  //   }
-  // };
 
   const handleEditDataEvent = async (values: any) => {
     try {

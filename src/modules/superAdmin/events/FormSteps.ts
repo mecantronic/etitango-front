@@ -1,6 +1,6 @@
 export interface FormStep {
   generalInfo: number;
-  tablas: number;
-  combos: number;
-  portado: number;
+  tables: number;
+  combo: number;
+  coverPage: number;
 }
