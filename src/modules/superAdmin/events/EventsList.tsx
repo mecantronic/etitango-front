@@ -47,7 +47,7 @@ const EventsList = () => {
     setIsLoading(true);
     fetchData().catch((error) => alert(error));
     setIsLoading(false);
-  }, []);
+  }, [changeEvent]);
 
   const handleDeleteEvent = async (id: string) => {
     try {

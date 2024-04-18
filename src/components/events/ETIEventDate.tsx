@@ -159,7 +159,7 @@ export default function ETIEventDate({
         await unassignEventAdmins(emailsToDelete, idEvent);
         await assignEventAdmin(selectedEmails, idEvent);
         setIsLoading(false);
-        changeEvent(false);
+        changeEvent(!false);
       }
     } catch (error) {
       alert(error);
@@ -184,7 +184,6 @@ export default function ETIEventDate({
           dateSignupOpen: selectedEvent?.dateSignupOpen || '',
           dateStart: selectedEvent?.dateStart || '',
           name: selectedEvent?.name || '',
-          country: selectedEvent?.country || '',
           province: selectedEvent?.province || '',
           city: selectedEvent?.city || '',
           admins: selectedEvent?.admins || '',
@@ -230,7 +229,11 @@ export default function ETIEventDate({
                         isDisabled={false}
                       />
                     )}
-                    <Button onClick={() => handleOpenEdit()}>
+                    <Button
+                      onClick={() => {
+                        handleOpenEdit(), handleEditDataEvent(values);
+                      }}
+                    >
                       {!enable && !isMobile ? (
                         <BorderColorIcon sx={{ color: 'details.perseanOrange' }}></BorderColorIcon>
                       ) : (
