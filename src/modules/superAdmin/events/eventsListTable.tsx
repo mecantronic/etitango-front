@@ -55,15 +55,22 @@ export function EventListTable(props: {
   onSelectEvent: Function;
   selectedRows: string[];
   setSelectedRows: Function;
+  enable: boolean;
 }) {
-  const { events, isLoading, onDeleteEvent, onSelectEvent, selectedRows, setSelectedRows } = props;
+  const { events, isLoading, onDeleteEvent, onSelectEvent, selectedRows, setSelectedRows, enable } =
+    props;
   const [showCheckbox, setShowCheckbox] = useState(false);
   const { t } = useTranslation(SCOPES.MODULES.EVENT_LIST, { useSuspense: false });
   const { user } = useContext(UserContext);
   const userIsSuperAdmin = isSuperAdmin(user);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [prevSelectedRow, setPrevSelectedRow] = useState<string | null>(null);
   const handleClick = (event: any) => {
-    setAnchorEl(event.currentTarget);
+    if (enable) {
+      alert(t('finishEditing'));
+    } else {
+      setAnchorEl(event.currentTarget);
+    }
   };
   const handleClose = () => {
     setAnchorEl(null);
@@ -100,6 +107,20 @@ export function EventListTable(props: {
       setSelectedRows([]);
     }
   }, [showCheckbox]);
+
+  useEffect(() => {
+    if (!enable) {
+      if (prevSelectedRow) {
+        setSelectedRows([prevSelectedRow]);
+      } else {
+        setSelectedRows([]);
+      }
+    } else {
+      if (selectedRows.length === 1) {
+        setPrevSelectedRow(selectedRows[0]);
+      }
+    }
+  }, [enable]);
 
   useEffect(() => {
     if (!showCheckbox && events.length > 0) {
@@ -160,7 +181,9 @@ export function EventListTable(props: {
     return (
       <Grid>
         {!showCheckbox && userIsSuperAdmin ? (
-          <Button onClick={() => setShowCheckbox(!showCheckbox)}>
+          <Button
+            onClick={() => (!enable ? setShowCheckbox(!showCheckbox) : alert(t('finishEditing')))}
+          >
             <DeleteIcon sx={{ color: 'status.error', height: '32px', width: '32px' }}></DeleteIcon>
           </Button>
         ) : (
@@ -198,7 +221,9 @@ export function EventListTable(props: {
           mt: 2,
           height: isMobile ? (trashIconMobile ? '31px' : '45px') : userIsSuperAdmin ? '0' : '35px'
         }}
-        onChange={(e, value) => apiRef.current.setPage(value - 1)}
+        onChange={(e, value) =>
+          !enable ? apiRef.current.setPage(value - 1) : alert(t('finishEditing'))
+        }
         renderItem={(item) => (
           <PaginationItem
             {...item}
@@ -278,7 +303,7 @@ export function EventListTable(props: {
           borderRadius: { xs: '', md: '12px' },
           backgroundColor: 'background.white',
           marginX: { xs: '20px', lg: 0 },
-          marginY: '20px' 
+          marginY: '20px'
         }}
       >
         <Box
@@ -337,21 +362,25 @@ export function EventListTable(props: {
             }
           }}
           onRowClick={(event) => {
-            if (!showCheckbox) {
-              const selectedEventId = event.row.id as string;
-              const isSelected = selectedRows.includes(selectedEventId);
+            if (enable) {
+              alert(t('finishEditing'));
+            } else {
+              if (!showCheckbox) {
+                const selectedEventId = event.row.id as string;
+                const isSelected = selectedRows.includes(selectedEventId);
 
-              if (isSelected) {
-                setSelectedRows((prevSelectedRows: string[]) =>
-                  prevSelectedRows.filter((rowId) => rowId !== selectedEventId)
-                );
-              } else {
-                setSelectedRows([selectedEventId]);
-              }
+                if (isSelected) {
+                  setSelectedRows((prevSelectedRows: string[]) =>
+                    prevSelectedRows.filter((rowId) => rowId !== selectedEventId)
+                  );
+                } else {
+                  setSelectedRows([selectedEventId]);
+                }
 
-              const selectedEvent = events.find((event) => event.id === selectedEventId);
-              if (selectedEvent) {
-                onSelectEvent(selectedEvent);
+                const selectedEvent = events.find((event) => event.id === selectedEventId);
+                if (selectedEvent && !enable) {
+                  onSelectEvent(selectedEvent);
+                }
               }
             }
           }}
@@ -371,13 +400,14 @@ export function EventListTable(props: {
               fontFamily: 'Montserrat'
             },
             '& .MuiDataGrid-row': {
-              ...(!showCheckbox && {
-                '&.Mui-selected': {
-                  border: `2px solid ${theme.palette.principal.secondary}`,
-                  backgroundColor: 'inherit',
-                  width: { xs: '98.9%', sm: '99.4%', lg: '99.6%' }
-                }
-              })
+              ...(!showCheckbox &&
+                !enable && {
+                  '&.Mui-selected': {
+                    border: `2px solid ${theme.palette.principal.secondary}`,
+                    backgroundColor: 'inherit',
+                    width: { xs: '98.9%', sm: '99.4%', lg: '99.6%' }
+                  }
+                })
             },
             '& .MuiDataGrid-row:hover': {
               backgroundColor: 'transparent'

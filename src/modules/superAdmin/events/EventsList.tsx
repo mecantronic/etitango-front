@@ -28,6 +28,7 @@ const EventsList = () => {
   const { user } = useContext(UserContext);
   const superAdmin = isSuperAdmin(user);
   const isAdminOfEventSelected = isAdminOfEvent(user, eventData?.id);
+  const [enable, setEnable] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -82,6 +83,7 @@ const EventsList = () => {
                 onSelectEvent={setEventData}
                 selectedRows={selectedRows}
                 setSelectedRows={setSelectedRows}
+                enable={enable}
               />
             )}
             <Box sx={{ mt: 5 }}>
@@ -90,6 +92,8 @@ const EventsList = () => {
                   selectedEvent={eventData}
                   setChangeEvent={setChangeEvent}
                   showEventsTable={setShowEventListTable}
+                  enable={enable}
+                  setEnable={setEnable}
                 ></EditEvent>
               ) : (
                 <Typography typography={'title.semiBold.h5'} sx={{ textAlign: 'center' }}>

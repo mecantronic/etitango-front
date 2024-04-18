@@ -51,6 +51,7 @@ export default function ETIEventDate({
   const idEvent = selectedEvent?.id;
   const { isMobile } = useGlobalState();
   const { t } = useTranslation(SCOPES.MODULES.ETI, { useSuspense: false });
+  const { t: tEti } = useTranslation(SCOPES.MODULES.EVENT_LIST, { useSuspense: false });
   // eslint-disable-next-line no-unused-vars
   const [event, setEvent] = useState<EtiEvent>();
   const { user } = useContext(UserContext);
@@ -150,16 +151,15 @@ export default function ETIEventDate({
 
   const handleEditDataEvent = async (values: any) => {
     try {
-      if (enable === true) {
-        if (idEvent) {
-          const selectedEmails = admins.map((admin: any) => admin.email);
-          await createOrUpdateDoc('events', values, idEvent === 'new' ? undefined : idEvent);
-          const emailsToDelete = adminsToDelete.filter((email) => !selectedEmails.includes(email));
-          await unassignEventAdmins(emailsToDelete, idEvent);
-          await assignEventAdmin(selectedEmails, idEvent);
-          setEnable(false);
-          changeEvent(false);
-        }
+      setIsLoading(true);
+      if (idEvent) {
+        const selectedEmails = admins.map((admin: any) => admin.email);
+        await createOrUpdateDoc('events', values, idEvent === 'new' ? undefined : idEvent);
+        const emailsToDelete = adminsToDelete.filter((email) => !selectedEmails.includes(email));
+        await unassignEventAdmins(emailsToDelete, idEvent);
+        await assignEventAdmin(selectedEmails, idEvent);
+        setIsLoading(false);
+        changeEvent(false);
       }
     } catch (error) {
       alert(error);
@@ -169,6 +169,10 @@ export default function ETIEventDate({
   const handleOpenEdit = () => {
     setEnable((prevState: boolean) => !prevState);
     changeEvent(!enable);
+  };
+
+  const handleOpenSave = () => {
+    alert(tEti('finishEditing'));
   };
 
   return (
@@ -632,7 +636,7 @@ export default function ETIEventDate({
                     </Button>
                   ) : (
                     <Button
-                      onClick={() => handleEditDataEvent(values)}
+                      onClick={() => (!enable ? handleEditDataEvent(values) : handleOpenSave())}
                       type="submit"
                       sx={{
                         width: '115px',
