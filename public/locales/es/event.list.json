@@ -7,5 +7,16 @@
   "delete": "Eliminar",
   "notEvents": "No hay eventos disponibles",
   "remove": "Borrar",
-  "cancel": "Cancelar"
+  "cancel": "Cancelar",
+  "start": "Comenzar",
+  "next": "Siguiente",
+  "tables": "Tablas",
+  "combos": "Combos",
+  "notPermission": "No tienes permisos para acceder a la información de este evento",
+  "finishEditing": "Primero finaliza la edición del evento",
+  "steps": {
+    "first": "Paso 1",
+    "second": "Paso 2",
+    "third": "Paso 3"
+  }
 }

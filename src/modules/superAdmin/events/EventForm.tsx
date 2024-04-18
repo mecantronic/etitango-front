@@ -192,6 +192,7 @@ export default function EventForm() {
                                 <TextFieldForm
                                   fieldName="name"
                                   placeHolder={t('placeholders.name')}
+                                  isDisabled={false}
                                 />
                               </Grid>
 
@@ -223,6 +224,8 @@ export default function EventForm() {
                                       textFieldProps={{ fullWidth: true }}
                                       fieldName="dateStart"
                                       setFieldValue={setFieldValue}
+                                      borderColor={true}
+                                      isDisabled={false}
                                     />
                                   </Grid>
                                   <Typography
@@ -243,6 +246,8 @@ export default function EventForm() {
                                       onChange={(value: any) => setFieldValue('timeStart', value)}
                                       error={touched['timeStart'] && !!errors['timeStart']}
                                       helperText={touched['timeStart'] && errors['timeStart']}
+                                      borderColor={true}
+                                      isDisabled={false}
                                     />
                                   </Grid>
                                 </Grid>
@@ -264,6 +269,8 @@ export default function EventForm() {
                                       textFieldProps={{ fullWidth: true }}
                                       fieldName="dateEnd"
                                       setFieldValue={setFieldValue}
+                                      borderColor={true}
+                                      isDisabled={false}
                                     />
                                   </Grid>
                                   <Typography
@@ -283,6 +290,8 @@ export default function EventForm() {
                                       onChange={(value: any) => setFieldValue('timeEnd', value)}
                                       error={touched['timeEnd'] && !!errors['timeEnd']}
                                       helperText={touched['timeEnd'] && errors['timeEnd']}
+                                      borderColor={true}
+                                      isDisabled={false}
                                     />
                                   </Grid>
                                 </Grid>
@@ -304,6 +313,8 @@ export default function EventForm() {
                                       textFieldProps={{ fullWidth: true }}
                                       fieldName="dateSignupOpen"
                                       setFieldValue={setFieldValue}
+                                      borderColor={true}
+                                      isDisabled={false}
                                     />
                                   </Grid>
                                   <Typography
@@ -329,6 +340,8 @@ export default function EventForm() {
                                       helperText={
                                         touched['timeSignupOpen'] && errors['timeSignupOpen']
                                       }
+                                      borderColor={true}
+                                      isDisabled={false}
                                     />
                                   </Grid>
                                 </Grid>
@@ -369,6 +382,8 @@ export default function EventForm() {
                                       textFieldProps={{ fullWidth: true }}
                                       fieldName="dateSignupEnd"
                                       setFieldValue={setFieldValue}
+                                      borderColor={true}
+                                      isDisabled={false}
                                     />
                                   </Grid>
                                   <Typography
@@ -404,6 +419,8 @@ export default function EventForm() {
                                       helperText={
                                         touched['timeSignupEnd'] && errors['timeSignupEnd']
                                       }
+                                      borderColor={true}
+                                      isDisabled={false}
                                     />
                                   </Grid>
                                 </Grid>

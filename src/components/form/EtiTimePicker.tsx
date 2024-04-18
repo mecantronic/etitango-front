@@ -11,10 +11,12 @@ interface ETITimePickerProps {
   onChange: Function;
   error?: boolean | undefined;
   helperText?: any;
+  borderColor: boolean;
+  isDisabled: boolean;
 }
 
 export const ETITimePicker = (props: ETITimePickerProps) => {
-  const { value, onChange, error, helperText } = props;
+  const { value, onChange, error, helperText, borderColor = true, isDisabled } = props;
   const { t } = useTranslation(SCOPES.MODULES.ETI, { useSuspense: false });
   const { isMobile } = useGlobalState();
   const handleInputChange = (event: any) => {
@@ -61,6 +63,7 @@ export const ETITimePicker = (props: ETITimePickerProps) => {
       onBlur={handleInputChange}
       error={error}
       helperText={helperText}
+      disabled={isDisabled}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
@@ -83,15 +86,22 @@ export const ETITimePicker = (props: ETITimePickerProps) => {
           width: { sm: '100%', md: '104px' },
           '& fieldset': {
             borderRadius: '8px',
-            borderColor: value ? 'details.perseanOrange' : 'details.peach',
-            borderWidth: 1
+            borderColor: borderColor
+              ? value
+                ? 'details.perseanOrange'
+                : 'details.peach'
+              : 'transparent',
+            borderWidth: borderColor ? 1 : 0
           },
           '&:hover fieldset': {
             borderRadius: '8px',
-            borderColor: 'details.peach'
+            borderColor: borderColor ? 'details.peach' : 'transparent'
           },
           '&.Mui-focused fieldset': {
             borderRadius: '8px',
+            borderColor: borderColor ? 'details.perseanOrange' : 'transparent'
+          },
+          '& .MuiOutlinedInput-notchedOutline': {
             borderColor: 'details.perseanOrange'
           }
         }

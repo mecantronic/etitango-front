@@ -7,10 +7,12 @@ import { SCOPES } from 'helpers/constants/i18n';
 
 export const TextFieldForm = ({
   fieldName,
-  placeHolder
+  placeHolder,
+  isDisabled
 }: {
   fieldName: string;
   placeHolder: string;
+  isDisabled: boolean;
 }) => {
   const { isMobile } = useGlobalState();
   const [field] = useField(fieldName);
@@ -27,6 +29,7 @@ export const TextFieldForm = ({
         ) : null
       }
       required
+      disabled={isDisabled}
       fullWidth
       placeholder={placeHolder}
       name={fieldName}
