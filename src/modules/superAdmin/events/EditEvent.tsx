@@ -13,14 +13,17 @@ import { FormStep } from './FormSteps';
 export default function EditEvent({
   selectedEvent,
   setChangeEvent,
-  showEventsTable
+  showEventsTable,
+  enable,
+  setEnable
 }: {
   selectedEvent: EtiEvent | null;
   setChangeEvent: Function;
   showEventsTable: Function;
+  enable: boolean;
+  setEnable: Function;
 }) {
   const { isMobile } = useGlobalState();
-  const [enable, setEnable] = useState(false);
   const { t } = useTranslation(SCOPES.MODULES.EVENT_LIST, { useSuspense: false });
   // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
